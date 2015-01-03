@@ -29,7 +29,7 @@ public class Auth {
     public void requestAuthentication(User user, String pass) {
         verifyWaitingPass.put(user, pass);
         verifyWaitingTimeout.put(user, System.currentTimeMillis() + 60000);
-        IrcBot.instance.getNickServ().getNickServ().send("ACC " + user.getNick());
+        IrcBot.instance.getNickServ().send("ACC " + user.getNick());
     }
 
     private boolean authenticate(User user, String pass) {

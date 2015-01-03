@@ -90,8 +90,8 @@ public class IrcBot {
             end(-1);
         }
         if (Config.USE_LOGIN) {
-            nickServ.getNickServ().send("GHOST " + Config.BOT_USERNAME + " " + Config.BOT_PASS);
-            nickServ.getNickServ().send("IDENTIFY " + Config.BOT_PASS);
+            nickServ.send("GHOST " + Config.BOT_USERNAME + " " + Config.BOT_PASS);
+            nickServ.send("IDENTIFY " + Config.BOT_PASS);
         }
 
         LOGGER.logInfo("Startup complete.");
