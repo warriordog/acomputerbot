@@ -30,11 +30,6 @@ public class CommandLogin extends Command {
     }
 
     @Override
-    public boolean allowedInChannel(Channel channel, User user) {
-        return false;
-    }
-
-    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Authentication request processed.  Please wait to be authenticated...");
         bot.getAuth().requestAuthentication(sender, command.args);
