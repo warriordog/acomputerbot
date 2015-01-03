@@ -58,10 +58,7 @@ public class IrcBot {
         Command.init();
         LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
 
-        connection = new IrcConnection(Config.SERVER);
-        if (Config.USE_LOGIN) {
-            connection.setUsername(Config.USERNAME);
-        }
+        connection = new IrcConnection(Config.SERVER);connection.setUsername(Config.USERNAME);
         connection.setNick(Config.NICK);
         connection.addMessageListener(handler);
         connection.addServerListener(handler);
