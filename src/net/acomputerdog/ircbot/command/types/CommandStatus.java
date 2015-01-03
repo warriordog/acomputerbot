@@ -13,6 +13,11 @@ public class CommandStatus extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Gets the internal status of AcomputerBot.";
+    }
+
+    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.send(bot.getVersionString() + " status:");
         target.send("  " + Command.getCommandNameMap().size() + " loaded commands with " + Command.getCommandMap().size() + " registered aliases.");

@@ -18,6 +18,11 @@ public class CommandLogout extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Log out as admin.";
+    }
+
+    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         if (bot.getAuth().deauthenticate(sender)) {
             sender.send("You have been successfully logged out!");

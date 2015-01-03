@@ -13,6 +13,11 @@ public class CommandGithub extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Prints a link to AcomputerBot's github repository.";
+    }
+
+    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("My source code can be found on github here: https://github.com/warriordog/acomputerbot");
         return true;

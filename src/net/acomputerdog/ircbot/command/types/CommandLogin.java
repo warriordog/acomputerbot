@@ -25,6 +25,11 @@ public class CommandLogin extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Login as an AcomputerBot admin.";
+    }
+
+    @Override
     public boolean allowedInChannel(Channel channel, User user) {
         return false;
     }

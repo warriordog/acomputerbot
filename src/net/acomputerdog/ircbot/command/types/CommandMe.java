@@ -19,6 +19,11 @@ public class CommandMe extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Tells AcomputerBot to perform an action (/me).";
+    }
+
+    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.sendAction(command.args);
         return true;

@@ -19,6 +19,11 @@ public class CommandStop extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Shuts down AcomputerBot.";
+    }
+
+    @Override
     public boolean allowedInPM(User user) {
         return bot.getAuth().isAuthenticated(user);
     }

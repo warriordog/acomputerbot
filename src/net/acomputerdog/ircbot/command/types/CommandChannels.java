@@ -14,6 +14,11 @@ public class CommandChannels extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Lists all channels that AcomputerBot is connected to.";
+    }
+
+    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Connected channels:");
         for (String chan : Channels.getChannels()) {

@@ -62,6 +62,10 @@ public abstract class Command {
         return commands;
     }
 
+    public String getDescription() {
+        return "No description";
+    }
+
     public String getHelpString() {
         if (helpString == null) {
             StringBuilder builder = new StringBuilder();

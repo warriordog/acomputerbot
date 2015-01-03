@@ -26,6 +26,11 @@ public class CommandSayInAll extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Tells AcomputerBot to say something in all connected channels.";
+    }
+
+    @Override
     public boolean allowedInPM(User user) {
         return bot.getAuth().isAuthenticated(user);
     }

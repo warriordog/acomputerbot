@@ -19,6 +19,11 @@ public class CommandInfo extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Prints information about AcomputerBot.";
+    }
+
+    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.send(colorYellow("This is a simple bot made by acomputerdog.  I am open source and written in java!  Type \"" + Config.COMMAND_PREFIX + "help\" for commands."));
         return true;

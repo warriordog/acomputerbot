@@ -36,6 +36,11 @@ public class CommandJoin extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Tells AcomputerBot to join a channel.";
+    }
+
+    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         String channelName = command.args.toLowerCase();
         if (!Channels.isConnected(channelName)) {

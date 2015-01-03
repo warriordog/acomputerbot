@@ -19,6 +19,11 @@ public class CommandSay extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Tells AcomputerBot to say something.";
+    }
+
+    @Override
     public String getHelpString() {
         return Config.COMMAND_PREFIX + "say <message>";
     }

@@ -25,6 +25,11 @@ public class CommandHelp extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Gets help on AcomputerBot commands.";
+    }
+
+    @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
             Command cmd = getCommandMap().get(command.args.toLowerCase());
@@ -32,6 +37,7 @@ public class CommandHelp extends Command {
                 target.send(colorGreen("Found command: " + cmd.getName()));
                 target.send(colorGreen("  Usage: \"" + cmd.getHelpString() + "\""));
                 target.send(colorGreen("  Aliases: " + getAliases(cmd)));
+                target.send(colorGreen("  Description: " + cmd.getDescription()));
                 target.send(colorGreen("  You can use: " + canUse(channel, sender, cmd)));
                 return true;
             } else {

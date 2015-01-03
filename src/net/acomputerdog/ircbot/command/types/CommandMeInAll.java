@@ -26,6 +26,11 @@ public class CommandMeInAll extends Command {
     }
 
     @Override
+    public String getDescription() {
+        return "Tells AcomputerBot to perform an action (/me) in all connected channels.";
+    }
+
+    @Override
     public boolean allowedInPM(User user) {
         return bot.getAuth().isAuthenticated(user);
     }
