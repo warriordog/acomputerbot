@@ -153,6 +153,9 @@ public abstract class Command {
     //--------Static Stuff-----------------
 
     private static void registerCommand(Command command) {
+        if (commandNameMap.containsKey(command.getName())) {
+            command.getLogger().logWarning("Registering duplicate command: " + command.getName());
+        }
         commandNameMap.put(command.getName(), command);
         for (String cmd : command.getCommands()) {
             Command oldCmd = commandMap.put(cmd.toLowerCase(), command);
@@ -178,7 +181,7 @@ public abstract class Command {
         registerCommand(new CommandChannels(bot));
         registerCommand(new CommandGithub(bot));
         registerCommand(new CommandLogin(bot));
-        registerCommand(new CommandLogin(bot));
+        registerCommand(new CommandLogout(bot));
     }
 
     protected static String colorError(String message) {
