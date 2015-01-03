@@ -20,6 +20,7 @@ public class IrcBot {
 
     private boolean isRunning = false;
     private boolean canRun = true;
+    private String shutdownReason = null;
 
     private IrcListener handler;
     private IrcConnection connection;
@@ -106,9 +107,12 @@ public class IrcBot {
         } else {
             LOGGER.logWarning("Shutting down unexpectedly with code " + code + "!");
         }
+        if (shutdownReason != null) {
+            LOGGER.logInfo("Shutdown reason: " + shutdownReason);
+        }
         try {
             if (connection != null) {
-                connection.disconnect("Bot shutting down.");
+                connection.disconnect(shutdownReason == null ? "Bot shutting down." : shutdownReason);
             }
             admins.save();
             Config.save();
@@ -118,6 +122,11 @@ public class IrcBot {
 
     public void stop() {
         canRun = false;
+    }
+
+    public void stop(String reason) {
+        shutdownReason = reason;
+        stop();
     }
 
     public IrcListener getHandler() {
