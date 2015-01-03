@@ -20,7 +20,7 @@ public class Config {
 
     public static String SERVER = "irc.esper.net";
 
-    public static String COMMAND_PREFIX = "~";
+    public static String COMMAND_PREFIX = "!";
 
     public static int MEMORY_BUFFER_SIZE = 1000000;
 
