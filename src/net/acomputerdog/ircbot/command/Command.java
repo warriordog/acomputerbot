@@ -42,7 +42,7 @@ public abstract class Command {
         return getMinArgs();
     }
 
-    public boolean allowedInChannel(Channel channel, User sender) {
+    public boolean allowedInChannel(Channel channel, User user) {
         return true;
     }
 

@@ -5,6 +5,7 @@ import com.sorcix.sirc.Chattable;
 import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
+import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
@@ -25,19 +26,19 @@ public class CommandLeave extends Command {
     }
 
     @Override
-    public boolean allowedInChannel(Channel channel, User sender) {
-        return sender.hasOperator() || "acomputerdog".equals(sender.getRealName());
+    public boolean allowedInChannel(Channel channel, User user) {
+        return user.hasOperator() || Admins.isAdmin(user);
     }
 
     @Override
     public boolean allowedInPM(User user) {
-        return "acomputerdog".equals(user.getRealName());
+        return Admins.isAdmin(user);
     }
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
-            if ("acomputerdog".equals(sender.getRealName())) {
+            if (Admins.isAdmin(sender)) {
                 String channelName = getChannelName(command.args.toLowerCase());
                 if (Channels.isConnected(channelName)) {
                     target.send("Left channel \"" + channelName + "\".");
@@ -53,7 +54,7 @@ public class CommandLeave extends Command {
                 return false;
             }
         } else {
-            if (sender.hasOperator() || "acomputerdog".equals(sender.getRealName())) {
+            if (sender.hasOperator() || Admins.isAdmin(sender)) {
                 target.send("Bye :(");
                 channel.part();
                 Channels.disconnect(channel.getName().toLowerCase());

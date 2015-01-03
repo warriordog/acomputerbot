@@ -40,7 +40,6 @@ public class CommandHelp extends Command {
             }
         } else {
             target.send(colorGreen("Registered commands: (use \"" + getHelpString() + "\" to view details)"));
-
             StringBuilder builder = new StringBuilder();
             builder.append("  ");
             int count = 0;
