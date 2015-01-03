@@ -15,7 +15,7 @@ public class CommandInfo extends Command {
     }
 
     private String getMessage() {
-        return colorYellow("This is a simple bot made by acomputerdog.  I am written in java and am (soon to be) open source!  Type \"" + Config.COMMAND_PREFIX + "help\" for commands.");
+        return colorYellow("This is a simple bot made by acomputerdog.  I am written in java and am open source!  Type \"" + Config.COMMAND_PREFIX + "help\" for commands.");
     }
 
     private String colorYellow(String message) {

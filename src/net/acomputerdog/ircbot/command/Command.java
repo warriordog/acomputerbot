@@ -218,6 +218,7 @@ public abstract class Command {
         registerCommand(new CommandMeInAll());
         registerCommand(new CommandStatus());
         registerCommand(new CommandChannels());
+        registerCommand(new CommandGithub());
     }
 
     protected static String colorError(String message) {
