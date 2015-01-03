@@ -43,8 +43,8 @@ public class CommandLeave extends Command {
                 String channelName = getChannelName(command.args.toLowerCase());
                 if (Channels.isConnected(channelName)) {
                     target.send("Left channel \"" + channelName + "\".");
-                    Channels.getChannel(channelName).part();
                     Channels.disconnect(channelName);
+                    Channels.getChannel(channelName).part();
                     return true;
                 } else {
                     target.send(colorError("I'm not connected to \"" + channelName + "\"!"));
@@ -57,8 +57,8 @@ public class CommandLeave extends Command {
         } else {
             if (sender.hasOperator() || Auth.isAuthenticated(sender)) {
                 target.send("Bye :(");
-                channel.part();
                 Channels.disconnect(channel.getName().toLowerCase());
+                channel.part();
                 return true;
             } else {
                 target.send(colorError("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));

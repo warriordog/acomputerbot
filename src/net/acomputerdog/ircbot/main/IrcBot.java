@@ -71,8 +71,6 @@ public class IrcBot {
         connection.setNick(Config.BOT_NICK);
         connection.addMessageListener(handler);
         connection.addServerListener(handler);
-        //nickservListener = new NickservListener(this);
-        //connection.setAdvancedListener(nickservListener);
         connection.addMessageListener(nickservListener = new NickservListener(this));
         try {
             LOGGER.logInfo("Connecting to " + Config.SERVER + "...");
@@ -85,8 +83,6 @@ public class IrcBot {
         if (Config.USE_LOGIN) {
             nickservListener.getNickServ().send("GHOST " + Config.BOT_USERNAME + " " + Config.BOT_PASS);
             nickservListener.getNickServ().send("IDENTIFY " + Config.BOT_PASS);
-            //connection.sendRaw("/msg NickServ ghost \"" + Config.BOT_USERNAME + "\" + Config.BOT_PASS");
-            //connection.sendRaw("/msg NickServ identify " + Config.BOT_PASS);
         }
 
         LOGGER.logInfo("Startup complete.");
