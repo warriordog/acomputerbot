@@ -93,7 +93,7 @@ public class Auth {
         for (User user : reauthWaitingAdmins.keySet()) {
             if (reauthWaitingAdmins.get(user) <= System.currentTimeMillis()) {
                 deauthenticate(user);
-                user.send("Your AcomputerBot session has expired, you must reauthenticate to perform admin commands!");
+                user.send("Your admin session has expired, you must reauthenticate to perform admin commands!");
             }
         }
         for (User user : verifyWaitingTimeout.keySet()) {
@@ -106,15 +106,16 @@ public class Auth {
     }
 
     public boolean deauthenticate(User user) {
-        if (!authenticatedAdmins.containsKey(user)) {
-            return false;
-        }
-        authenticatedAdmins.remove(user);
         loginAttempts.remove(user);
         authFailedTimeouts.remove(user);
         reauthWaitingAdmins.remove(user);
         verifyWaitingTimeout.remove(user);
         verifyWaitingPass.remove(user);
+        if (!authenticatedAdmins.containsKey(user)) {
+            return false;
+        }
+        authenticatedAdmins.remove(user);
+        LOGGER.logInfo("Admin " + getUserName(user) + " has been deauthenticated.");
         return true;
     }
 
