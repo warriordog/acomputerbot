@@ -13,11 +13,6 @@ public class CommandLogout extends Command {
     }
 
     @Override
-    public boolean allowedInChannel(Channel channel, User user) {
-        return false;
-    }
-
-    @Override
     public String getDescription() {
         return "Log out as admin.";
     }
@@ -25,10 +20,10 @@ public class CommandLogout extends Command {
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         if (bot.getAuth().deauthenticate(sender)) {
-            sender.send("You have been successfully logged out!");
+            target.send("You have been successfully logged out!");
             return true;
         } else {
-            sender.send(colorError("You are not logged in!"));
+            target.send(colorError("You are not logged in!"));
             return false;
         }
     }
