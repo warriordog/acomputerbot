@@ -59,4 +59,6 @@ $RECYCLE.BIN/
 *.lnk
 
 #Additional directories
-./WorkingDir/*
+WorkingDir/
+WorkingDir/*
+WorkingDir/**
