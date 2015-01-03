@@ -50,7 +50,7 @@ public class IrcBot {
 
     private void init() {
         Config.load();
-        LOGGER = new CLogger(Config.USERNAME, false, true);
+        LOGGER = new CLogger(Config.BOT_USERNAME, false, true);
         buffer.allocate(Config.MEMORY_BUFFER_SIZE);
         LOGGER.logInfo("Beginning startup.");
         Runtime.getRuntime().addShutdownHook(new IrcShutdownHandler(this));
@@ -63,9 +63,9 @@ public class IrcBot {
 
         connection = new IrcConnection(Config.SERVER);
         if (Config.USE_LOGIN) {
-            connection.setUsername(Config.USERNAME);
+            connection.setUsername(Config.BOT_USERNAME);
         }
-        connection.setNick(Config.NICK);
+        connection.setNick(Config.BOT_NICK);
         connection.addMessageListener(handler);
         connection.addServerListener(handler);
         try {
@@ -77,7 +77,7 @@ public class IrcBot {
             end(-1);
         }
         if (Config.USE_LOGIN) {
-            connection.sendRaw("/msg NickServ identify " + Config.PASS);
+            connection.sendRaw("/msg NickServ identify " + Config.BOT_PASS);
         }
 
         LOGGER.logInfo("Startup complete.");

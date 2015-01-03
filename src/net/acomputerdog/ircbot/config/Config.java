@@ -12,11 +12,11 @@ public class Config {
 
     public static boolean USE_LOGIN = false;
 
-    public static String USERNAME = "compbot_test";
+    public static String BOT_USERNAME = "compbot_test";
 
-    public static String NICK = "compbot_test";
+    public static String BOT_NICK = "compbot_test";
 
-    public static String PASS = "";
+    public static String BOT_PASS = "";
 
     public static String SERVER = "irc.esper.net";
 
@@ -39,9 +39,9 @@ public class Config {
                 in.close();
                 TPS = prop.containsKey("TPS") ? Integer.parseInt(prop.getProperty("TPS")) : TPS;
                 USE_LOGIN = prop.containsKey("USE_LOGIN") ? Boolean.parseBoolean(prop.getProperty("USE_LOGIN")) : USE_LOGIN;
-                USERNAME = prop.getProperty("USERNAME", USERNAME);
-                NICK = prop.getProperty("NICK", NICK);
-                PASS = prop.getProperty("PASS", PASS);
+                BOT_USERNAME = prop.getProperty("BOT_USERNAME", BOT_USERNAME);
+                BOT_NICK = prop.getProperty("BOT_NICK", BOT_NICK);
+                BOT_PASS = prop.getProperty("BOT_PASS", BOT_PASS);
                 SERVER = prop.getProperty("SERVER", SERVER);
                 COMMAND_PREFIX = prop.getProperty("COMMAND_PREFIX", COMMAND_PREFIX);
                 MEMORY_BUFFER_SIZE = prop.containsKey("MEMORY_BUFFER_SIZE") ? Integer.parseInt(prop.getProperty("MEMORY_BUFFER_SIZE")) : MEMORY_BUFFER_SIZE;
@@ -63,9 +63,9 @@ public class Config {
                 Properties prop = new Properties();
                 prop.setProperty("TPS", String.valueOf(TPS));
                 prop.setProperty("USE_LOGIN", String.valueOf(USE_LOGIN));
-                prop.setProperty("USERNAME", USERNAME);
-                prop.setProperty("NICK", String.valueOf(NICK));
-                prop.setProperty("PASS", String.valueOf(PASS));
+                prop.setProperty("BOT_USERNAME", BOT_USERNAME);
+                prop.setProperty("BOT_NICK", String.valueOf(BOT_NICK));
+                prop.setProperty("BOT_PASS", String.valueOf(BOT_PASS));
                 prop.setProperty("SERVER", String.valueOf(SERVER));
                 prop.setProperty("COMMAND_PREFIX", String.valueOf(COMMAND_PREFIX));
                 prop.setProperty("MEMORY_BUFFER_SIZE", String.valueOf(MEMORY_BUFFER_SIZE));
@@ -81,6 +81,6 @@ public class Config {
     }
 
     private static int calculateHash() {
-        return new Hasher().hash(TPS).hash(USE_LOGIN).hash(USERNAME).hash(NICK).hash(PASS).hash(SERVER).hash(COMMAND_PREFIX).hashCode();
+        return new Hasher().hash(TPS).hash(USE_LOGIN).hash(BOT_USERNAME).hash(BOT_NICK).hash(BOT_PASS).hash(SERVER).hash(COMMAND_PREFIX).hashCode();
     }
 }
