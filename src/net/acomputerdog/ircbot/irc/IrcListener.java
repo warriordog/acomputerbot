@@ -118,6 +118,6 @@ public class IrcListener implements MessageListener, ServerListener {
 
     @Override
     public void onTopic(IrcConnection irc, Channel channel, User sender, String topic) {
-        LOGGER.logDetail("Got channel topic: " + topic);
+        channel.setTopic(topic);
     }
 }

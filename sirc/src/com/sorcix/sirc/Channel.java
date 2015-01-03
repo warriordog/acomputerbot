@@ -483,7 +483,7 @@ public final class Channel implements Chattable {
 	 * 
 	 * @param topic The new topic.
 	 */
-	protected void setTopic(final String topic) {
+	public void setTopic(final String topic) {
 		this.topic = topic;
 	}
 	
