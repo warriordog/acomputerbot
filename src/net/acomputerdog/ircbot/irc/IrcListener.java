@@ -108,7 +108,10 @@ public class IrcListener implements MessageListener, ServerListener {
 
     @Override
     public void onPart(IrcConnection irc, Channel channel, User user, String message) {
-
+        if (user.isUs()) {
+            LOGGER.logInfo("Leaving channel " + channel.getName() + ".");
+            Channels.disconnect(channel.getName());
+        }
     }
 
     @Override
