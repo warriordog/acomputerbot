@@ -36,11 +36,8 @@ public class CommandLeave extends Command {
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
-        if (channel == null) {
-            if (!command.hasArgs()) {
-                target.send(colorError("You must specify a channel to leave!"));
-                return false;
-            } else {
+        if (command.hasArgs()) {
+            if ("acomputerdog".equals(sender.getRealName())) {
                 String channelName = getChannelName(command.args.toLowerCase());
                 if (Channels.isConnected(channelName)) {
                     target.send("Left channel \"" + channelName + "\".");
@@ -51,15 +48,20 @@ public class CommandLeave extends Command {
                     target.send(colorError("I'm not connected to \"" + channelName + "\"!"));
                     return false;
                 }
+            } else {
+                target.send(colorError("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
+                return false;
             }
-        } else if (sender.hasOperator() || "acomputerdog".equals(sender.getRealName())) {
-            target.send("Bye :(");
-            channel.part();
-            Channels.disconnect(channel.getName().toLowerCase());
-            return true;
         } else {
-            target.send(colorError("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
-            return false;
+            if (sender.hasOperator() || "acomputerdog".equals(sender.getRealName())) {
+                target.send("Bye :(");
+                channel.part();
+                Channels.disconnect(channel.getName().toLowerCase());
+                return true;
+            } else {
+                target.send(colorError("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
+                return false;
+            }
         }
     }
 
