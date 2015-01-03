@@ -59,7 +59,7 @@ public class IrcBot {
         Config.load();
         LOGGER = new CLogger(Config.BOT_USERNAME, false, true);
         buffer.allocate(Config.MEMORY_BUFFER_SIZE);
-        LOGGER.logInfo("Beginning startup.");
+        LOGGER.logInfo(getVersionString() + " starting.");
         Runtime.getRuntime().addShutdownHook(new IrcShutdownHandler(this));
 
         admins = new Admins(this);
