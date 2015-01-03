@@ -52,16 +52,6 @@ public abstract class Command {
 
     public abstract boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command);
 
-    /*
-    public boolean processCommandGeneric(IrcBot bot, Chattable target, User sender, CommandLine command) {
-        getLogger().logWarning("Generic command handler called!");
-        return false;
-    }
-
-    public abstract boolean processCommandChannel(IrcBot bot, Channel channel, User sender, CommandLine command);
-    public abstract boolean processCommandPM(IrcBot bot, User sender, CommandLine command);
-    */
-
     public String getName() {
         return name;
     }
@@ -102,44 +92,6 @@ public abstract class Command {
         }
         return logger;
     }
-
-    /*
-    public static void onChannelChat(IrcBot irc, User sender, Channel target, String message) {
-        if (message.startsWith(COMMAND_PREFIX)) {
-            CommandLine cmdLine = new CommandLine(message.substring(1));
-            Command cmd = commandMap.get(cmdLine.command);
-            if (cmd != null) {
-                if (cmd.allowedInChannel(target, )) {
-                    if (cmd.getMinArgs() <= 0 || cmdLine.hasArgs()) {
-                        cmd.processCommandChannel(irc, target, sender, cmdLine);
-                    } else {
-                        target.send(colorError("Not enough arguments, use \"" + cmd.getHelpString() + "\"."));
-                    }
-                }
-            } else {
-                target.send(colorError("Unknown command, use \"" + COMMAND_PREFIX + "\"help for a list of commands."));
-            }
-        }
-    }
-
-    public static void onPrivateMessage(IrcBot irc, User sender, String message) {
-        if (message.startsWith(COMMAND_PREFIX)) {
-            CommandLine cmdLine = new CommandLine(message.substring(1));
-            Command cmd = commandMap.get(cmdLine.command);
-            if (cmd != null) {
-                if (cmd.allowedInPM(sender)) {
-                    if (cmd.getMinArgs() <= 0 || cmdLine.hasArgs()) {
-                        cmd.processCommandPM(irc, sender, cmdLine);
-                    } else {
-                        sender.send(colorError("Not enough arguments, use \"" + cmd.getHelpString() + "\"."));
-                    }
-                }
-            } else {
-                sender.send(colorError("Unknown command, use \"" + COMMAND_PREFIX + "help\" for a list of commands."));
-            }
-        }
-    }
-*/
 
     public static void onChat(IrcBot bot, Channel channel, User sender, Chattable target, String message) {
         if (message.length() > 1 && message.startsWith(Config.COMMAND_PREFIX)) {
@@ -192,7 +144,7 @@ public abstract class Command {
                 '}';
     }
 
-    //--------------------
+    //--------Static Stuff-----------------
 
     private static void registerCommand(Command command) {
         commandNameMap.put(command.getName(), command);
