@@ -24,6 +24,14 @@ public class Config {
 
     public static int MEMORY_BUFFER_SIZE = 1000000;
 
+    public static String ADMIN_PASS = "compbot";
+
+    public static int MAX_AUTH_ATTEMPTS = 5;
+
+    public static long LOGIN_ATTEMPT_TIMEOUT = 1000 * 60 * 10; //10 minutes
+
+    public static long AUTH_TIMEOUT = 1000 * 60 * 10; //10 minutes
+
     //---------Internal Stuff--------------
 
     private static final CLogger LOGGER = new CLogger("Config", false, true);
@@ -45,6 +53,10 @@ public class Config {
                 SERVER = prop.getProperty("SERVER", SERVER);
                 COMMAND_PREFIX = prop.getProperty("COMMAND_PREFIX", COMMAND_PREFIX);
                 MEMORY_BUFFER_SIZE = prop.containsKey("MEMORY_BUFFER_SIZE") ? Integer.parseInt(prop.getProperty("MEMORY_BUFFER_SIZE")) : MEMORY_BUFFER_SIZE;
+                ADMIN_PASS = prop.getProperty("ADMIN_PASS", ADMIN_PASS);
+                MAX_AUTH_ATTEMPTS = prop.containsKey("MAX_AUTH_ATTEMPTS") ? Integer.parseInt(prop.getProperty("MAX_AUTH_ATTEMPTS")) : MAX_AUTH_ATTEMPTS;
+                LOGIN_ATTEMPT_TIMEOUT = prop.containsKey("LOGIN_ATTEMPT_TIMEOUT") ? Long.parseLong(prop.getProperty("LOGIN_ATTEMPT_TIMEOUT")) : LOGIN_ATTEMPT_TIMEOUT;
+                AUTH_TIMEOUT = prop.containsKey("AUTH_TIMEOUT") ? Long.parseLong(prop.getProperty("AUTH_TIMEOUT")) : AUTH_TIMEOUT;
             } else {
                 LOGGER.logInfo("Configuration file does not exist.  It will be created.");
                 save();
@@ -64,11 +76,15 @@ public class Config {
                 prop.setProperty("TPS", String.valueOf(TPS));
                 prop.setProperty("USE_LOGIN", String.valueOf(USE_LOGIN));
                 prop.setProperty("BOT_USERNAME", BOT_USERNAME);
-                prop.setProperty("BOT_NICK", String.valueOf(BOT_NICK));
-                prop.setProperty("BOT_PASS", String.valueOf(BOT_PASS));
-                prop.setProperty("SERVER", String.valueOf(SERVER));
-                prop.setProperty("COMMAND_PREFIX", String.valueOf(COMMAND_PREFIX));
+                prop.setProperty("BOT_NICK", BOT_NICK);
+                prop.setProperty("BOT_PASS", BOT_PASS);
+                prop.setProperty("SERVER", SERVER);
+                prop.setProperty("COMMAND_PREFIX", COMMAND_PREFIX);
                 prop.setProperty("MEMORY_BUFFER_SIZE", String.valueOf(MEMORY_BUFFER_SIZE));
+                prop.setProperty("ADMIN_PASS", ADMIN_PASS);
+                prop.setProperty("MAX_AUTH_ATTEMPTS", String.valueOf(MAX_AUTH_ATTEMPTS));
+                prop.setProperty("LOGIN_ATTEMPT_TIMEOUT", String.valueOf(LOGIN_ATTEMPT_TIMEOUT));
+                prop.setProperty("AUTH_TIMEOUT", String.valueOf(AUTH_TIMEOUT));
                 OutputStream out = new FileOutputStream(saveFile);
                 prop.store(out, "AcomputerBot configuration file.  Lines prefixed with '#' will be ignored.");
                 out.close();

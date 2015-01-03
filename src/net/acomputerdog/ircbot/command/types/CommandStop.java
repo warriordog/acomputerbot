@@ -7,6 +7,7 @@ import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.main.IrcBot;
+import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandStop extends Command {
     public CommandStop() {
@@ -15,12 +16,12 @@ public class CommandStop extends Command {
 
     @Override
     public boolean allowedInChannel(Channel channel, User user) {
-        return Admins.isAdmin(user);
+        return Auth.isAuthenticated(user);
     }
 
     @Override
     public boolean allowedInPM(User user) {
-        return Admins.isAdmin(user);
+        return Auth.isAuthenticated(user);
     }
 
     @Override

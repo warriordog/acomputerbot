@@ -8,6 +8,8 @@ import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
+import net.acomputerdog.ircbot.security.Auth;
+import net.acomputerdog.ircbot.security.NickservListener;
 
 public class IrcBot {
     public static final IrcBot instance = new IrcBot();
@@ -20,6 +22,7 @@ public class IrcBot {
 
     private IrcListener handler;
     private IrcConnection connection;
+    private NickservListener nickservListener;
 
     private IrcBot() {
         if (instance != null) {
@@ -68,6 +71,9 @@ public class IrcBot {
         connection.setNick(Config.BOT_NICK);
         connection.addMessageListener(handler);
         connection.addServerListener(handler);
+        //nickservListener = new NickservListener(this);
+        //connection.setAdvancedListener(nickservListener);
+        connection.addMessageListener(nickservListener = new NickservListener(this));
         try {
             LOGGER.logInfo("Connecting to " + Config.SERVER + "...");
             connection.connect();
@@ -77,14 +83,17 @@ public class IrcBot {
             end(-1);
         }
         if (Config.USE_LOGIN) {
-            connection.sendRaw("/msg NickServ identify " + Config.BOT_PASS);
+            nickservListener.getNickServ().send("GHOST " + Config.BOT_USERNAME + " " + Config.BOT_PASS);
+            nickservListener.getNickServ().send("IDENTIFY " + Config.BOT_PASS);
+            //connection.sendRaw("/msg NickServ ghost \"" + Config.BOT_USERNAME + "\" + Config.BOT_PASS");
+            //connection.sendRaw("/msg NickServ identify " + Config.BOT_PASS);
         }
 
         LOGGER.logInfo("Startup complete.");
     }
 
     private void onTick() {
-
+        Auth.tick();
     }
 
     private void end(int code) {
@@ -121,6 +130,10 @@ public class IrcBot {
 
     public boolean canRun() {
         return canRun;
+    }
+
+    public NickservListener getNickservListener() {
+        return nickservListener;
     }
 
     public static void main(String[] args) {

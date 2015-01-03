@@ -9,6 +9,7 @@ import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
+import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandLeave extends Command {
     public CommandLeave() {
@@ -27,18 +28,18 @@ public class CommandLeave extends Command {
 
     @Override
     public boolean allowedInChannel(Channel channel, User user) {
-        return user.hasOperator() || Admins.isAdmin(user);
+        return user.hasOperator() || Auth.isAuthenticated(user);
     }
 
     @Override
     public boolean allowedInPM(User user) {
-        return Admins.isAdmin(user);
+        return Auth.isAuthenticated(user);
     }
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
-            if (Admins.isAdmin(sender)) {
+            if (Auth.isAuthenticated(sender)) {
                 String channelName = getChannelName(command.args.toLowerCase());
                 if (Channels.isConnected(channelName)) {
                     target.send("Left channel \"" + channelName + "\".");
@@ -54,7 +55,7 @@ public class CommandLeave extends Command {
                 return false;
             }
         } else {
-            if (sender.hasOperator() || Admins.isAdmin(sender)) {
+            if (sender.hasOperator() || Auth.isAuthenticated(sender)) {
                 target.send("Bye :(");
                 channel.part();
                 Channels.disconnect(channel.getName().toLowerCase());

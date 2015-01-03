@@ -140,12 +140,19 @@ public final class User implements Chattable {
     }
 
     @Override
-    public boolean equals(final Object user) {
-        try {
-            return ((User) user).getNick().equalsIgnoreCase(this.nick);
-        } catch (final Exception ex) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        return !(nick != null ? !nick.equals(user.nick) : user.nick != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return nick != null ? nick.hashCode() : 0;
     }
 
     /**
@@ -457,4 +464,6 @@ public final class User implements Chattable {
     protected void updateUser(final User user) {
         //TODO: Unfinished method?
     }
+
+
 }

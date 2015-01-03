@@ -9,6 +9,7 @@ import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
+import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandMeInAll extends Command {
     public CommandMeInAll() {
@@ -22,12 +23,12 @@ public class CommandMeInAll extends Command {
 
     @Override
     public boolean allowedInChannel(Channel channel, User user) {
-        return Admins.isAdmin(user);
+        return Auth.isAuthenticated(user);
     }
 
     @Override
     public boolean allowedInPM(User user) {
-        return Admins.isAdmin(user);
+        return Auth.isAuthenticated(user);
     }
 
     @Override
