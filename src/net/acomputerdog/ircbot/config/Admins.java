@@ -13,7 +13,7 @@ public class Admins {
     private static final Set<String> adminNames = new HashSet<>();
     private static final File saveFile = new File("./admins.cfg");
 
-    private static int hash = 0;
+    private static int hash = -1;
 
     public static boolean isAdmin(String user) {
         return user != null && !user.isEmpty() && adminNames.contains(user);
