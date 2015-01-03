@@ -5,15 +5,14 @@ import com.sorcix.sirc.Chattable;
 import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
-import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
 import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandSayInAll extends Command {
-    public CommandSayInAll() {
-        super("SayInAll", "sayinall", "say-in-all", "say_in_all", "sayall", "say-all", "say_all");
+    public CommandSayInAll(IrcBot bot) {
+        super(bot, "SayInAll", "sayinall", "say-in-all", "say_in_all", "sayall", "say-all", "say_all");
     }
 
     @Override
@@ -23,12 +22,12 @@ public class CommandSayInAll extends Command {
 
     @Override
     public boolean allowedInChannel(Channel channel, User user) {
-        return Auth.isAuthenticated(user);
+        return bot.getAuth().isAuthenticated(user);
     }
 
     @Override
     public boolean allowedInPM(User user) {
-        return Auth.isAuthenticated(user);
+        return bot.getAuth().isAuthenticated(user);
     }
 
     @Override

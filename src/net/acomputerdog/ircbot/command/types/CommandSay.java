@@ -9,8 +9,8 @@ import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class CommandSay extends Command {
-    public CommandSay() {
-        super("Say", "say");
+    public CommandSay(IrcBot bot) {
+        super(bot, "Say", "say");
     }
 
     @Override

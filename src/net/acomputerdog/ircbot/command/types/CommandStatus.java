@@ -8,8 +8,8 @@ import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class CommandStatus extends Command {
-    public CommandStatus() {
-        super("Status", "status", "stats");
+    public CommandStatus(IrcBot bot) {
+        super(bot, "Status", "status", "stats");
     }
 
     @Override

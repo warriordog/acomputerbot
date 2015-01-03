@@ -10,8 +10,8 @@ import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class CommandInfo extends Command {
-    public CommandInfo() {
-        super("Info", "info", "inf", "about");
+    public CommandInfo(IrcBot bot) {
+        super(bot, "Info", "info", "inf", "about");
     }
 
     private String colorYellow(String message) {

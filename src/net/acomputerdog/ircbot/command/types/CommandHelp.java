@@ -10,8 +10,8 @@ import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class CommandHelp extends Command {
-    public CommandHelp() {
-        super("Help", "help", "hlp", "?");
+    public CommandHelp(IrcBot bot) {
+        super(bot, "Help", "help", "hlp", "?");
     }
 
     @Override

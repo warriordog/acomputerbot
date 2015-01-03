@@ -10,31 +10,37 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Auth {
-    private static final CLogger LOGGER = new CLogger("Auth", false, true);
+    private final IrcBot bot;
+    
+    private final CLogger LOGGER = new CLogger("Auth", false, true);
 
-    private static final Map<User, Long> authenticatedAdmins = new HashMap<>();
-    private static final Map<User, Integer> loginAttempts = new HashMap<>();
-    private static final Map<User, Long> authFailedTimeouts = new HashMap<>();
+    private final Map<User, Long> authenticatedAdmins = new HashMap<>();
+    private final Map<User, Integer> loginAttempts = new HashMap<>();
+    private final Map<User, Long> authFailedTimeouts = new HashMap<>();
 
-    private static final Map<User, Long> reauthWaitingAdmins = new HashMap<>();
-    private static final Map<User, String> verifyWaitingPass = new HashMap<>();
-    private static final Map<User, Long> verifyWaitingTimeout = new HashMap<>();
+    private final Map<User, Long> reauthWaitingAdmins = new HashMap<>();
+    private final Map<User, String> verifyWaitingPass = new HashMap<>();
+    private final Map<User, Long> verifyWaitingTimeout = new HashMap<>();
 
-    public static void requestAuthentication(User user, String pass) {
+    public Auth(IrcBot bot) {
+        this.bot = bot;
+    }
+
+    public void requestAuthentication(User user, String pass) {
         verifyWaitingPass.put(user, pass);
         verifyWaitingTimeout.put(user, System.currentTimeMillis() + 60000);
-        IrcBot.instance.getNickservListener().getNickServ().send("ACC " + user.getNick());
+        IrcBot.instance.getNickServ().getNickServ().send("ACC " + user.getNick());
         //IrcBot.instance.getConnection().sendRaw("/msg NickServ ACC " + user.getNick());
     }
 
-    private static boolean authenticate(User user, String pass) {
+    private boolean authenticate(User user, String pass) {
         if (loginAttempts.get(user) == null) {
             loginAttempts.put(user, 0);
         }
         int attempts = loginAttempts.get(user) + 1;
         loginAttempts.put(user, attempts);
         if (attempts < Config.MAX_AUTH_ATTEMPTS) {
-            if (Admins.isAdmin(user)) {
+            if (bot.getAdmins().isAdmin(user)) {
                 if (pass.equals(Config.ADMIN_PASS)) {
                     user.send("You have now been logged in!  Remember that if you log out for more than 10 minutes your session will expire!");
                     authenticatedAdmins.put(user, System.currentTimeMillis() + Config.AUTH_TIMEOUT);
@@ -63,11 +69,11 @@ public class Auth {
         return false;
     }
 
-    public static boolean isAuthenticated(User user) {
+    public boolean isAuthenticated(User user) {
         return authenticatedAdmins.containsKey(user);
     }
 
-    public static void tick() {
+    public void tick() {
         for (User user : authFailedTimeouts.keySet()) {
             long time = authFailedTimeouts.get(user);
             if (time <= System.currentTimeMillis()) {
@@ -98,7 +104,7 @@ public class Auth {
         }
     }
 
-    static void onUserVerified(User user) {
+    void onUserVerified(User user) {
         if (verifyWaitingPass.containsKey(user)) {
             authenticate(user, verifyWaitingPass.get(user));
             verifyWaitingPass.remove(user);

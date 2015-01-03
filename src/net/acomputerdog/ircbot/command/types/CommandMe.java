@@ -9,8 +9,8 @@ import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class CommandMe extends Command {
-    public CommandMe() {
-        super("Me", "me", "emote", "action");
+    public CommandMe(IrcBot bot) {
+        super(bot, "Me", "me", "emote", "action");
     }
 
     @Override

@@ -5,15 +5,14 @@ import com.sorcix.sirc.Chattable;
 import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
-import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
 import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandLeave extends Command {
-    public CommandLeave() {
-        super("Leave", "leave", "part");
+    public CommandLeave(IrcBot bot) {
+        super(bot, "Leave", "leave", "part");
     }
 
     @Override
@@ -28,18 +27,18 @@ public class CommandLeave extends Command {
 
     @Override
     public boolean allowedInChannel(Channel channel, User user) {
-        return user.hasOperator() || Auth.isAuthenticated(user);
+        return user.hasOperator() || bot.getAuth().isAuthenticated(user);
     }
 
     @Override
     public boolean allowedInPM(User user) {
-        return Auth.isAuthenticated(user);
+        return bot.getAuth().isAuthenticated(user);
     }
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
-            if (Auth.isAuthenticated(sender)) {
+            if (bot.getAuth().isAuthenticated(sender)) {
                 String channelName = getChannelName(command.args.toLowerCase());
                 if (Channels.isConnected(channelName)) {
                     target.send("Left channel \"" + channelName + "\".");
@@ -55,7 +54,7 @@ public class CommandLeave extends Command {
                 return false;
             }
         } else {
-            if (sender.hasOperator() || Auth.isAuthenticated(sender)) {
+            if (sender.hasOperator() || bot.getAuth().isAuthenticated(sender)) {
                 target.send("Bye :(");
                 Channels.disconnect(channel.getName().toLowerCase());
                 channel.part();

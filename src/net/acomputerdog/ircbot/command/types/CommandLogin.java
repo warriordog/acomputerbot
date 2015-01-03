@@ -10,8 +10,8 @@ import net.acomputerdog.ircbot.main.IrcBot;
 import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandLogin extends Command {
-    public CommandLogin() {
-        super("Login", "login", "verify", "log-in", "log_in", "identify", "authenticate", "auth", "authorize");
+    public CommandLogin(IrcBot bot) {
+        super(bot, "Login", "login", "verify", "log-in", "log_in", "identify", "authenticate", "auth", "authorize");
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CommandLogin extends Command {
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Authentication request processed.  Please wait to be authenticated...");
-        Auth.requestAuthentication(sender, command.args);
+        bot.getAuth().requestAuthentication(sender, command.args);
         return true;
     }
 }

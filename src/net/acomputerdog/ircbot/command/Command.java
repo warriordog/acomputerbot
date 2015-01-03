@@ -17,20 +17,22 @@ public abstract class Command {
 
     private final String name;
     private final String[] commands;
+    protected final IrcBot bot;
 
     private String helpString;
     private CLogger logger;
 
-    public Command(String name, String... commands) {
+    public Command(IrcBot bot, String name, String... commands) {
         this.name = name;
+        this.bot = bot;
         if (commands == null || commands.length == 0) {
             throw new IllegalArgumentException("Cannot create a command with no command strings!");
         }
         this.commands = commands;
     }
 
-    public Command(String command) {
-        this(command, command);
+    public Command(IrcBot bot, String command) {
+        this(bot, command, command);
     }
 
     public int getMinArgs() {
@@ -156,22 +158,22 @@ public abstract class Command {
         }
     }
 
-    public static void init() {
-        registerCommand(new CommandHelp());
-        registerCommand(new CommandInfo());
-        registerCommand(new CommandStop());
-        registerCommand(new CommandJoin());
-        registerCommand(new CommandLeave());
-        registerCommand(new CommandSay());
-        registerCommand(new CommandSayIn());
-        registerCommand(new CommandSayInAll());
-        registerCommand(new CommandMe());
-        registerCommand(new CommandMeIn());
-        registerCommand(new CommandMeInAll());
-        registerCommand(new CommandStatus());
-        registerCommand(new CommandChannels());
-        registerCommand(new CommandGithub());
-        registerCommand(new CommandLogin());
+    public static void init(IrcBot bot) {
+        registerCommand(new CommandHelp(bot));
+        registerCommand(new CommandInfo(bot));
+        registerCommand(new CommandStop(bot));
+        registerCommand(new CommandJoin(bot));
+        registerCommand(new CommandLeave(bot));
+        registerCommand(new CommandSay(bot));
+        registerCommand(new CommandSayIn(bot));
+        registerCommand(new CommandSayInAll(bot));
+        registerCommand(new CommandMe(bot));
+        registerCommand(new CommandMeIn(bot));
+        registerCommand(new CommandMeInAll(bot));
+        registerCommand(new CommandStatus(bot));
+        registerCommand(new CommandChannels(bot));
+        registerCommand(new CommandGithub(bot));
+        registerCommand(new CommandLogin(bot));
     }
 
     protected static String colorError(String message) {

@@ -1,6 +1,7 @@
 package net.acomputerdog.ircbot.main;
 
 import com.sorcix.sirc.IrcConnection;
+import com.sorcix.sirc.NickNameException;
 import net.acomputerdog.core.java.MemBuffer;
 import net.acomputerdog.core.java.Sleep;
 import net.acomputerdog.core.logger.CLogger;
@@ -9,7 +10,7 @@ import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
 import net.acomputerdog.ircbot.security.Auth;
-import net.acomputerdog.ircbot.security.NickservListener;
+import net.acomputerdog.ircbot.security.NickServ;
 
 public class IrcBot {
     public static final IrcBot instance = new IrcBot();
@@ -22,7 +23,9 @@ public class IrcBot {
 
     private IrcListener handler;
     private IrcConnection connection;
-    private NickservListener nickservListener;
+    private NickServ nickServ;
+    private Admins admins;
+    private Auth auth;
 
     private IrcBot() {
         if (instance != null) {
@@ -58,10 +61,12 @@ public class IrcBot {
         LOGGER.logInfo("Beginning startup.");
         Runtime.getRuntime().addShutdownHook(new IrcShutdownHandler(this));
 
-        Admins.load();
+        admins = new Admins(this);
+        admins.load();
+        auth = new Auth(this);
 
         handler = new IrcListener(this);
-        Command.init();
+        Command.init(this);
         LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
 
         connection = new IrcConnection(Config.SERVER);
@@ -71,25 +76,28 @@ public class IrcBot {
         connection.setNick(Config.BOT_NICK);
         connection.addMessageListener(handler);
         connection.addServerListener(handler);
-        connection.addMessageListener(nickservListener = new NickservListener(this));
+        connection.addMessageListener(nickServ = new NickServ(this));
         try {
             LOGGER.logInfo("Connecting to " + Config.SERVER + "...");
             connection.connect();
             LOGGER.logInfo("Connected.");
+        } catch (NickNameException e) {
+            LOGGER.logFatal("Nickname " + Config.BOT_NICK + " is already in use!");
+            end(-2);
         } catch (Exception e) {
             LOGGER.logFatal("Unable to connect to IRC network!", e);
             end(-1);
         }
         if (Config.USE_LOGIN) {
-            nickservListener.getNickServ().send("GHOST " + Config.BOT_USERNAME + " " + Config.BOT_PASS);
-            nickservListener.getNickServ().send("IDENTIFY " + Config.BOT_PASS);
+            nickServ.getNickServ().send("GHOST " + Config.BOT_USERNAME + " " + Config.BOT_PASS);
+            nickServ.getNickServ().send("IDENTIFY " + Config.BOT_PASS);
         }
 
         LOGGER.logInfo("Startup complete.");
     }
 
     private void onTick() {
-        Auth.tick();
+        auth.tick();
     }
 
     private void end(int code) {
@@ -102,7 +110,7 @@ public class IrcBot {
             if (connection != null) {
                 connection.disconnect("Bot shutting down.");
             }
-            Admins.save();
+            admins.save();
             Config.save();
         } catch (Throwable ignored) {}
         System.exit(code);
@@ -128,8 +136,16 @@ public class IrcBot {
         return canRun;
     }
 
-    public NickservListener getNickservListener() {
-        return nickservListener;
+    public NickServ getNickServ() {
+        return nickServ;
+    }
+
+    public Admins getAdmins() {
+        return admins;
+    }
+
+    public Auth getAuth() {
+        return auth;
     }
 
     public static void main(String[] args) {

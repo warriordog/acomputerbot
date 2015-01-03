@@ -2,6 +2,7 @@ package net.acomputerdog.ircbot.config;
 
 import com.sorcix.sirc.User;
 import net.acomputerdog.core.logger.CLogger;
+import net.acomputerdog.ircbot.main.IrcBot;
 
 import java.io.*;
 import java.util.HashSet;
@@ -9,33 +10,39 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class Admins {
-    private static final CLogger LOGGER = new CLogger("AdminList", false, true);
-    private static final Set<String> adminNames = new HashSet<>();
-    private static final File saveFile = new File("./admins.cfg");
+    private final IrcBot bot;
+    
+    private final CLogger LOGGER = new CLogger("AdminList", false, true);
+    private final Set<String> adminNames = new HashSet<>();
+    private final File saveFile = new File("./admins.cfg");
 
-    private static int hash = -1;
+    private int hash = -1;
 
-    public static boolean isAdmin(String user) {
+    public Admins(IrcBot bot) {
+        this.bot = bot;
+    }
+
+    public boolean isAdmin(String user) {
         return user != null && !user.isEmpty() && adminNames.contains(user);
     }
 
-    public static boolean isAdmin(User user) {
+    public boolean isAdmin(User user) {
         return user != null && isAdmin(user.getRealName());
     }
 
-    public static void addAdmin(String user) {
+    public void addAdmin(String user) {
         if (user != null && !user.isEmpty()) {
             adminNames.add(user);
         }
     }
 
-    public static void addAdmin(User user) {
+    public void addAdmin(User user) {
         if (user != null) {
             addAdmin(user.getRealName());
         }
     }
 
-    public static void load() {
+    public void load() {
         try {
             if (saveFile.isFile()) {
                 BufferedReader reader = new BufferedReader(new FileReader(saveFile));
@@ -52,7 +59,7 @@ public class Admins {
         hash = adminNames.hashCode();
     }
 
-    public static void save() {
+    public void save() {
         try {
             int currHash = adminNames.hashCode();
             if (hash != currHash) {

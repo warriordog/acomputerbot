@@ -9,8 +9,8 @@ import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class CommandChannels extends Command {
-    public CommandChannels() {
-        super("Channels", "channels", "listchannels", "list_channels");
+    public CommandChannels(IrcBot bot) {
+        super(bot, "Channels", "channels", "listchannels", "list_channels");
     }
 
     @Override

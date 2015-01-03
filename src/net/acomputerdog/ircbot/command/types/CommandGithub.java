@@ -8,8 +8,8 @@ import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class CommandGithub extends Command {
-    public CommandGithub() {
-        super("Github", "github", "source", "src");
+    public CommandGithub(IrcBot bot) {
+        super(bot, "Github", "github", "source", "src");
     }
 
     @Override
