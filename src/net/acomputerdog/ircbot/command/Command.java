@@ -174,6 +174,7 @@ public abstract class Command {
         registerCommand(new CommandChannels(bot));
         registerCommand(new CommandGithub(bot));
         registerCommand(new CommandLogin(bot));
+        registerCommand(new CommandLogin(bot));
     }
 
     protected static String colorError(String message) {

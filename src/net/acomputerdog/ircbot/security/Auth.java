@@ -30,7 +30,6 @@ public class Auth {
         verifyWaitingPass.put(user, pass);
         verifyWaitingTimeout.put(user, System.currentTimeMillis() + 60000);
         IrcBot.instance.getNickServ().getNickServ().send("ACC " + user.getNick());
-        //IrcBot.instance.getConnection().sendRaw("/msg NickServ ACC " + user.getNick());
     }
 
     private boolean authenticate(User user, String pass) {
@@ -42,6 +41,7 @@ public class Auth {
         if (attempts < Config.MAX_AUTH_ATTEMPTS) {
             if (bot.getAdmins().isAdmin(user)) {
                 if (pass.equals(Config.ADMIN_PASS)) {
+                    LOGGER.logInfo("Admin " + getUserName(user) + " has been authenticated.");
                     user.send("You have now been logged in!  Remember that if you log out for more than 10 minutes your session will expire!");
                     authenticatedAdmins.put(user, System.currentTimeMillis() + Config.AUTH_TIMEOUT);
                     loginAttempts.put(user, 0);
@@ -49,13 +49,13 @@ public class Auth {
                     return true;
                 } else {
                     user.send("Incorrect password, please try again!");
-                    LOGGER.logWarning("User " + user.getHostName() + " failed authentication!");
+                    LOGGER.logWarning("User " + getUserName(user) + " failed authentication!");
                     LOGGER.logWarning("Reason: Incorrect password.");
                     LOGGER.logWarning("Password used: \"" + pass + "\".");
                 }
             } else {
                 user.send("You are not an AcomputerBot admin!");
-                LOGGER.logWarning("User " + user.getHostName() + " failed authentication!");
+                LOGGER.logWarning("User " + getUserName(user) + " failed authentication!");
                 LOGGER.logWarning("Reason: Not an admin.");
                 LOGGER.logWarning("Password used: \"" + pass + "\".");
             }
@@ -67,6 +67,10 @@ public class Auth {
             LOGGER.logWarning("Password used: \"" + pass + "\".");
         }
         return false;
+    }
+
+    private String getUserName(User user) {
+        return user.getNick() + "@" + user.getHostName();
     }
 
     public boolean isAuthenticated(User user) {
@@ -88,10 +92,7 @@ public class Auth {
         }
         for (User user : reauthWaitingAdmins.keySet()) {
             if (reauthWaitingAdmins.get(user) <= System.currentTimeMillis()) {
-                reauthWaitingAdmins.remove(user);
-                authenticatedAdmins.remove(user);
-                loginAttempts.remove(user);
-                authFailedTimeouts.remove(user);
+                deauthenticate(user);
                 user.send("Your AcomputerBot session has expired, you must reauthenticate to perform admin commands!");
             }
         }
@@ -99,9 +100,22 @@ public class Auth {
             if (verifyWaitingTimeout.get(user) <= System.currentTimeMillis()) {
                 verifyWaitingTimeout.remove(user);
                 verifyWaitingPass.remove(user);
-                user.send("AcomputerBot was unable to verify your login status with NickServ!  Please try logging in again!");
+                user.send("AcomputerBot was unable to verify your login status with NickServ!  This is a bug, please try logging in again!");
             }
         }
+    }
+
+    public boolean deauthenticate(User user) {
+        if (!authenticatedAdmins.containsKey(user)) {
+            return false;
+        }
+        authenticatedAdmins.remove(user);
+        loginAttempts.remove(user);
+        authFailedTimeouts.remove(user);
+        reauthWaitingAdmins.remove(user);
+        verifyWaitingTimeout.remove(user);
+        verifyWaitingPass.remove(user);
+        return true;
     }
 
     void onUserVerified(User user) {
