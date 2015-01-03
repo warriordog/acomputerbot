@@ -14,17 +14,13 @@ public class CommandInfo extends Command {
         super("Info", "info", "inf", "about");
     }
 
-    private String getMessage() {
-        return colorYellow("This is a simple bot made by acomputerdog.  I am written in java and am open source!  Type \"" + Config.COMMAND_PREFIX + "help\" for commands.");
-    }
-
     private String colorYellow(String message) {
         return IrcColors.color(message, IrcColors.YELLOW);
     }
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
-        target.send(colorYellow("This is a simple bot made by acomputerdog.  I am written in java and am (soon to be) open source!  Type \"" + Config.COMMAND_PREFIX + "help\" for commands."));
+        target.send(colorYellow("This is a simple bot made by acomputerdog.  I am open source and written in java!  Type \"" + Config.COMMAND_PREFIX + "help\" for commands."));
         return true;
     }
 }
