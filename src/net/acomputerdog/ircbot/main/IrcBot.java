@@ -5,6 +5,7 @@ import net.acomputerdog.core.java.MemBuffer;
 import net.acomputerdog.core.java.Sleep;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.command.Command;
+import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
 
@@ -54,6 +55,8 @@ public class IrcBot {
         LOGGER.logInfo("Beginning startup.");
         Runtime.getRuntime().addShutdownHook(new IrcShutdownHandler(this));
 
+        Admins.load();
+
         handler = new IrcListener(this);
         Command.init();
         LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
@@ -94,6 +97,7 @@ public class IrcBot {
             if (connection != null) {
                 connection.disconnect("Bot shutting down.");
             }
+            Admins.save();
             Config.save();
         } catch (Throwable ignored) {}
         System.exit(code);
