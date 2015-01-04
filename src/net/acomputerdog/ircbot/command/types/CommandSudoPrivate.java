@@ -39,11 +39,11 @@ public class CommandSudoPrivate extends Command {
         if (index != -1) {
             String user = command.args.substring(0, index);
             String cmd = getCommand(command.args.substring(index + 1));
-            User usr = bot.getConnection().createUser(user, channel == null ? null : channel.getName());
+            User usr = bot.getConnection().createUser(user);
             Command.onChat(bot, channel, usr, usr, cmd);
             return true;
         } else {
-            target.send(colorRed("Not enough args, use \"" + getHelpString() + "\"."));
+            target.send(colorRed("Not enough args, use \"" + getHelpString() + "\"!"));
             return false;
         }
     }

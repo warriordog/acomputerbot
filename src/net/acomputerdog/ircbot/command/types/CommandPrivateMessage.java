@@ -8,9 +8,14 @@ import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
-public class CommandSudo extends Command {
-    public CommandSudo(IrcBot bot) {
-        super(bot, "Sudo", "sudo", "runas", "run-as", "run_as");
+public class CommandPrivateMessage extends Command {
+    public CommandPrivateMessage(IrcBot bot) {
+        super(bot, "PrivateMessage", "privatemessage", "private-message", "private_message", "pm", "sendpm", "send-pm", "send_pm", "msg", "tell");
+    }
+
+    @Override
+    public String getDescription() {
+        return "Sends a PM to a player";
     }
 
     @Override
@@ -19,13 +24,8 @@ public class CommandSudo extends Command {
     }
 
     @Override
-    public String getDescription() {
-        return "Runs a command as another user.";
-    }
-
-    @Override
     public String getHelpString() {
-        return Config.COMMAND_PREFIX + "sudo <user> <command>";
+        return Config.COMMAND_PREFIX + "privatemessage <player> <message>";
     }
 
     @Override
@@ -38,19 +38,14 @@ public class CommandSudo extends Command {
         int index = command.args.indexOf(' ');
         if (index != -1) {
             String user = command.args.substring(0, index);
-            String cmd = getCommand(command.args.substring(index + 1));
-            Command.onChat(bot, channel, bot.getConnection().createUser(user), target, cmd);
+            String message = command.args.substring(index + 1);
+            User usr = bot.getConnection().createUser(user);
+            usr.sendMessage(message);
+            target.send("Private message sent.");
             return true;
         } else {
             target.send(colorRed("Not enough args, use \"" + getHelpString() + "\"!"));
             return false;
         }
-    }
-
-    private String getCommand(String cmd) {
-        if (!cmd.startsWith(Config.COMMAND_PREFIX)) {
-            return Config.COMMAND_PREFIX + cmd;
-        }
-        return cmd;
     }
 }
