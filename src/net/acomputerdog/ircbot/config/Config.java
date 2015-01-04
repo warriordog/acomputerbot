@@ -32,6 +32,8 @@ public class Config {
 
     public static long AUTH_TIMEOUT = 1000 * 60 * 10; //10 minutes
 
+    public static int MESSAGES_PER_SECOND = 2; //default is 10
+
     //---------Internal Stuff--------------
 
     private static final CLogger LOGGER = new CLogger("Config", false, true);
@@ -57,6 +59,7 @@ public class Config {
                 MAX_AUTH_ATTEMPTS = prop.containsKey("MAX_AUTH_ATTEMPTS") ? Integer.parseInt(prop.getProperty("MAX_AUTH_ATTEMPTS")) : MAX_AUTH_ATTEMPTS;
                 LOGIN_ATTEMPT_TIMEOUT = prop.containsKey("LOGIN_ATTEMPT_TIMEOUT") ? Long.parseLong(prop.getProperty("LOGIN_ATTEMPT_TIMEOUT")) : LOGIN_ATTEMPT_TIMEOUT;
                 AUTH_TIMEOUT = prop.containsKey("AUTH_TIMEOUT") ? Long.parseLong(prop.getProperty("AUTH_TIMEOUT")) : AUTH_TIMEOUT;
+                MESSAGES_PER_SECOND = prop.containsKey("MESSAGES_PER_SECOND") ? Integer.parseInt(prop.getProperty("MESSAGES_PER_SECOND")) : MESSAGES_PER_SECOND;
             } else {
                 LOGGER.logInfo("Configuration file does not exist.  It will be created.");
                 save();
@@ -85,6 +88,7 @@ public class Config {
                 prop.setProperty("MAX_AUTH_ATTEMPTS", String.valueOf(MAX_AUTH_ATTEMPTS));
                 prop.setProperty("LOGIN_ATTEMPT_TIMEOUT", String.valueOf(LOGIN_ATTEMPT_TIMEOUT));
                 prop.setProperty("AUTH_TIMEOUT", String.valueOf(AUTH_TIMEOUT));
+                prop.setProperty("MESSAGES_PER_SECOND", String.valueOf(MESSAGES_PER_SECOND));
                 OutputStream out = new FileOutputStream(saveFile);
                 prop.store(out, "AcomputerBot configuration file.  Lines prefixed with '#' will be ignored.");
                 out.close();

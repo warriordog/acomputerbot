@@ -27,6 +27,8 @@
  */
 package com.sorcix.sirc;
 
+import net.acomputerdog.core.java.Sleep;
+
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -86,27 +88,19 @@ class IrcOutput extends Thread {
      */
     @Override
     public void run() {
-        try {
-            boolean running = true;
-            String line;
-            while (running) {
-                Thread.sleep(this.irc.getMessageDelay());
-                line = this.queue.take();
-                if (line != null) {
-                    this.sendNow(line);
-                } else {
-                    running = false;
-                }
+        boolean running = true;
+        String line;
+        while (running) {
+            //Thread.sleep(this.irc.getMessageDelay());
+            long time = System.currentTimeMillis();
+            line = this.queue.take();
+            if (line != null) {
+                this.sendNow(line);
+            } else {
+                running = false;
             }
-        } catch (final InterruptedException e) {
-            // end this thread
-        }/* catch (final IllegalStateException e) {
-            if (this.irc.isConnected()) {
-				this.irc.setConnected(false);
-				this.irc.disconnect();
-			}
-			e.printStackTrace();
-		}*/
+            Sleep.sync(time, 1000 / this.irc.getMessageDelay());
+        }
     }
 
     /**

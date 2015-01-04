@@ -78,6 +78,7 @@ public class IrcBot {
         connection.addMessageListener(handler);
         connection.addServerListener(handler);
         connection.addMessageListener(nickServ = new NickServ(this));
+        connection.setMessageDelay(Config.MESSAGES_PER_SECOND);
         try {
             LOGGER.logInfo("Connecting to " + Config.SERVER + "...");
             connection.connect();

@@ -35,7 +35,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -76,7 +77,7 @@ public class IrcConnection {
     /**
      * Outgoing message delay. (Flood control)
      */
-    private int messageDelay = 100;
+    private int messageDelay = 10; //changed to messages per second instead of time per message. (previously 100)
     /**
      * Message listeners.
      */
