@@ -36,7 +36,10 @@ public class CommandAliases extends Command {
                 count = 0;
             }
         }
-        target.send(builder.toString());
+        String lastLine = builder.toString();
+        if (!lastLine.isEmpty()) {
+            target.send(colorGreen(lastLine));
+        }
         return true;
     }
 }
