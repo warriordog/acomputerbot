@@ -6,6 +6,7 @@ import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,25 +67,24 @@ public class BlackList {
         removeBlacklisted(user.getNick());
     }
 
+    public Set<String> getBlacklistedUsers() {
+        return Collections.unmodifiableSet(blacklistedUsers);
+    }
+
+    public Set<String> getWhitelistedUsers() {
+        return Collections.unmodifiableSet(whitelistedUsers);
+    }
+
     public boolean canUseBot(User user) {
         if (bot.getAuth().isAuthenticated(user)) {
             return true;
         }
         if (Config.ENABLE_BLACKLIST && !Config.ENABLE_WHITELIST) {
-            return isBlacklisted(user) && !isWhitelisted(user);
+            return !isBlacklisted(user) || isWhitelisted(user);
         } else if (Config.ENABLE_WHITELIST) {
             return isWhitelisted(user);
         }
         return true;
-        /*
-        if ((!Config.ENABLE_BLACKLIST && !Config.ENABLE_WHITELIST) || bot.getAuth().isAuthenticated(user)) {
-            return true;
-        }
-        if (isBlacklisted(user)) {
-            return Config.ENABLE_WHITELIST && isWhitelisted(user);
-        }
-        return true;
-        */
     }
 
     public void load() {

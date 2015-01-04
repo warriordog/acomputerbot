@@ -220,6 +220,8 @@ public abstract class Command {
         registerCommand(new CommandBlacklist(bot));
         registerCommand(new CommandEnableWhitelist(bot));
         registerCommand(new CommandEnableBlacklist(bot));
+        registerCommand(new CommandListWhitelist(bot));
+        registerCommand(new CommandListBlacklist(bot));
     }
 
     protected static String colorRed(String message) {
