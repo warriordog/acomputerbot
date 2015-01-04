@@ -67,13 +67,24 @@ public class BlackList {
     }
 
     public boolean canUseBot(User user) {
-        if (!Config.ENABLE_BLACKLIST || bot.getAuth().isAuthenticated(user)) {
+        if (bot.getAuth().isAuthenticated(user)) {
+            return true;
+        }
+        if (Config.ENABLE_BLACKLIST && !Config.ENABLE_WHITELIST) {
+            return isBlacklisted(user) && !isWhitelisted(user);
+        } else if (Config.ENABLE_WHITELIST) {
+            return isWhitelisted(user);
+        }
+        return true;
+        /*
+        if ((!Config.ENABLE_BLACKLIST && !Config.ENABLE_WHITELIST) || bot.getAuth().isAuthenticated(user)) {
             return true;
         }
         if (isBlacklisted(user)) {
             return Config.ENABLE_WHITELIST && isWhitelisted(user);
         }
         return true;
+        */
     }
 
     public void load() {
