@@ -33,16 +33,23 @@ public class CommandSpy extends Command {
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
-        User user = bot.getConnection().createUser(command.args);
-        Spy spy = spyMap.get(user);
-        if (spy != null) {
-            spy.stop();
+        if (command.args.equals("*")) {
+            spyMap.keySet().forEach(u -> spyMap.get(u).stop());
+            target.send("All spy sessions ended.");
+            return true;
         } else {
-            spy = new Spy(bot, user, target);
-            spyMap.put(user, spy);
-            spy.start();
+            User user = bot.getConnection().createUser(command.args.toLowerCase());
+            Spy spy = spyMap.get(user);
+            if (spy != null) {
+                spy.stop();
+                spyMap.remove(user);
+            } else {
+                spy = new Spy(bot, user, target);
+                spyMap.put(user, spy);
+                spy.start();
+            }
+            return true;
         }
-        return true;
     }
 
     private static class Spy implements MessageListener {
@@ -51,12 +58,15 @@ public class CommandSpy extends Command {
         private final User spyTarget;
         private final Chattable spySender;
         private final String name;
+        private final String targetName;
 
         private Spy(IrcBot bot, User spyTarget, Chattable spySender) {
             this.bot = bot;
             this.spyTarget = spyTarget;
             this.spySender = spySender;
-            this.name = "[SPY][" + spyTarget.getNick() + "]";
+            String targetNick = spyTarget.getNick();
+            this.targetName = targetNick.substring(0, targetNick.length() - 1).concat("_");
+            this.name = "[SPY][" + targetName + "]";
         }
 
         @Override
