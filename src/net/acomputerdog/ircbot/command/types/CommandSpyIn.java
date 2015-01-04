@@ -4,7 +4,6 @@ import com.sorcix.sirc.*;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
-import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 import java.util.HashMap;
@@ -41,8 +40,8 @@ public class CommandSpyIn extends Command {
         } else {
             String chanName = command.args.toLowerCase();
             Channel chan = bot.getConnection().createChannel(chanName);
-            if (!Channels.isConnected(chan)) {
-                Channels.connect(chan);
+            Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();
+            if (!channelMap.containsKey(chanName)) {
                 chan.join();
             }
             ChannelSpy spy = spyMap.get(chan);

@@ -5,8 +5,9 @@ import com.sorcix.sirc.Chattable;
 import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
-import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
+
+import java.util.Map;
 
 public class CommandChannels extends Command {
     public CommandChannels(IrcBot bot) {
@@ -21,8 +22,9 @@ public class CommandChannels extends Command {
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Connected channels:");
-        for (String chan : Channels.getChannels()) {
-            String topic = Channels.getChannel(chan).getTopic();
+        Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();
+        for (String chan : channelMap.keySet()) {
+            String topic = channelMap.get(chan).getTopic();
             target.send("  " + chan + (topic == null ? "" : ": " + topic));
         }
         return true;

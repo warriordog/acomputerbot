@@ -27,6 +27,7 @@
  */
 package com.sorcix.sirc;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -116,6 +117,10 @@ public final class ClientState {
      */
     public Iterator<Channel> getChannels() {
         return this.channels.values().iterator();
+    }
+
+    public Map<String, Channel> getChannelMap() {
+        return Collections.unmodifiableMap(channels);
     }
 
     /**

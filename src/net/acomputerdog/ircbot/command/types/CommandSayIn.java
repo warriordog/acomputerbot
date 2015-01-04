@@ -6,8 +6,9 @@ import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
-import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
+
+import java.util.Map;
 
 public class CommandSayIn extends Command {
     public CommandSayIn(IrcBot bot) {
@@ -42,13 +43,14 @@ public class CommandSayIn extends Command {
             return false;
         }
         String channelName = command.args.substring(0, split).toLowerCase();
-        if (Channels.isConnected(channelName)) {
+        Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();
+        if (channelMap.containsKey(channelName)) {
             String filtered = bot.getStringCheck().filterString(command.args.substring(split + 1));
             if (filtered == null) {
                 target.send(colorRed("The string was blocked, probably due to cascaded commands!"));
                 return false;
             }
-            Channels.getChannel(channelName).send(filtered);
+            channelMap.get(channelName).send(filtered);
             return true;
         } else {
             target.send(colorRed("Not connected to \"" + channelName + "\"!"));

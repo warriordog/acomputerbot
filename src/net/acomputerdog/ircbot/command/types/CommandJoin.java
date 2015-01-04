@@ -6,8 +6,9 @@ import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
-import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
+
+import java.util.Map;
 
 public class CommandJoin extends Command {
     public CommandJoin(IrcBot bot) {
@@ -37,10 +38,10 @@ public class CommandJoin extends Command {
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         String channelName = command.args.toLowerCase();
-        if (!Channels.isConnected(channelName)) {
+        Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();
+        if (!channelMap.containsKey(channelName)) {
             Channel chan = bot.getConnection().createChannel(channelName);
             chan.join();
-            Channels.connect(chan);
             target.send("Joined \"" + channelName + "\".");
             return true;
         } else {

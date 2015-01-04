@@ -3,7 +3,6 @@ package net.acomputerdog.ircbot.irc;
 import com.sorcix.sirc.*;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.command.Command;
-import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class IrcListener implements MessageListener, ServerListener {
@@ -79,7 +78,6 @@ public class IrcListener implements MessageListener, ServerListener {
     public void onJoin(IrcConnection irc, Channel channel, User user) {
         if (user.isUs()) {
             LOGGER.logInfo("Joining channel " + channel.getName() + ".");
-            Channels.connect(channel);
         }
     }
 
@@ -87,7 +85,6 @@ public class IrcListener implements MessageListener, ServerListener {
     public void onKick(IrcConnection irc, Channel channel, User sender, User user, String msg) {
         if (user.isUs()) {
             LOGGER.logWarning("Kicked from channel " + channel.getName() + " by " + sender.getNick() + "/" + sender.getRealName() + "/" + sender.getHostName() + "!");
-            Channels.disconnect(channel.getName());
         }
     }
 
@@ -110,7 +107,6 @@ public class IrcListener implements MessageListener, ServerListener {
     public void onPart(IrcConnection irc, Channel channel, User user, String message) {
         if (user.isUs() && channel != null) {
             LOGGER.logInfo("Leaving channel " + channel.getName() + ".");
-            Channels.disconnect(channel.getName());
         }
     }
 

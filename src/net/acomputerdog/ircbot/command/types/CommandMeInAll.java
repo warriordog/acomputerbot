@@ -6,8 +6,9 @@ import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
-import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
+
+import java.util.Map;
 
 public class CommandMeInAll extends Command {
     public CommandMeInAll(IrcBot bot) {
@@ -41,8 +42,9 @@ public class CommandMeInAll extends Command {
             target.send(colorRed("The string was blocked, probably due to cascaded commands!"));
             return false;
         }
-        for (String chanName : Channels.getChannels()) {
-            Channels.getChannel(chanName).sendAction(filtered);
+        Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();
+        for (String chanName : channelMap.keySet()) {
+            channelMap.get(chanName).sendAction(filtered);
         }
         return true;
     }

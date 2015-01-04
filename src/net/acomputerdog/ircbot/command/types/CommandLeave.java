@@ -6,8 +6,9 @@ import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
-import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
+
+import java.util.Map;
 
 public class CommandLeave extends Command {
     public CommandLeave(IrcBot bot) {
@@ -43,10 +44,10 @@ public class CommandLeave extends Command {
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
             String channelName = getChannelName(command.args.toLowerCase());
-            if (Channels.isConnected(channelName)) {
+            Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();
+            if (channelMap.containsKey(channelName)) {
                 target.send("Left channel \"" + channelName + "\".");
-                Channels.getChannel(channelName).part();
-                Channels.disconnect(channelName);
+                channelMap.get(channelName).part();
                 return true;
             } else {
                 target.send(colorRed("I'm not connected to \"" + channelName + "\"!"));
@@ -54,7 +55,6 @@ public class CommandLeave extends Command {
             }
         } else {
             target.send("Bye :(");
-            Channels.disconnect(channel.getName().toLowerCase());
             channel.part();
             return true;
         }
