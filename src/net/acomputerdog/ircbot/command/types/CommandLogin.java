@@ -7,7 +7,6 @@ import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
-import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandLogin extends Command {
     public CommandLogin(IrcBot bot) {
@@ -17,6 +16,11 @@ public class CommandLogin extends Command {
     @Override
     public int getMinArgs() {
         return 1;
+    }
+
+    @Override
+    public boolean canOverrideBlacklist() {
+        return true;
     }
 
     @Override

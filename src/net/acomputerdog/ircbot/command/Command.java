@@ -77,6 +77,10 @@ public abstract class Command {
         return "No description";
     }
 
+    public boolean canOverrideBlacklist() {
+        return false;
+    }
+
     public String getHelpString() {
         if (helpString == null) {
             StringBuilder builder = new StringBuilder();
@@ -138,9 +142,9 @@ public abstract class Command {
 
     public static void onChat(IrcBot bot, Channel channel, User sender, Chattable target, String message) {
         if (message.length() > 1 && message.startsWith(Config.COMMAND_PREFIX)) {
-            if (bot.getBlacklist().canUseBot(sender)) {
-                CommandLine cmdLine = new CommandLine(message.substring(1));
-                Command cmd = commandMap.get(cmdLine.command);
+            CommandLine cmdLine = new CommandLine(message.substring(1));
+            Command cmd = commandMap.get(cmdLine.command);
+            if (bot.getBlacklist().canUseBot(sender) || cmd.canOverrideBlacklist()) {
                 if (cmd != null) {
                     if (cmd.getMinArgs() <= 0 || cmdLine.hasArgs()) {
                         if (!cmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmd.canOpOverride() && sender.hasOperator())) {
@@ -212,6 +216,10 @@ public abstract class Command {
         registerCommand(new CommandSpyIn(bot));
         registerCommand(new CommandAdmins(bot));
         registerCommand(new CommandAliases(bot));
+        registerCommand(new CommandWhitelist(bot));
+        registerCommand(new CommandBlacklist(bot));
+        registerCommand(new CommandEnableWhitelist(bot));
+        registerCommand(new CommandEnableBlacklist(bot));
     }
 
     protected static String colorRed(String message) {

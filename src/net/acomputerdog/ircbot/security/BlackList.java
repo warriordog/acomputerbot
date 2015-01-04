@@ -27,7 +27,7 @@ public class BlackList {
     }
 
     public void addWhitelisted(String user) {
-        whitelistedUsers.add(user);
+        whitelistedUsers.add(user.toLowerCase());
     }
 
     public void addWhitelisted(User user) {
@@ -35,7 +35,7 @@ public class BlackList {
     }
 
     public void addBlacklisted(String user) {
-        blacklistedUsers.add(user);
+        blacklistedUsers.add(user.toLowerCase());
     }
 
     public void addBlacklisted(User user) {
@@ -43,11 +43,27 @@ public class BlackList {
     }
 
     public boolean isBlacklisted(User user) {
-        return blacklistedUsers.contains(user.getNick());
+        return blacklistedUsers.contains(user.getNick().toLowerCase());
     }
 
     public boolean isWhitelisted(User user) {
-        return whitelistedUsers.contains(user.getNick());
+        return whitelistedUsers.contains(user.getNick().toLowerCase());
+    }
+
+    public void removeWhitelisted(String str) {
+        whitelistedUsers.remove(str.toLowerCase());
+    }
+
+    public void removeWhitelisted(User user) {
+        removeWhitelisted(user.getNick());
+    }
+
+    public void removeBlacklisted(String str) {
+        blacklistedUsers.remove(str.toLowerCase());
+    }
+
+    public void removeBlacklisted(User user) {
+        removeBlacklisted(user.getNick());
     }
 
     public boolean canUseBot(User user) {

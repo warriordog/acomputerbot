@@ -38,9 +38,9 @@ public class Config {
 
     public static int CHAT_FILTER_MODE = 1; //0 is no filter, 1 is remove cascaded commands, 2 is block cascaded commands
 
-    public static boolean ENABLE_BLACKLIST = true;
+    public static boolean ENABLE_BLACKLIST = false;
 
-    public static boolean ENABLE_WHITELIST = true;
+    public static boolean ENABLE_WHITELIST = false;
 
     //---------Internal Stuff--------------
 
