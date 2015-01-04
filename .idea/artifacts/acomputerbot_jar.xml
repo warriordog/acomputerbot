@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="acomputerbot:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/acomputerbot_jar</output-path>
+    <root id="archive" name="acomputerbot.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/res/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="acomputerbot" />
+      <element id="module-output" name="sirc" />
+      <element id="extracted-dir" path="$USER_HOME$/CompCore/build/CompCore.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
