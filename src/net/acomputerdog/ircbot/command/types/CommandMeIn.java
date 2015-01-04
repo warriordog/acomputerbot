@@ -43,7 +43,12 @@ public class CommandMeIn extends Command {
         }
         String channelName = command.args.substring(0, split).toLowerCase();
         if (Channels.isConnected(channelName)) {
-            Channels.getChannel(channelName).sendAction(command.args.substring(split + 1));
+            String filtered = bot.getStringCheck().filterString(command.args.substring(split + 1));
+            if (filtered == null) {
+                target.send(colorRed("The string was blocked, probably due to cascaded commands!"));
+                return false;
+            }
+            Channels.getChannel(channelName).sendAction(filtered);
             return true;
         } else {
             target.send(colorRed("Not connected to \"" + channelName + "\"!"));

@@ -8,7 +8,6 @@ import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
-import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandSayInAll extends Command {
     public CommandSayInAll(IrcBot bot) {
@@ -37,8 +36,13 @@ public class CommandSayInAll extends Command {
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+        String filtered = bot.getStringCheck().filterString(command.args);
+        if (filtered == null) {
+            target.send(colorRed("The string was blocked, probably due to cascaded commands!"));
+            return false;
+        }
         for (String chanName : Channels.getChannels()) {
-            Channels.getChannel(chanName).send(command.args);
+            Channels.getChannel(chanName).send(filtered);
         }
         return true;
     }

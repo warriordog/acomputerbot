@@ -30,7 +30,12 @@ public class CommandSay extends Command {
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
-        target.send(command.args);
+        String filtered = bot.getStringCheck().filterString(command.args);
+        if (filtered == null) {
+            target.send(colorRed("The string was blocked, probably due to cascaded commands!"));
+            return false;
+        }
+        target.send(filtered);
         return true;
     }
 }

@@ -34,6 +34,10 @@ public class Config {
 
     public static int MESSAGES_PER_SECOND = 2; //default is 10
 
+    public static int MAX_CASCADED_COMMANDS = 2; //max number of "~" that can be in a chat said by AcomputerBot
+
+    public static int CHAT_FILTER_MODE = 1; //0 is no filter, 1 is remove cascaded commands, 2 is block cascaded commands
+
     //---------Internal Stuff--------------
 
     private static final CLogger LOGGER = new CLogger("Config", false, true);
@@ -60,6 +64,8 @@ public class Config {
                 LOGIN_ATTEMPT_TIMEOUT = prop.containsKey("LOGIN_ATTEMPT_TIMEOUT") ? Long.parseLong(prop.getProperty("LOGIN_ATTEMPT_TIMEOUT")) : LOGIN_ATTEMPT_TIMEOUT;
                 AUTH_TIMEOUT = prop.containsKey("AUTH_TIMEOUT") ? Long.parseLong(prop.getProperty("AUTH_TIMEOUT")) : AUTH_TIMEOUT;
                 MESSAGES_PER_SECOND = prop.containsKey("MESSAGES_PER_SECOND") ? Integer.parseInt(prop.getProperty("MESSAGES_PER_SECOND")) : MESSAGES_PER_SECOND;
+                MAX_CASCADED_COMMANDS = prop.containsKey("MAX_CASCADED_COMMANDS") ? Integer.parseInt(prop.getProperty("MAX_CASCADED_COMMANDS")) : MAX_CASCADED_COMMANDS;
+                CHAT_FILTER_MODE = prop.containsKey("CHAT_FILTER_MODE") ? Integer.parseInt(prop.getProperty("CHAT_FILTER_MODE")) : CHAT_FILTER_MODE;
             } else {
                 LOGGER.logInfo("Configuration file does not exist.  It will be created.");
                 save();
@@ -89,6 +95,8 @@ public class Config {
                 prop.setProperty("LOGIN_ATTEMPT_TIMEOUT", String.valueOf(LOGIN_ATTEMPT_TIMEOUT));
                 prop.setProperty("AUTH_TIMEOUT", String.valueOf(AUTH_TIMEOUT));
                 prop.setProperty("MESSAGES_PER_SECOND", String.valueOf(MESSAGES_PER_SECOND));
+                prop.setProperty("MAX_CASCADED_COMMANDS", String.valueOf(MAX_CASCADED_COMMANDS));
+                prop.setProperty("CHAT_FILTER_MODE", String.valueOf(CHAT_FILTER_MODE));
                 OutputStream out = new FileOutputStream(saveFile);
                 prop.store(out, "AcomputerBot configuration file.  Lines prefixed with '#' will be ignored.");
                 out.close();

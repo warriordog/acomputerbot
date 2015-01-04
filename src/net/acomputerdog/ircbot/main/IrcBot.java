@@ -11,6 +11,7 @@ import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
 import net.acomputerdog.ircbot.security.Auth;
 import net.acomputerdog.ircbot.security.NickServ;
+import net.acomputerdog.ircbot.security.StringCheck;
 
 public class IrcBot {
     public static final IrcBot instance = new IrcBot();
@@ -27,6 +28,7 @@ public class IrcBot {
     private NickServ nickServ;
     private Admins admins;
     private Auth auth;
+    private StringCheck stringCheck;
 
     private IrcBot() {
         if (instance != null) {
@@ -66,6 +68,7 @@ public class IrcBot {
         admins.load();
         auth = new Auth(this);
 
+        stringCheck = new StringCheck(this);
         handler = new IrcListener(this);
         Command.init(this);
         LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
@@ -157,6 +160,10 @@ public class IrcBot {
 
     public Auth getAuth() {
         return auth;
+    }
+
+    public StringCheck getStringCheck() {
+        return stringCheck;
     }
 
     public static void main(String[] args) {

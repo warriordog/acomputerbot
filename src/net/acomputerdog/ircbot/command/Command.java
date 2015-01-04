@@ -207,6 +207,7 @@ public abstract class Command {
         registerCommand(new CommandSpyOn(bot));
         registerCommand(new CommandSpyIn(bot));
         registerCommand(new CommandAdmins(bot));
+        registerCommand(new CommandAliases(bot));
     }
 
     protected static String colorRed(String message) {
