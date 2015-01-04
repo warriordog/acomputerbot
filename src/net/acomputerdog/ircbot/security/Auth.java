@@ -3,7 +3,6 @@ package net.acomputerdog.ircbot.security;
 import com.sorcix.sirc.Chattable;
 import com.sorcix.sirc.User;
 import net.acomputerdog.core.logger.CLogger;
-import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
@@ -46,31 +45,31 @@ public class Auth {
             if (bot.getAdmins().isAdmin(user)) {
                 if (pass.equals(Config.ADMIN_PASS)) {
                     LOGGER.logInfo("Admin " + getUserName(user) + " has been authenticated.");
-                    loginReplyTarget.get(user).send("You have now been logged in!  Remember that if you log out for more than 10 minutes your session will expire!");
+                    loginReplyTarget.get(user).send("You have now been logged in!  Remember that if you log out for more than " + (Config.AUTH_TIMEOUT / 60000) + " minutes your session will expire!");
                     authenticatedAdmins.put(user, System.currentTimeMillis() + Config.AUTH_TIMEOUT);
                     loginAttempts.put(user, 0);
                     authFailedTimeouts.remove(user);
                     return true;
                 } else {
                     loginReplyTarget.get(user).send("Incorrect password, please try again!");
-                    LOGGER.logWarning("User " + getUserName(user) + " failed authentication!");
-                    LOGGER.logWarning("Reason: Incorrect password.");
-                    LOGGER.logWarning("Password used: \"" + pass + "\".");
+                    logFailedAuth(user, "Incorrect password.", pass);
                 }
             } else {
                 loginReplyTarget.get(user).send("You are not an AcomputerBot admin!");
-                LOGGER.logWarning("User " + getUserName(user) + " failed authentication!");
-                LOGGER.logWarning("Reason: Not an admin.");
-                LOGGER.logWarning("Password used: \"" + pass + "\".");
+                logFailedAuth(user, "Not an admin.", pass);
             }
         } else {
-            loginReplyTarget.get(user).send("You have too many failed login attempts!  Pleas try again in 10 minutes.");
+            loginReplyTarget.get(user).send("You have too many failed login attempts!  Pleas try again in " + (Config.LOGIN_ATTEMPT_TIMEOUT / 60000) + " minutes.");
             authFailedTimeouts.put(user, System.currentTimeMillis() + Config.LOGIN_ATTEMPT_TIMEOUT);
-            LOGGER.logWarning("User " + user.getHostName() + " failed authentication!");
-            LOGGER.logWarning("Reason: Too many login attempts.");
-            LOGGER.logWarning("Password used: \"" + pass + "\".");
+            logFailedAuth(user, "Too many login attempts.", pass);
         }
         return false;
+    }
+
+    private void logFailedAuth(User user, String reason, String pass) {
+        LOGGER.logWarning("User " + getUserName(user) + " failed authentication!");
+        LOGGER.logWarning(" Reason: " + reason);
+        LOGGER.logWarning(" Password used: \"" + pass + "\".");
     }
 
     private String getUserName(User user) {

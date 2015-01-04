@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+//todo replace with ClientState
 public class Channels {
     private static final Map<String, Channel> connectedChannels = new HashMap<>();
 
