@@ -25,18 +25,13 @@ public class CommandMeIn extends Command {
     }
 
     @Override
-    public boolean allowedInChannel(Channel channel, User user) {
-        return bot.getAuth().isAuthenticated(user);
-    }
-
-    @Override
     public String getDescription() {
         return "Tells AcomputerBot to perform an action (/me) in a specific channel.";
     }
 
     @Override
-    public boolean allowedInPM(User user) {
-        return bot.getAuth().isAuthenticated(user);
+    public boolean requiresAdmin() {
+        return true;
     }
 
     @Override

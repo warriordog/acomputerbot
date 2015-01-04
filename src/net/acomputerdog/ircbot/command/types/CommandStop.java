@@ -15,8 +15,8 @@ public class CommandStop extends Command {
     }
 
     @Override
-    public boolean allowedInChannel(Channel channel, User user) {
-        return bot.getAuth().isAuthenticated(user);
+    public boolean requiresAdmin() {
+        return true;
     }
 
     @Override
@@ -32,11 +32,6 @@ public class CommandStop extends Command {
     @Override
     public String getDescription() {
         return "Shuts down AcomputerBot.";
-    }
-
-    @Override
-    public boolean allowedInPM(User user) {
-        return bot.getAuth().isAuthenticated(user);
     }
 
     @Override

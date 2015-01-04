@@ -23,19 +23,15 @@ public class CommandSayIn extends Command {
     public String getHelpString() {
         return Config.COMMAND_PREFIX + "sayin <channel> <message>";
     }
+
     @Override
-    public boolean allowedInChannel(Channel channel, User user) {
-        return bot.getAuth().isAuthenticated(user);
+    public boolean requiresAdmin() {
+        return true;
     }
 
     @Override
     public String getDescription() {
         return "Tells AcomputerBot to say something in a channel.";
-    }
-
-    @Override
-    public boolean allowedInPM(User user) {
-        return bot.getAuth().isAuthenticated(user);
     }
 
     @Override

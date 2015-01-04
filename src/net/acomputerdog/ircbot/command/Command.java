@@ -52,6 +52,14 @@ public abstract class Command {
         return true;
     }
 
+    public boolean requiresAdmin() {
+        return false;
+    }
+
+    public boolean canOpOverride() {
+        return false;
+    }
+
     public abstract boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command);
 
     public String getName() {
@@ -105,10 +113,20 @@ public abstract class Command {
             Command cmd = commandMap.get(cmdLine.command);
             if (cmd != null) {
                 if (cmd.getMinArgs() <= 0 || cmdLine.hasArgs()) {
-                    if (channel == null && cmd.allowedInPM(sender)) {
-                        cmd.processCommand(bot, null, sender, target, cmdLine);
-                    } else if (cmd.allowedInChannel(channel, sender)) {
-                        cmd.processCommand(bot, channel, sender, target, cmdLine);
+                    if (!cmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmd.canOpOverride() && sender.hasOperator())) {
+                        if (channel == null && cmd.allowedInPM(sender)) {
+                            cmd.processCommand(bot, null, sender, target, cmdLine);
+                        } else if (cmd.allowedInChannel(channel, sender)) {
+                            cmd.processCommand(bot, channel, sender, target, cmdLine);
+                        } else {
+                            sender.send(colorRed("That command cannot be used here!"));
+                        }
+                    } else {
+                        if (cmd.canOpOverride()) {
+                            sender.send(colorRed("Only a bot admin or channel operator can perform that command!"));
+                        } else {
+                            sender.send(colorRed("Only a bot admin can perform that command!"));
+                        }
                     }
                 } else {
                     target.send(colorRed("Not enough arguments, use \"" + cmd.getHelpString() + "\"."));

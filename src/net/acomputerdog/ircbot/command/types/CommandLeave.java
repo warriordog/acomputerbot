@@ -25,50 +25,38 @@ public class CommandLeave extends Command {
     }
 
     @Override
-    public boolean allowedInChannel(Channel channel, User user) {
-        return user.hasOperator() || bot.getAuth().isAuthenticated(user);
+    public boolean requiresAdmin() {
+        return true;
     }
 
     @Override
-    public boolean allowedInPM(User user) {
-        return bot.getAuth().isAuthenticated(user);
+    public boolean canOpOverride() {
+        return true;
     }
-
 
     @Override
     public String getDescription() {
         return "Tells AcomputerBot to leave a channel.";
     }
 
-
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
-            if (bot.getAuth().isAuthenticated(sender)) {
-                String channelName = getChannelName(command.args.toLowerCase());
-                if (Channels.isConnected(channelName)) {
-                    target.send("Left channel \"" + channelName + "\".");
-                    Channels.disconnect(channelName);
-                    Channels.getChannel(channelName).part();
-                    return true;
-                } else {
-                    target.send(colorRed("I'm not connected to \"" + channelName + "\"!"));
-                    return false;
-                }
+            String channelName = getChannelName(command.args.toLowerCase());
+            if (Channels.isConnected(channelName)) {
+                target.send("Left channel \"" + channelName + "\".");
+                Channels.getChannel(channelName).part();
+                Channels.disconnect(channelName);
+                return true;
             } else {
-                target.send(colorRed("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
+                target.send(colorRed("I'm not connected to \"" + channelName + "\"!"));
                 return false;
             }
         } else {
-            if (sender.hasOperator() || bot.getAuth().isAuthenticated(sender)) {
-                target.send("Bye :(");
-                Channels.disconnect(channel.getName().toLowerCase());
-                channel.part();
-                return true;
-            } else {
-                target.send(colorRed("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
-                return false;
-            }
+            target.send("Bye :(");
+            Channels.disconnect(channel.getName().toLowerCase());
+            channel.part();
+            return true;
         }
     }
 
