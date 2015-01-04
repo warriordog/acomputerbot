@@ -2,7 +2,6 @@ package net.acomputerdog.ircbot.command.types;
 
 import com.sorcix.sirc.Channel;
 import com.sorcix.sirc.Chattable;
-import com.sorcix.sirc.IrcColors;
 import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
@@ -41,7 +40,7 @@ public class CommandHelp extends Command {
                 target.send(colorGreen("  You can use: " + canUse(channel, sender, cmd)));
                 return true;
             } else {
-                target.send(colorError("Could not find command: \"" + command.args + "\""));
+                target.send(colorRed("Could not find command: \"" + command.args + "\""));
                 return false;
             }
         } else {
@@ -85,9 +84,5 @@ public class CommandHelp extends Command {
             return command.allowedInPM(user);
         }
         return command.allowedInChannel(channel, user);
-    }
-
-    protected static String colorGreen(String text) {
-        return IrcColors.color(text, IrcColors.DARK_GREEN);
     }
 }

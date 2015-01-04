@@ -8,7 +8,6 @@ import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
-import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandLeave extends Command {
     public CommandLeave(IrcBot bot) {
@@ -53,11 +52,11 @@ public class CommandLeave extends Command {
                     Channels.getChannel(channelName).part();
                     return true;
                 } else {
-                    target.send(colorError("I'm not connected to \"" + channelName + "\"!"));
+                    target.send(colorRed("I'm not connected to \"" + channelName + "\"!"));
                     return false;
                 }
             } else {
-                target.send(colorError("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
+                target.send(colorRed("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
                 return false;
             }
         } else {
@@ -67,7 +66,7 @@ public class CommandLeave extends Command {
                 channel.part();
                 return true;
             } else {
-                target.send(colorError("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
+                target.send(colorRed("Only channel ops and bot admins may use \"" + Config.COMMAND_PREFIX + "leave\"!"));
                 return false;
             }
         }

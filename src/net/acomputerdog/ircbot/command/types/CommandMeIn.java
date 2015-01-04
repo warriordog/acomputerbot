@@ -8,7 +8,6 @@ import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
-import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandMeIn extends Command {
     public CommandMeIn(IrcBot bot) {
@@ -44,7 +43,7 @@ public class CommandMeIn extends Command {
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         int split = command.args.indexOf(' ');
         if (split == -1 || split == command.args.length() - 1) {
-            target.send(colorError("Not enough args, use \"" + getHelpString() + "\"."));
+            target.send(colorRed("Not enough args, use \"" + getHelpString() + "\"."));
             return false;
         }
         String channelName = command.args.substring(0, split).toLowerCase();
@@ -52,7 +51,7 @@ public class CommandMeIn extends Command {
             Channels.getChannel(channelName).sendAction(command.args.substring(split + 1));
             return true;
         } else {
-            target.send(colorError("Not connected to \"" + channelName + "\"!"));
+            target.send(colorRed("Not connected to \"" + channelName + "\"!"));
             return false;
         }
     }

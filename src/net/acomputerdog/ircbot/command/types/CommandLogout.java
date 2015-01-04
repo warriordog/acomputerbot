@@ -23,7 +23,7 @@ public class CommandLogout extends Command {
             target.send("You have been successfully logged out!");
             return true;
         } else {
-            target.send(colorError("You are not logged in!"));
+            target.send(colorRed("You are not logged in!"));
             return false;
         }
     }

@@ -42,7 +42,7 @@ public class CommandSayIn extends Command {
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         int split = command.args.indexOf(' ');
         if (split == -1 || split == command.args.length() - 1) {
-            target.send(colorError("Not enough args, use \"" + getHelpString() + "\"."));
+            target.send(colorRed("Not enough args, use \"" + getHelpString() + "\"."));
             return false;
         }
         String channelName = command.args.substring(0, split).toLowerCase();
@@ -50,7 +50,7 @@ public class CommandSayIn extends Command {
             Channels.getChannel(channelName).send(command.args.substring(split + 1));
             return true;
         } else {
-            target.send(colorError("Not connected to \"" + channelName + "\"!"));
+            target.send(colorRed("Not connected to \"" + channelName + "\"!"));
             return false;
         }
     }

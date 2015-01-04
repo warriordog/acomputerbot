@@ -8,7 +8,6 @@ import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.Channels;
 import net.acomputerdog.ircbot.main.IrcBot;
-import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandJoin extends Command {
     public CommandJoin(IrcBot bot) {
@@ -50,7 +49,7 @@ public class CommandJoin extends Command {
             target.send("Joined \"" + channelName + "\".");
             return true;
         } else {
-            target.send(colorError("Already connected to \"" + channelName + "\"!"));
+            target.send(colorRed("Already connected to \"" + channelName + "\"!"));
             return false;
         }
     }

@@ -14,10 +14,6 @@ public class CommandInfo extends Command {
         super(bot, "Info", "info", "inf", "about");
     }
 
-    private String colorYellow(String message) {
-        return IrcColors.color(message, IrcColors.YELLOW);
-    }
-
     @Override
     public String getDescription() {
         return "Prints information about AcomputerBot.";

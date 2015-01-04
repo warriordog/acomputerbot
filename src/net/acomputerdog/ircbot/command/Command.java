@@ -111,10 +111,10 @@ public abstract class Command {
                         cmd.processCommand(bot, channel, sender, target, cmdLine);
                     }
                 } else {
-                    target.send(colorError("Not enough arguments, use \"" + cmd.getHelpString() + "\"."));
+                    target.send(colorRed("Not enough arguments, use \"" + cmd.getHelpString() + "\"."));
                 }
             } else {
-                target.send(colorError("Unknown command, use \"" + Config.COMMAND_PREFIX + "help\" for a list of commands."));
+                target.send(colorRed("Unknown command, use \"" + Config.COMMAND_PREFIX + "help\" for a list of commands."));
             }
         }
     }
@@ -186,7 +186,15 @@ public abstract class Command {
         registerCommand(new CommandSpyIn(bot));
     }
 
-    protected static String colorError(String message) {
+    protected static String colorRed(String message) {
         return IrcColors.color(message, IrcColors.RED);
+    }
+
+    protected static String colorGreen(String text) {
+        return IrcColors.color(text, IrcColors.DARK_GREEN);
+    }
+
+    protected static String colorYellow(String message) {
+        return IrcColors.color(message, IrcColors.YELLOW);
     }
 }
