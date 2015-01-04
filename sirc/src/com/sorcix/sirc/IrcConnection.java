@@ -35,9 +35,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
  * Main IRC Connection class in sIRC.
@@ -81,11 +80,11 @@ public class IrcConnection {
     /**
      * Message listeners.
      */
-    private final List<MessageListener> messageListeners;
+    private final Set<MessageListener> messageListeners;
     /**
      * Mode listeners.
      */
-    private final List<ModeListener> modeListeners;
+    private final Set<ModeListener> modeListeners;
     /**
      * Connection OutputStream thread.
      */
@@ -93,11 +92,11 @@ public class IrcConnection {
     /**
      * Server listeners.
      */
-    private final List<ServerListener> serverListeners;
+    private final Set<ServerListener> serverListeners;
     /**
      * Services.
      */
-    private final List<SIRCService> services;
+    private final Set<SIRCService> services;
     /**
      * Connection socket.
      */
@@ -167,10 +166,10 @@ public class IrcConnection {
     public IrcConnection(final String server, final int port,
                          final String password) {
         this.server = new IrcServer(server, port, password, false);
-        this.serverListeners = new Vector<>(4);
-        this.messageListeners = new Vector<>(4);
-        this.modeListeners = new Vector<>(2);
-        this.services = new Vector<>(0);
+        this.serverListeners = new CopyOnWriteArraySet<>();
+        this.messageListeners = new CopyOnWriteArraySet<>();
+        this.modeListeners = new CopyOnWriteArraySet<>();
+        this.services = new CopyOnWriteArraySet<>();
         this.state = new ClientState();
     }
 
