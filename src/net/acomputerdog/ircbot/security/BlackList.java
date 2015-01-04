@@ -141,7 +141,7 @@ public class BlackList {
                 LOGGER.logInfo("Saved blacklist.");
             }
         } catch (Exception e) {
-            LOGGER.logWarning("Exception loading blacklist!", e);
+            LOGGER.logWarning("Exception saving blacklist!", e);
         }
     }
 }

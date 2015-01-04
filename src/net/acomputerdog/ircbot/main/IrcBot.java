@@ -7,6 +7,7 @@ import net.acomputerdog.core.java.Sleep;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.config.Admins;
+import net.acomputerdog.ircbot.config.AutoJoinList;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
 import net.acomputerdog.ircbot.security.Auth;
@@ -31,6 +32,7 @@ public class IrcBot {
     private Auth auth;
     private StringCheck stringCheck;
     private BlackList blacklist;
+    private AutoJoinList autoJoinList;
 
     private IrcBot() {
         if (instance != null) {
@@ -70,8 +72,10 @@ public class IrcBot {
         auth = new Auth(this);
         blacklist = new BlackList(this);
         stringCheck = new StringCheck(this);
+        autoJoinList = new AutoJoinList(this);
         admins.load();
         blacklist.load();
+        autoJoinList.load();
 
         handler = new IrcListener(this);
         Command.init(this);
@@ -105,6 +109,7 @@ public class IrcBot {
         }
 
         LOGGER.logInfo("Startup complete.");
+        autoJoinList.joinChannels();
     }
 
     private void onTick() {
@@ -124,6 +129,8 @@ public class IrcBot {
             if (connection != null) {
                 connection.disconnect(shutdownReason == null ? "Bot shutting down." : shutdownReason);
             }
+            blacklist.save();
+            autoJoinList.save();
             admins.save();
             Config.save();
             IrcConnection.ABOUT_ADDITIONAL = "";
@@ -149,7 +156,7 @@ public class IrcBot {
     }
 
     public String getVersionString() {
-        return "AcomputerBot v0.12.1";
+        return "AcomputerBot v0.13";
     }
 
     public boolean canRun() {

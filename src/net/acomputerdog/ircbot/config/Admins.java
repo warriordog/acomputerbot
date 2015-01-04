@@ -81,7 +81,7 @@ public class Admins {
                 LOGGER.logInfo("Saved admin list.");
             }
         } catch (Exception e) {
-            LOGGER.logWarning("Exception loading admin list!", e);
+            LOGGER.logWarning("Exception saving admin list!", e);
         }
     }
 }
