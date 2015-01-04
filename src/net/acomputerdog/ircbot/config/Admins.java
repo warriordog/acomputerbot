@@ -5,8 +5,8 @@ import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 public class Admins {
@@ -40,6 +40,10 @@ public class Admins {
         if (user != null) {
             addAdmin(user.getRealName());
         }
+    }
+
+    public Set<String> getAdmins() {
+        return Collections.unmodifiableSet(adminNames);
     }
 
     public void load() {
