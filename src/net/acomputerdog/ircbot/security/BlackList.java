@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Blacklist1 {
+public class BlackList {
 
     private final CLogger LOGGER = new CLogger("BlackList", false, true);
     private final Set<String> blacklistedUsers = new HashSet<>();
@@ -22,7 +22,7 @@ public class Blacklist1 {
     private int whitelistHash = -1;
     private int blacklistHash = -1;
 
-    public Blacklist1(IrcBot bot) {
+    public BlackList(IrcBot bot) {
         this.bot = bot;
     }
 

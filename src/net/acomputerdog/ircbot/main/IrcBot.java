@@ -10,7 +10,7 @@ import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
 import net.acomputerdog.ircbot.security.Auth;
-import net.acomputerdog.ircbot.security.Blacklist1;
+import net.acomputerdog.ircbot.security.BlackList;
 import net.acomputerdog.ircbot.security.NickServ;
 import net.acomputerdog.ircbot.security.StringCheck;
 
@@ -30,7 +30,7 @@ public class IrcBot {
     private Admins admins;
     private Auth auth;
     private StringCheck stringCheck;
-    private Blacklist1 blacklist;
+    private BlackList blacklist;
 
     private IrcBot() {
         if (instance != null) {
@@ -68,7 +68,7 @@ public class IrcBot {
 
         admins = new Admins(this);
         auth = new Auth(this);
-        blacklist = new Blacklist1(this);
+        blacklist = new BlackList(this);
         stringCheck = new StringCheck(this);
         admins.load();
         blacklist.load();
@@ -172,7 +172,7 @@ public class IrcBot {
         return stringCheck;
     }
 
-    public Blacklist1 getBlacklist() {
+    public BlackList getBlacklist() {
         return blacklist;
     }
 
