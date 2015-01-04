@@ -78,8 +78,9 @@ final class IrcParser {
                     // send ping reply
                     line.getSender().sendCtcpReply("PING " + line.getMessage().substring(5), true);
                 } else if (line.getMessage().startsWith("SOURCE")) {
-                    // send sIRC source
-                    line.getSender().sendCtcpReply("SOURCE http://j-sirc.googlecode.com");
+                    // send acombuterbot sources.  Previously sent sIRC, but acomputerbot has a link to sIRC sources so its OK to remove
+                    // line.getSender().sendCtcpReply("SOURCE http://j-sirc.googlecode.com");
+                    line.getSender().sendCtcpReply("SOURCE https://github.com/warriordog/acomputerbot");
                 } else if (line.getMessage().equals("CLIENTINFO")) {
                     // send client info
                     line.getSender().sendCtcpReply("CLIENTINFO VERSION TIME PING SOURCE FINGER SIRCVERS");

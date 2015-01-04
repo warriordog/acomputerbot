@@ -50,10 +50,11 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 public class IrcConnection {
 
+    public static String ABOUT_ADDITIONAL = "";
     /**
      * The sIRC about string, used in CTCP
      */
-    public static String ABOUT = "Sorcix Lib-IRC (sIRC) v" + IrcConnection.VERSION;
+    public static String ABOUT = "Sorcix Lib-IRC (sIRC) v" + IrcConnection.VERSION + IrcConnection.ABOUT_ADDITIONAL;
     /**
      * Debug: Show raw messages
      */

@@ -73,6 +73,7 @@ public class IrcBot {
         Command.init(this);
         LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
 
+        IrcConnection.ABOUT_ADDITIONAL += (" / " + getVersionString());
         connection = new IrcConnection(Config.SERVER);
         if (Config.USE_LOGIN) {
             connection.setUsername(Config.BOT_USERNAME);
@@ -121,6 +122,7 @@ public class IrcBot {
             }
             admins.save();
             Config.save();
+            IrcConnection.ABOUT_ADDITIONAL = "";
         } catch (Throwable ignored) {}
         System.exit(code);
     }
