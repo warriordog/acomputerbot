@@ -45,18 +45,24 @@ public class CommandHelp extends Command {
             }
         } else {
             target.send(colorGreen("Registered commands: (use \"" + getHelpString() + "\" to view details)"));
-            StringBuilder builder = new StringBuilder();
-            builder.append("  ");
+            StringBuilder builder = new StringBuilder(20);
             int count = 0;
             for (String cmd : getCommandNameMap().keySet()) {
                 Command cmmd = getCommandNameMap().get(cmd);
-                if ((cmmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmmd.canOpOverride() && sender.hasOperator())) &&
+                if ((!cmmd.requiresAdmin() || (bot.getAuth().isAuthenticated(sender) || (cmmd.canOpOverride() && sender.hasOperator()))) &&
                         ((channel != null && cmmd.allowedInChannel(channel, sender)) || (channel == null && cmmd.allowedInPM(sender)))) {
                     if (count > 0) {
                         builder.append(", ");
+                    } else {
+                        builder.append("  ");
                     }
                     builder.append(cmd);
                     count++;
+                    if (count >= 10) {
+                        count = 0;
+                        target.send(colorGreen(builder.toString()));
+                        builder = new StringBuilder(20);
+                    }
                 }
             }
             target.send(colorGreen(builder.toString()));
