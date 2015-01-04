@@ -138,7 +138,7 @@ public class IrcBot {
     }
 
     public String getVersionString() {
-        return "AcomputerBot v0.3";
+        return "AcomputerBot v0.4";
     }
 
     public boolean canRun() {
