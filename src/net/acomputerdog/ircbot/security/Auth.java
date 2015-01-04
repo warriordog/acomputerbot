@@ -59,7 +59,7 @@ public class Auth {
                 logFailedAuth(user, "Not an admin.", pass);
             }
         } else {
-            loginReplyTarget.get(user).send("You have too many failed login attempts!  Pleas try again in " + (Config.LOGIN_ATTEMPT_TIMEOUT / 60000) + " minutes.");
+            loginReplyTarget.get(user).send("You have too many failed login attempts!  Please try again in " + (Config.LOGIN_ATTEMPT_TIMEOUT / 60000) + " minutes.");
             authFailedTimeouts.put(user, System.currentTimeMillis() + Config.LOGIN_ATTEMPT_TIMEOUT);
             logFailedAuth(user, "Too many login attempts.", pass);
         }
@@ -90,6 +90,7 @@ public class Auth {
         }
         for (User user : authenticatedAdmins.keySet()) {
             if (authenticatedAdmins.get(user) <= System.currentTimeMillis()) {
+                IrcBot.instance.getNickServ().send("ACC " + user.getNick());
                 reauthWaitingAdmins.put(user, System.currentTimeMillis() + 60000);
             }
         }
@@ -97,6 +98,7 @@ public class Auth {
             if (reauthWaitingAdmins.get(user) <= System.currentTimeMillis()) {
                 deauthenticate(user);
                 user.send("Your admin session has expired, you must reauthenticate to perform admin commands!");
+                LOGGER.logWarning("Authentication expired for admin " + user.getNick() + ".");
             }
         }
         for (User user : verifyWaitingTimeout.keySet()) {
@@ -104,6 +106,7 @@ public class Auth {
                 verifyWaitingTimeout.remove(user);
                 verifyWaitingPass.remove(user);
                 loginReplyTarget.get(user).send("AcomputerBot was unable to verify your login status with NickServ!  This is a bug, please try logging in again!");
+                LOGGER.logWarning("Unable to verify NickServ status for \"" + user.getNick() + "\"!");
             }
         }
     }
@@ -135,5 +138,17 @@ public class Auth {
             loginAttempts.put(user, 0);
             authFailedTimeouts.remove(user);
         }
+    }
+
+    void onUserUnverified(User user) {
+        if (verifyWaitingPass.containsKey(user)) {
+            logFailedAuth(user, "Not logged in to nickserv.", verifyWaitingPass.get(user));
+            user.send("You must be logged into NickServ to log in as an AcomputerBot admin!");
+        }
+        if (reauthWaitingAdmins.containsKey(user)) {
+            user.send("You have logged out of NickServ, and your admin session has expired!  You must log in again to perform admin commands.");
+            LOGGER.logWarning("Admin " + user.getNick() + " has logged out of NickServ and lost authentication.");
+        }
+        deauthenticate(user);
     }
 }

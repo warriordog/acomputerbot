@@ -40,6 +40,8 @@ public class NickServ implements MessageListener, Chattable {
             if (parts.length == 4 && parts[1].equals("ACC")) {
                 if (parts[2].equals("3")) {
                     bot.getAuth().onUserVerified(bot.getConnection().createUser(parts[0]));
+                } else {
+                    bot.getAuth().onUserUnverified(bot.getConnection().createUser(parts[0]));
                 }
             }
         }
