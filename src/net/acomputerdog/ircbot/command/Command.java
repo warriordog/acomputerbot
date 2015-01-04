@@ -224,6 +224,8 @@ public abstract class Command {
         registerCommand(new CommandListBlacklist(bot));
         registerCommand(new CommandSmiley(bot));
         registerCommand(new CommandChar(bot));
+        registerCommand(new CommandSudo(bot));
+        registerCommand(new CommandSudoPrivate(bot));
     }
 
     protected static String colorRed(String message) {
