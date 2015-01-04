@@ -70,7 +70,7 @@ final class IrcParser {
                     line.getSender().sendCtcpReply("VERSION " + irc.getVersion());
                 } else if (line.getMessage().equals("SIRCVERS")) {
                     // send sIRC version information
-                    line.getSender().sendCtcpReply("SIRCVERS " + IrcConnection.ABOUT);
+                    line.getSender().sendCtcpReply("SIRCVERS " + IrcConnection.ABOUT + IrcConnection.ABOUT_ADDITIONAL);
                 } else if (line.getMessage().equals("TIME")) {
                     // send current date&time
                     line.getSender().sendCtcpReply(new Date().toString());

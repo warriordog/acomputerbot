@@ -77,7 +77,7 @@ public class IrcBot {
         Command.init(this);
         LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
 
-        IrcConnection.ABOUT_ADDITIONAL += (" / " + getVersionString());
+        IrcConnection.ABOUT_ADDITIONAL += (" + " + getVersionString());
         connection = new IrcConnection(Config.SERVER);
         if (Config.USE_LOGIN) {
             connection.setUsername(Config.BOT_USERNAME);
@@ -149,7 +149,7 @@ public class IrcBot {
     }
 
     public String getVersionString() {
-        return "AcomputerBot v0.12";
+        return "AcomputerBot v0.12.1";
     }
 
     public boolean canRun() {

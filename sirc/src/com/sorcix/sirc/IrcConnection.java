@@ -54,7 +54,7 @@ public class IrcConnection {
     /**
      * The sIRC about string, used in CTCP
      */
-    public static String ABOUT = "Sorcix Lib-IRC (sIRC) v" + IrcConnection.VERSION + IrcConnection.ABOUT_ADDITIONAL;
+    public static String ABOUT = "Sorcix Lib-IRC (sIRC) v" + IrcConnection.VERSION;
     /**
      * Debug: Show raw messages
      */
