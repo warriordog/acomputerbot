@@ -182,7 +182,7 @@ public abstract class Command {
         registerCommand(new CommandGithub(bot));
         registerCommand(new CommandLogin(bot));
         registerCommand(new CommandLogout(bot));
-        registerCommand(new CommandSpy(bot));
+        registerCommand(new CommandSpyOn(bot));
     }
 
     protected static String colorError(String message) {

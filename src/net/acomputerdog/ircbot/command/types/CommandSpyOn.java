@@ -9,11 +9,11 @@ import net.acomputerdog.ircbot.main.IrcBot;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandSpy extends Command {
-    private final Map<User, Spy> spyMap = new HashMap<>();
+public class CommandSpyOn extends Command {
+    private final Map<User, UserSpy> spyMap = new HashMap<>();
 
-    public CommandSpy(IrcBot bot) {
-        super(bot, "Spy", "spy", "watch", "monitor", "listen");
+    public CommandSpyOn(IrcBot bot) {
+        super(bot, "SpyOn", "spyon", "spy-on", "spy_on");
     }
 
     @Override
@@ -28,7 +28,7 @@ public class CommandSpy extends Command {
 
     @Override
     public String getHelpString() {
-        return Config.COMMAND_PREFIX + "spy <target>";
+        return Config.COMMAND_PREFIX + "spyon <target>";
     }
 
     @Override
@@ -39,12 +39,12 @@ public class CommandSpy extends Command {
             return true;
         } else {
             User user = bot.getConnection().createUser(command.args.toLowerCase());
-            Spy spy = spyMap.get(user);
+            UserSpy spy = spyMap.get(user);
             if (spy != null) {
                 spy.stop();
                 spyMap.remove(user);
             } else {
-                spy = new Spy(bot, user, target);
+                spy = new UserSpy(bot, user, target);
                 spyMap.put(user, spy);
                 spy.start();
             }
@@ -52,7 +52,7 @@ public class CommandSpy extends Command {
         }
     }
 
-    private static class Spy implements MessageListener {
+    private static class UserSpy implements MessageListener {
 
         private final IrcBot bot;
         private final User spyTarget;
@@ -60,7 +60,7 @@ public class CommandSpy extends Command {
         private final String name;
         private final String targetName;
 
-        private Spy(IrcBot bot, User spyTarget, Chattable spySender) {
+        private UserSpy(IrcBot bot, User spyTarget, Chattable spySender) {
             this.bot = bot;
             this.spyTarget = spyTarget;
             this.spySender = spySender;
