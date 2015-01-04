@@ -146,13 +146,13 @@ public final class User implements Chattable {
 
         User user = (User) o;
 
-        return !(nick != null ? !nick.equals(user.nick) : user.nick != null);
+        return !(nick != null ? !nickLower.equalsIgnoreCase(user.nickLower) : user.nickLower != null);
 
     }
 
     @Override
     public int hashCode() {
-        return nick != null ? nick.hashCode() : 0;
+        return nick != null ? nickLower.hashCode() : 0;
     }
 
     /**

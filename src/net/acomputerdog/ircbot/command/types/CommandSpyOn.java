@@ -38,7 +38,7 @@ public class CommandSpyOn extends Command {
             target.send("All spy sessions ended.");
             return true;
         } else {
-            User user = bot.getConnection().createUser(command.args.toLowerCase());
+            User user = bot.getConnection().createUser(command.args.toLowerCase().trim());
             UserSpy spy = spyMap.get(user);
             if (spy != null) {
                 spy.stop();
@@ -58,15 +58,13 @@ public class CommandSpyOn extends Command {
         private final User spyTarget;
         private final Chattable spySender;
         private final String name;
-        private final String targetName;
 
         private UserSpy(IrcBot bot, User spyTarget, Chattable spySender) {
             this.bot = bot;
             this.spyTarget = spyTarget;
             this.spySender = spySender;
             String targetNick = spyTarget.getNick();
-            this.targetName = targetNick.substring(0, targetNick.length() - 1).concat("□");
-            this.name = "[SPY][" + targetName + "]";
+            this.name = "[SPY][" + targetNick.substring(0, targetNick.length() - 1).concat("□") + "]";
         }
 
         @Override
