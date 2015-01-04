@@ -50,7 +50,8 @@ public class CommandHelp extends Command {
             int count = 0;
             for (String cmd : getCommandNameMap().keySet()) {
                 Command cmmd = getCommandNameMap().get(cmd);
-                if ((cmmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmmd.canOpOverride() && sender.hasOperator())) && ((channel != null && cmmd.allowedInChannel(channel, sender)) || (channel == null && cmmd.allowedInPM(sender)))) {
+                if ((cmmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmmd.canOpOverride() && sender.hasOperator())) &&
+                        ((channel != null && cmmd.allowedInChannel(channel, sender)) || (channel == null && cmmd.allowedInPM(sender)))) {
                     if (count > 0) {
                         builder.append(", ");
                     }
