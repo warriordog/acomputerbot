@@ -10,6 +10,7 @@ import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
 import net.acomputerdog.ircbot.security.Auth;
+import net.acomputerdog.ircbot.security.BlackList;
 import net.acomputerdog.ircbot.security.NickServ;
 import net.acomputerdog.ircbot.security.StringCheck;
 
@@ -29,6 +30,7 @@ public class IrcBot {
     private Admins admins;
     private Auth auth;
     private StringCheck stringCheck;
+    private BlackList blacklist;
 
     private IrcBot() {
         if (instance != null) {
@@ -65,10 +67,12 @@ public class IrcBot {
         Runtime.getRuntime().addShutdownHook(new IrcShutdownHandler(this));
 
         admins = new Admins(this);
-        admins.load();
         auth = new Auth(this);
-
+        blacklist = new BlackList(this);
         stringCheck = new StringCheck(this);
+        admins.load();
+        blacklist.load();
+
         handler = new IrcListener(this);
         Command.init(this);
         LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
@@ -145,7 +149,7 @@ public class IrcBot {
     }
 
     public String getVersionString() {
-        return "AcomputerBot v0.5";
+        return "AcomputerBot v0.6";
     }
 
     public boolean canRun() {
@@ -166,6 +170,10 @@ public class IrcBot {
 
     public StringCheck getStringCheck() {
         return stringCheck;
+    }
+
+    public BlackList getBlacklist() {
+        return blacklist;
     }
 
     public static void main(String[] args) {

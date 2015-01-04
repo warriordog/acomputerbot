@@ -138,30 +138,34 @@ public abstract class Command {
 
     public static void onChat(IrcBot bot, Channel channel, User sender, Chattable target, String message) {
         if (message.length() > 1 && message.startsWith(Config.COMMAND_PREFIX)) {
-            CommandLine cmdLine = new CommandLine(message.substring(1));
-            Command cmd = commandMap.get(cmdLine.command);
-            if (cmd != null) {
-                if (cmd.getMinArgs() <= 0 || cmdLine.hasArgs()) {
-                    if (!cmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmd.canOpOverride() && sender.hasOperator())) {
-                        if (channel == null && cmd.allowedInPM(sender)) {
-                            cmd.processCommand(bot, null, sender, target, cmdLine);
-                        } else if (cmd.allowedInChannel(channel, sender)) {
-                            cmd.processCommand(bot, channel, sender, target, cmdLine);
+            if (bot.getBlacklist().canUseBot(sender)) {
+                CommandLine cmdLine = new CommandLine(message.substring(1));
+                Command cmd = commandMap.get(cmdLine.command);
+                if (cmd != null) {
+                    if (cmd.getMinArgs() <= 0 || cmdLine.hasArgs()) {
+                        if (!cmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmd.canOpOverride() && sender.hasOperator())) {
+                            if (channel == null && cmd.allowedInPM(sender)) {
+                                cmd.processCommand(bot, null, sender, target, cmdLine);
+                            } else if (cmd.allowedInChannel(channel, sender)) {
+                                cmd.processCommand(bot, channel, sender, target, cmdLine);
+                            } else {
+                                target.send(colorRed("That command cannot be used here!"));
+                            }
                         } else {
-                            target.send(colorRed("That command cannot be used here!"));
+                            if (cmd.canOpOverride()) {
+                                target.send(colorRed("Only a bot admin or channel operator can perform that command!"));
+                            } else {
+                                target.send(colorRed("Only a bot admin can perform that command!"));
+                            }
                         }
                     } else {
-                        if (cmd.canOpOverride()) {
-                            target.send(colorRed("Only a bot admin or channel operator can perform that command!"));
-                        } else {
-                            target.send(colorRed("Only a bot admin can perform that command!"));
-                        }
+                        target.send(colorRed("Not enough arguments, use \"" + cmd.getHelpString() + "\"."));
                     }
                 } else {
-                    target.send(colorRed("Not enough arguments, use \"" + cmd.getHelpString() + "\"."));
+                    target.send(colorRed("Unknown command, use \"" + Config.COMMAND_PREFIX + "help\" for a list of commands."));
                 }
             } else {
-                target.send(colorRed("Unknown command, use \"" + Config.COMMAND_PREFIX + "help\" for a list of commands."));
+                target.send(colorRed("You are not permitted to use AcomputerBot!"));
             }
         }
     }

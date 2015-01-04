@@ -38,6 +38,10 @@ public class Config {
 
     public static int CHAT_FILTER_MODE = 1; //0 is no filter, 1 is remove cascaded commands, 2 is block cascaded commands
 
+    public static boolean ENABLE_BLACKLIST = true;
+
+    public static boolean ENABLE_WHITELIST = true;
+
     //---------Internal Stuff--------------
 
     private static final CLogger LOGGER = new CLogger("Config", false, true);
@@ -66,6 +70,8 @@ public class Config {
                 MESSAGES_PER_SECOND = prop.containsKey("MESSAGES_PER_SECOND") ? Integer.parseInt(prop.getProperty("MESSAGES_PER_SECOND")) : MESSAGES_PER_SECOND;
                 MAX_CASCADED_COMMANDS = prop.containsKey("MAX_CASCADED_COMMANDS") ? Integer.parseInt(prop.getProperty("MAX_CASCADED_COMMANDS")) : MAX_CASCADED_COMMANDS;
                 CHAT_FILTER_MODE = prop.containsKey("CHAT_FILTER_MODE") ? Integer.parseInt(prop.getProperty("CHAT_FILTER_MODE")) : CHAT_FILTER_MODE;
+                ENABLE_BLACKLIST = prop.containsKey("ENABLE_BLACKLIST") ? Boolean.parseBoolean(prop.getProperty("ENABLE_BLACKLIST")) : ENABLE_BLACKLIST;
+                ENABLE_WHITELIST = prop.containsKey("ENABLE_WHITELIST") ? Boolean.parseBoolean(prop.getProperty("ENABLE_WHITELIST")) : ENABLE_WHITELIST;
             } else {
                 LOGGER.logInfo("Configuration file does not exist.  It will be created.");
                 save();
@@ -97,6 +103,8 @@ public class Config {
                 prop.setProperty("MESSAGES_PER_SECOND", String.valueOf(MESSAGES_PER_SECOND));
                 prop.setProperty("MAX_CASCADED_COMMANDS", String.valueOf(MAX_CASCADED_COMMANDS));
                 prop.setProperty("CHAT_FILTER_MODE", String.valueOf(CHAT_FILTER_MODE));
+                prop.setProperty("ENABLE_BLACKLIST", String.valueOf(ENABLE_BLACKLIST));
+                prop.setProperty("ENABLE_WHITELIST", String.valueOf(ENABLE_WHITELIST));
                 OutputStream out = new FileOutputStream(saveFile);
                 prop.store(out, "AcomputerBot configuration file.  Lines prefixed with '#' will be ignored.");
                 out.close();
