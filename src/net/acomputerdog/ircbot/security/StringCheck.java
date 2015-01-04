@@ -53,7 +53,7 @@ public class StringCheck {
     private String filterCommands(String str) {
         String blocked = blockCommands(str);
         if (blocked == null) {
-            return str.replace(Config.COMMAND_PREFIX, "■");
+            return str.replace(Config.COMMAND_PREFIX, "□");
         }
         return str;
     }

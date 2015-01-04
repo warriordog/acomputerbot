@@ -65,7 +65,7 @@ public class CommandSpyOn extends Command {
             this.spyTarget = spyTarget;
             this.spySender = spySender;
             String targetNick = spyTarget.getNick();
-            this.targetName = targetNick.substring(0, targetNick.length() - 1).concat("_");
+            this.targetName = targetNick.substring(0, targetNick.length() - 1).concat("□");
             this.name = "[SPY][" + targetName + "]";
         }
 

@@ -81,7 +81,7 @@ public class CommandSpyIn extends Command {
         }
 
         private String formatName(String name) {
-            return name.substring(0, name.length() - 1).concat("_");
+            return name.substring(0, name.length() - 1).concat("□");
         }
 
         private void start() {
