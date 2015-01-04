@@ -88,6 +88,6 @@ public class CommandHelp extends Command {
     }
 
     protected static String colorGreen(String text) {
-        return IrcColors.color(text, IrcColors.GREEN);
+        return IrcColors.color(text, IrcColors.DARK_GREEN);
     }
 }
