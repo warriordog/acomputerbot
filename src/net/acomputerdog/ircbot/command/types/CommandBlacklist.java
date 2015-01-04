@@ -38,10 +38,10 @@ public class CommandBlacklist extends Command {
         User user = bot.getConnection().createUser(command.args);
         if (bot.getBlacklist().isBlacklisted(user)) {
             bot.getBlacklist().removeBlacklisted(user);
-            target.send("User \"" + user.getNick() + "\" has been un-blacklisted.");
+            target.send("User " + user.getNick() + " has been un-blacklisted.");
         } else {
             bot.getBlacklist().addBlacklisted(user);
-            target.send("User \"" + user.getNick() + "\" has been blacklisted.");
+            target.send("User " + user.getNick() + " has been blacklisted.");
         }
         return true;
     }

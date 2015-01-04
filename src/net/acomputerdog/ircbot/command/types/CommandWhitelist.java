@@ -38,10 +38,10 @@ public class CommandWhitelist extends Command {
         User user = bot.getConnection().createUser(command.args);
         if (bot.getBlacklist().isWhitelisted(user)) {
             bot.getBlacklist().removeWhitelisted(user);
-            target.send("User \"" + user.getNick() + "\" has been un-whitelisted.");
+            target.send("User " + user.getNick() + " has been un-whitelisted.");
         } else {
             bot.getBlacklist().addWhitelisted(user);
-            target.send("User \"" + user.getNick() + "\" has been whitelisted.");
+            target.send("User " + user.getNick() + " has been whitelisted.");
         }
         return true;
     }

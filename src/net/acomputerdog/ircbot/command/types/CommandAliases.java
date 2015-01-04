@@ -20,7 +20,7 @@ public class CommandAliases extends Command {
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Registered aliases:");
-        StringBuilder builder = new StringBuilder(20);
+        StringBuilder builder = new StringBuilder(16);
         int count = 0;
         for (String str : getCommandMap().keySet()) {
             if (count > 0) {
@@ -30,9 +30,9 @@ public class CommandAliases extends Command {
             }
             builder.append(str);
             count++;
-            if (count >= 10) {
+            if (count >= 8) {
                 target.send(builder.toString());
-                builder = new StringBuilder(20);
+                builder = new StringBuilder(16);
                 count = 0;
             }
         }

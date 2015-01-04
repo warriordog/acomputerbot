@@ -8,9 +8,9 @@ import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
-public class CommandEnableBlacklist extends Command {
-    public CommandEnableBlacklist(IrcBot bot) {
-        super(bot, "EnableBlacklist", "enableblacklist", "enable-blacklist", "enable_blacklist", "blackliston", "blacklist-on", "blacklist_on");
+public class CommandToggleWhitelist extends Command {
+    public CommandToggleWhitelist(IrcBot bot) {
+        super(bot, "ToggleWhitelist", "togglewhitelist", "toggle-whitelist", "toggle_whitelist");
     }
 
     @Override
@@ -20,22 +20,22 @@ public class CommandEnableBlacklist extends Command {
 
     @Override
     public String getDescription() {
-        return "Toggles blacklist mode.";
+        return "Toggles whitelist mode.";
     }
 
     @Override
     public String getHelpString() {
-        return Config.COMMAND_PREFIX + "enableblacklist";
+        return Config.COMMAND_PREFIX + "togglewhitelist";
     }
 
     @Override
     public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
-        if (Config.ENABLE_BLACKLIST) {
-            Config.ENABLE_BLACKLIST = false;
-            target.send("Blacklist disabled.");
+        if (Config.ENABLE_WHITELIST) {
+            Config.ENABLE_WHITELIST = false;
+            target.send("Whitelist disabled.");
         } else {
-            Config.ENABLE_BLACKLIST = true;
-            target.send("Blacklist enabled.");
+            Config.ENABLE_WHITELIST = true;
+            target.send("Whitelist enabled.");
         }
         return true;
     }

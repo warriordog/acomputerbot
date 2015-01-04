@@ -218,8 +218,8 @@ public abstract class Command {
         registerCommand(new CommandAliases(bot));
         registerCommand(new CommandWhitelist(bot));
         registerCommand(new CommandBlacklist(bot));
-        registerCommand(new CommandEnableWhitelist(bot));
-        registerCommand(new CommandEnableBlacklist(bot));
+        registerCommand(new CommandToggleWhitelist(bot));
+        registerCommand(new CommandToggleBlacklist(bot));
         registerCommand(new CommandListWhitelist(bot));
         registerCommand(new CommandListBlacklist(bot));
     }
