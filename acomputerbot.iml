@@ -9,7 +9,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="CompCore" level="application" />
     <orderEntry type="module" module-name="sirc" />
+    <orderEntry type="library" name="CompCore" level="project" />
   </component>
 </module>
