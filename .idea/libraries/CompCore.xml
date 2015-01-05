@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="CompCore">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/CompCore.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$USER_HOME$/CompCore/source/main" />
+    </SOURCES>
+  </library>
+</component>
