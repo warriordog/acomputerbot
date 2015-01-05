@@ -45,7 +45,7 @@ public class CommandHelp extends Command {
             }
         } else {
             target.send(colorGreen("Registered commands: (use \"" + getHelpString() + "\" to view details)"));
-            StringBuilder builder = new StringBuilder(20);
+            StringBuilder builder = new StringBuilder(16);
             int count = 0;
             for (String cmd : getCommandNameMap().keySet()) {
                 Command cmmd = getCommandNameMap().get(cmd);
@@ -58,10 +58,10 @@ public class CommandHelp extends Command {
                     }
                     builder.append(cmd);
                     count++;
-                    if (count >= 10) {
+                    if (count >= 8) {
                         count = 0;
                         target.send(colorGreen(builder.toString()));
-                        builder = new StringBuilder(20);
+                        builder = new StringBuilder(16);
                     }
                 }
             }

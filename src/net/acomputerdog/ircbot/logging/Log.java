@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
+//todo threading
 public class Log {
     private final LogManager manager;
     private final String name;
