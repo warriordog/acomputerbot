@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 
-//todo threading
 public class Log {
     private final LogManager manager;
     private final String name;
@@ -22,7 +21,7 @@ public class Log {
         this.manager = manager;
         this.name = name;
         this.logNum = findAvailableNum(manager.getLogDir(), name);
-        this.logFile = new File(manager.getLogDir(), "/" + name + "." + logNum + ".log");
+        this.logFile = new File(manager.getLogDir(), "/" + logNum + "/" + name + ".log");
         this.logger = new CLogger(name, false, true);
         fileOut = new FileOutputStream(logFile);
         if ("Global".equals(name)) {
@@ -75,11 +74,14 @@ public class Log {
     private static int findAvailableNum(File dir, String name) {
         //todo replace with java.nio
         int num = -1; //will start at 0 because num++ is at start of loop
-        File file;
+        File currDir;
+        File currFile;
         do {
             num++;
-            file = new File(dir, "/" + name + "." + num + ".log");
-        } while (file.isFile());
+            currDir = new File(dir, "/" + num + "/");
+            currFile = new File(currDir, "/" + name + ".log");
+        } while (currFile.isFile());
+        currDir.mkdirs();
         return num;
     }
 }
