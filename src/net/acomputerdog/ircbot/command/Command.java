@@ -270,6 +270,7 @@ public abstract class Command {
         registerCommand(new CommandPrivateMessage(bot));
         registerCommand(new CommandWhoAmI(bot));
         registerCommand(new CommandJavaScript(bot));
+        registerCommand(new CommandPipe(bot));
     }
 
     protected static String colorRed(String message) {
