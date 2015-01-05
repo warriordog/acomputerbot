@@ -156,7 +156,7 @@ public abstract class Command {
                                         cmd.getLogger().logInfo("User " + sender.getNick() + " used command in PM: \"" + message + "\".");
                                     } else if (cmd.allowedInChannel(channel, sender)) {
                                         cmd.processCommand(bot, channel, sender, target, cmdLine);
-                                        cmd.getLogger().logInfo("User " + sender.getNick() + " used command in channel " + channel.getName() + ": \"" + message + "\".");
+                                        cmd.getLogger().logInfo("User " + sender.getNick() + " used command in " + channel.getName() + ": \"" + message + "\".");
                                     } else {
                                         target.send(colorRed("That command cannot be used here!"));
                                     }
