@@ -4,6 +4,7 @@ import com.sorcix.sirc.Channel;
 import com.sorcix.sirc.Chattable;
 import com.sorcix.sirc.User;
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
+import net.acomputerdog.core.java.Patterns;
 import net.acomputerdog.core.java.Sleep;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.command.Command;
@@ -108,7 +109,28 @@ public class CommandJavaScript extends Command {
         }
 
         private void execute(String code) throws ScriptException {
-            target.send("> " + String.valueOf(engine.eval(code)));
+            String result = String.valueOf(engine.eval(code));
+            sendResult(result);
+        }
+
+        private void sendResult(String result) {
+            String[] lines = result.split(Patterns.NEWLINE);
+            if (lines.length <= 5) {
+                for (String line : lines) {
+                    if (line.length() > 400) {
+                        target.send("Output was too long, so it has been truncated.");
+                        line = line.substring(0, 397).concat("...");
+                    }
+                    target.send("> " + line);
+                }
+            } else {
+                target.send("Output had too many lines, so newlines were replaced with \"▼\".");
+                if (result.length() > 400) {
+                    target.send("Output was too long, so it has been truncated.");
+                    result = result.substring(0, 397).concat("...");
+                }
+                target.send("> " + result.replace("\n", "▼"));
+            }
         }
 
         private void checkRunTime() {
