@@ -110,7 +110,7 @@ public abstract class Command {
 
     protected CLogger getLogger() {
         if (logger == null) {
-            logger = new CLogger("Command" + name, false, true);
+            logger = bot.getLogManager().getLogger("Command" + name);
         }
         return logger;
     }

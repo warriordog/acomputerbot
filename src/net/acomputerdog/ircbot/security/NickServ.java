@@ -14,7 +14,7 @@ public class NickServ extends Chattable implements MessageListener {
         nickServ = bot.getConnection().createUser("NickServ");
     }
 
-    public User getNickServ() {
+    public User getUser() {
         return nickServ;
     }
 

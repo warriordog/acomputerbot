@@ -5,12 +5,13 @@ import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
 public class StringCheck {
-    private final CLogger LOGGER = new CLogger("StringCheck", false, true);
+    private final CLogger LOGGER;
 
     private final IrcBot bot;
 
     public StringCheck(IrcBot bot) {
         this.bot = bot;
+        LOGGER = bot.getLogManager().getLogger("StringCheck");
     }
 
     public String filterString(String str) {

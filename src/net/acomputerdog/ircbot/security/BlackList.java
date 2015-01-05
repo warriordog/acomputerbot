@@ -12,7 +12,7 @@ import java.util.Set;
 
 public class BlackList {
 
-    private final CLogger LOGGER = new CLogger("BlackList", false, true);
+    private final CLogger LOGGER;
     private final Set<String> blacklistedUsers = new HashSet<>();
     private final Set<String> whitelistedUsers = new HashSet<>();
     private final File blacklistSaveFile = new File("./blacklist.txt");
@@ -25,6 +25,7 @@ public class BlackList {
 
     public BlackList(IrcBot bot) {
         this.bot = bot;
+        LOGGER = bot.getLogManager().getLogger("BlackList");
     }
 
     public void addWhitelisted(String user) {

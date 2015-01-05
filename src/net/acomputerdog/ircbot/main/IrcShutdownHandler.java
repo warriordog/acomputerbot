@@ -7,12 +7,13 @@ import net.acomputerdog.core.logger.CLogger;
 public class IrcShutdownHandler extends Thread {
     private final MemBuffer runBuffer = new MemBuffer();
     private final MemBuffer exceptionBuffer = new MemBuffer();
-    private final CLogger LOGGER = new CLogger("ShutdownHandler", false, true);
+    private final CLogger LOGGER;
     private final IrcBot bot;
 
     public IrcShutdownHandler(IrcBot bot) {
         super();
         this.bot = bot;
+        LOGGER = bot.getLogManager().getLogger("ShutdownHandler");
         super.setName("IrcBot_Shutdown_Handler");
         runBuffer.allocate(1000);
         exceptionBuffer.allocate(1000);

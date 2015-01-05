@@ -11,8 +11,8 @@ import java.util.Map;
 
 public class Auth {
     private final IrcBot bot;
-    
-    private final CLogger LOGGER = new CLogger("Auth", false, true);
+
+    private final CLogger LOGGER;
 
     private final Map<User, Long> authenticatedAdmins = new HashMap<>();
     private final Map<User, Integer> loginAttempts = new HashMap<>();
@@ -26,6 +26,7 @@ public class Auth {
 
     public Auth(IrcBot bot) {
         this.bot = bot;
+        LOGGER = bot.getLogManager().getLogger("Auth");
     }
 
     public void requestAuthentication(User user, Chattable target, String pass) {

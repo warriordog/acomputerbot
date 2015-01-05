@@ -10,6 +10,7 @@ import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.AutoJoinList;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
+import net.acomputerdog.ircbot.logging.LogManager;
 import net.acomputerdog.ircbot.security.Auth;
 import net.acomputerdog.ircbot.security.BlackList;
 import net.acomputerdog.ircbot.security.NickServ;
@@ -33,6 +34,7 @@ public class IrcBot {
     private StringCheck stringCheck;
     private BlackList blacklist;
     private AutoJoinList autoJoinList;
+    private LogManager logManager;
 
     private IrcBot() {
         if (instance != null) {
@@ -62,8 +64,13 @@ public class IrcBot {
     }
 
     private void init() {
+        try {
+            logManager = new LogManager(this);
+        } catch (Exception e) {
+            throw new RuntimeException("Unable to initialize log manager!", e);
+        }
         Config.load();
-        LOGGER = new CLogger(Config.BOT_USERNAME, false, true);
+        LOGGER = logManager.getLogger(Config.BOT_USERNAME);
         buffer.allocate(Config.MEMORY_BUFFER_SIZE);
         LOGGER.logInfo(getVersionString() + " starting.");
         Runtime.getRuntime().addShutdownHook(new IrcShutdownHandler(this));
@@ -181,6 +188,10 @@ public class IrcBot {
 
     public BlackList getBlacklist() {
         return blacklist;
+    }
+
+    public LogManager getLogManager() {
+        return logManager;
     }
 
     public static void main(String[] args) {

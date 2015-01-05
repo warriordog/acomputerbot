@@ -7,7 +7,7 @@ import net.acomputerdog.ircbot.main.IrcBot;
 
 public class IrcListener implements MessageListener, ServerListener {
 
-    private static final CLogger LOGGER = new CLogger("IrcListener", false, true);
+    private final CLogger LOGGER;
 
     private final IrcBot bot;
 
@@ -15,6 +15,7 @@ public class IrcListener implements MessageListener, ServerListener {
 
     public IrcListener(IrcBot ircBot) {
         this.bot = ircBot;
+        LOGGER = bot.getLogManager().getLogger("IRCListener");
     }
 
    /*

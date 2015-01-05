@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class AutoJoinList {
-    private final CLogger LOGGER = new CLogger("AutoJoinList", false, true);
+    private final CLogger LOGGER;
     private final Set<String> autoJoinChannels = new HashSet<>();
     private final File saveFile = new File("./autojoin.txt");
 
@@ -19,6 +19,7 @@ public class AutoJoinList {
 
     public AutoJoinList(IrcBot bot) {
         this.bot = bot;
+        LOGGER = bot.getLogManager().getLogger("AutoJoinList");
     }
 
     public void addAutoJoinChannel(String channel) {

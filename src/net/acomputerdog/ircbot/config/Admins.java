@@ -11,8 +11,8 @@ import java.util.Set;
 
 public class Admins {
     private final IrcBot bot;
-    
-    private final CLogger LOGGER = new CLogger("AdminList", false, true);
+
+    private final CLogger LOGGER;
     private final Set<String> adminNames = new HashSet<>();
     private final File saveFile = new File("./admins.cfg");
 
@@ -20,6 +20,7 @@ public class Admins {
 
     public Admins(IrcBot bot) {
         this.bot = bot;
+        LOGGER = bot.getLogManager().getLogger("AdminList");
     }
 
     public boolean isAdmin(String user) {

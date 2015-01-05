@@ -2,6 +2,7 @@ package net.acomputerdog.ircbot.config;
 
 import net.acomputerdog.core.hash.Hasher;
 import net.acomputerdog.core.logger.CLogger;
+import net.acomputerdog.ircbot.main.IrcBot;
 
 import java.io.*;
 import java.util.Properties;
@@ -46,7 +47,8 @@ public class Config {
 
     //---------Internal Stuff--------------
 
-    private static final CLogger LOGGER = new CLogger("Config", false, true);
+    private static final CLogger LOGGER = IrcBot.instance.getLogManager().getLogger("Config");
+    ;
     private static final File saveFile = new File("./config.cfg");
     private static int hash = 0;
 
