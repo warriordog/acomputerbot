@@ -153,8 +153,10 @@ public abstract class Command {
                                 if (!cmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmd.canOpOverride() && sender.hasOperator())) {
                                     if (channel == null && cmd.allowedInPM(sender)) {
                                         cmd.processCommand(bot, null, sender, target, cmdLine);
+                                        cmd.getLogger().logInfo("User " + sender.getNick() + " used command in PM: \"" + message + "\".");
                                     } else if (cmd.allowedInChannel(channel, sender)) {
                                         cmd.processCommand(bot, channel, sender, target, cmdLine);
+                                        cmd.getLogger().logInfo("User " + sender.getNick() + " used command in channel " + channel.getName() + ": \"" + message + "\".");
                                     } else {
                                         target.send(colorRed("That command cannot be used here!"));
                                     }

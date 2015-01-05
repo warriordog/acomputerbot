@@ -74,7 +74,7 @@ public class CommandJavaScript extends Command {
     private JSExecutor getExecutorFor(Chattable target) {
         JSExecutor executor = executionMap.get(target);
         if (executor == null) {
-            executionMap.put(target, executor = new JSExecutor(target));
+            executionMap.put(target, executor = new JSExecutor(target, getLogger()));
         }
         return executor;
     }
@@ -83,19 +83,21 @@ public class CommandJavaScript extends Command {
         private static final String[] jsRemoves = {"Java", "java", "Packages", "packages", "com", "edu", "org", "net", "jdk", "java", "javafx", "javax", "JavaImporter", "sun"};
         private final ScriptEngine engine;
         private final Chattable target;
+        private final CLogger LOGGER;
 
         private volatile Thread thread;
         private volatile String code = null;
         private volatile long startTime = 0;
 
-        private JSExecutor(Chattable target) {
+        private JSExecutor(Chattable target, CLogger logger) {
             this.target = target;
+            this.LOGGER = logger;
             engine = new NashornScriptEngineFactory().getScriptEngine(new String[]{"--no-java"});
             for (String str : jsRemoves) {
                 try {
                     engine.eval(str + " = undefined;");
                 } catch (Exception e) {
-                    IrcBot.LOGGER.logWarning("Exception removing JS function \"" + str + "\"!", e);
+                    LOGGER.logWarning("Exception removing JS function \"" + str + "\"!", e);
                 }
             }
             if (System.getSecurityManager() == null) {
@@ -106,7 +108,7 @@ public class CommandJavaScript extends Command {
         }
 
         private void execute(String code) throws ScriptException {
-            target.send(String.valueOf(engine.eval(code)));
+            target.send("> " + String.valueOf(engine.eval(code)));
         }
 
         private void checkRunTime() {
@@ -131,18 +133,22 @@ public class CommandJavaScript extends Command {
                         try {
                             JSSecurityManager.setActive(true);
                             execute(code);
+                            LOGGER.logInfo(target.getName() + " executed JS: \"" + codeCopy + "\".");
                             JSSecurityManager.setActive(false);
                         } catch (ThreadDeath e) {
                             //message is sent elsewhere
-                            IrcBot.LOGGER.logWarning("JS timed out \"" + codeCopy + "\".");
+                            LOGGER.logWarning(target.getName() + " timed out JS: \"" + codeCopy + "\"!");
+                            throw e;
                         } catch (ScriptException e) {
                             target.send(colorRed("[Script Error] " + e.getMessage()));
+                            LOGGER.logInfo(target.getName() + " wrote invalid script: \"" + codeCopy + "\".");
                         } catch (SecurityException e) {
                             target.send(colorRed("[Script Error] Script attempted to perform an illegal operation!"));
+                            LOGGER.logWarning(target.getName() + " performed an illegal operation: \"" + codeCopy + "\"!");
                         } catch (Throwable t) {
                             target.send(colorRed("An exception occurred simulating your script!"));
                             target.send(colorRed("Exception type is: \"" + t.getClass().getName() + "\".  Message: \"" + t.getMessage() + "\"."));
-                            IrcBot.LOGGER.logError("Exception executing JS \"" + code + "\"!", t);
+                            LOGGER.logError(target.getName() + " wrote bugged JS: \"" + codeCopy + "\"!", t);
                         }
                         startTime = 0;
                         code = null;
