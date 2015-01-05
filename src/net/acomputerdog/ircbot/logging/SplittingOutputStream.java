@@ -21,6 +21,30 @@ public class SplittingOutputStream extends OutputStream {
         out2.write(b);
     }
 
+    @Override
+    public void flush() throws IOException {
+        out1.flush();
+        out2.flush();
+    }
+
+    @Override
+    public void close() throws IOException {
+        out1.close();
+        out2.close();
+    }
+
+    @Override
+    public void write(byte[] b, int off, int len) throws IOException {
+        out1.write(b, off, len);
+        out2.write(b, off, len);
+    }
+
+    @Override
+    public void write(byte[] b) throws IOException {
+        out1.write(b);
+        out2.write(b);
+    }
+
     public OutputStream getOut1() {
         return out1;
     }
@@ -36,10 +60,8 @@ public class SplittingOutputStream extends OutputStream {
 
         SplittingOutputStream that = (SplittingOutputStream) o;
 
-        if (!out1.equals(that.out1)) return false;
-        if (!out2.equals(that.out2)) return false;
+        return out1.equals(that.out1) && out2.equals(that.out2);
 
-        return true;
     }
 
     @Override

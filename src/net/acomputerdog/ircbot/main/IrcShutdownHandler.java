@@ -3,6 +3,7 @@ package net.acomputerdog.ircbot.main;
 import com.sorcix.sirc.IrcConnection;
 import net.acomputerdog.core.java.MemBuffer;
 import net.acomputerdog.core.logger.CLogger;
+import net.acomputerdog.ircbot.logging.LogManager;
 
 public class IrcShutdownHandler extends Thread {
     private final MemBuffer runBuffer = new MemBuffer();
@@ -28,6 +29,10 @@ public class IrcShutdownHandler extends Thread {
                 IrcConnection connection = bot.getConnection();
                 if (connection != null) {
                     connection.disconnect("Unexpected shutdown (probably crashed)");
+                }
+                LogManager manager = bot.getLogManager();
+                if (manager != null) {
+                    manager.onShutdown();
                 }
             }
         } catch (Throwable t) {
