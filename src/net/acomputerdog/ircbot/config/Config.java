@@ -42,6 +42,8 @@ public class Config {
 
     public static boolean ENABLE_WHITELIST = false;
 
+    public static long JS_TIMEOUT = 10000;
+
     //---------Internal Stuff--------------
 
     private static final CLogger LOGGER = new CLogger("Config", false, true);
@@ -72,6 +74,7 @@ public class Config {
                 CHAT_FILTER_MODE = prop.containsKey("CHAT_FILTER_MODE") ? Integer.parseInt(prop.getProperty("CHAT_FILTER_MODE")) : CHAT_FILTER_MODE;
                 ENABLE_BLACKLIST = prop.containsKey("ENABLE_BLACKLIST") ? Boolean.parseBoolean(prop.getProperty("ENABLE_BLACKLIST")) : ENABLE_BLACKLIST;
                 ENABLE_WHITELIST = prop.containsKey("ENABLE_WHITELIST") ? Boolean.parseBoolean(prop.getProperty("ENABLE_WHITELIST")) : ENABLE_WHITELIST;
+                JS_TIMEOUT = prop.containsKey("JS_TIMEOUT") ? Long.parseLong(prop.getProperty("JS_TIMEOUT")) : JS_TIMEOUT;
             } else {
                 LOGGER.logInfo("Configuration file does not exist.  It will be created.");
                 save();
@@ -105,6 +108,7 @@ public class Config {
                 prop.setProperty("CHAT_FILTER_MODE", String.valueOf(CHAT_FILTER_MODE));
                 prop.setProperty("ENABLE_BLACKLIST", String.valueOf(ENABLE_BLACKLIST));
                 prop.setProperty("ENABLE_WHITELIST", String.valueOf(ENABLE_WHITELIST));
+                prop.setProperty("JS_TIMEOUT", String.valueOf(JS_TIMEOUT));
                 OutputStream out = new FileOutputStream(saveFile);
                 prop.store(out, "AcomputerBot configuration file.  Lines prefixed with '#' will be ignored.");
                 out.close();

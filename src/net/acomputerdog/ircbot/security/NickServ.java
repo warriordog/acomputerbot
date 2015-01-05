@@ -4,7 +4,7 @@ import com.sorcix.sirc.*;
 import net.acomputerdog.core.java.Patterns;
 import net.acomputerdog.ircbot.main.IrcBot;
 
-public class NickServ implements MessageListener, Chattable {
+public class NickServ extends Chattable implements MessageListener {
 
     private final IrcBot bot;
     private final User nickServ;
@@ -58,5 +58,15 @@ public class NickServ implements MessageListener, Chattable {
     @Override
     public void sendAction(String action) {
         nickServ.sendAction(action);
+    }
+
+    @Override
+    public String getName() {
+        return nickServ.getNick();
+    }
+
+    @Override
+    public String getNameLower() {
+        return nickServ.getNickLower();
     }
 }

@@ -32,7 +32,7 @@ package com.sorcix.sirc;
  *
  * @author Sorcix
  */
-public final class User implements Chattable {
+public final class User extends Chattable {
 
     /**
      * Hostname of this user (or null if unknown).
@@ -291,6 +291,16 @@ public final class User implements Chattable {
      */
     public void sendAction(final String action) {
         this.sendCtcpAction(action);
+    }
+
+    @Override
+    public String getName() {
+        return getNick();
+    }
+
+    @Override
+    public String getNameLower() {
+        return getNickLower();
     }
 
     /**

@@ -147,7 +147,7 @@ public abstract class Command {
                 CommandLine cmdLine = new CommandLine(message.substring(1));
                 Command cmd = commandMap.get(cmdLine.command);
                 try {
-                    if (bot.getBlacklist().canUseBot(sender) || cmd.canOverrideBlacklist()) {
+                    if (bot.getBlacklist().canUseBot(sender) || cmd.canOverrideBlacklist() || (cmd.canOpOverride() && sender.hasOperator())) {
                         if (cmd != null) {
                             if (cmd.getMinArgs() <= 0 || cmdLine.hasArgs()) {
                                 if (!cmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmd.canOpOverride() && sender.hasOperator())) {
@@ -177,7 +177,7 @@ public abstract class Command {
                 } catch (Exception e) {
                     cmd.getLogger().logError("An exception occurred while processing this command!");
                     cmd.getLogger().logError("The command being executed was \"" + message + "\".");
-                    cmd.getLogger().logError("The exception was a \"" + e.getClass().getName() + "\".", e);
+                    cmd.getLogger().logError("The exception was a \"" + e.getClass().getName() + "\".  Message: \"" + e.getMessage() + "\".", e);
                     target.send(colorRed("An exception occurred while processing the command!  Please report this!"));
                 }
             }
@@ -267,6 +267,7 @@ public abstract class Command {
         registerCommand(new CommandSudoPrivate(bot));
         registerCommand(new CommandPrivateMessage(bot));
         registerCommand(new CommandWhoAmI(bot));
+        registerCommand(new CommandJavaScript(bot));
     }
 
     protected static String colorRed(String message) {

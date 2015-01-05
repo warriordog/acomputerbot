@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Sorcix
  */
-public final class Channel implements Chattable {
+public final class Channel extends Chattable {
 
     /**
      * IrcConnection used to send messages to this channel.
