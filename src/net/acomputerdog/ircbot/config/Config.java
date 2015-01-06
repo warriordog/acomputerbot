@@ -37,7 +37,7 @@ public class Config {
 
     public static int MAX_CASCADED_COMMANDS = 2; //max number of "~" that can be in a chat said by AcomputerBot
 
-    public static int CHAT_FILTER_MODE = 1; //0 is no filter, 1 is remove cascaded commands, 2 is block cascaded commands
+    public static int COMMAND_FILTER_MODE = 1; //0 is no filter, 1 is remove cascaded commands, 2 is block cascaded commands
 
     public static boolean ENABLE_BLACKLIST = true;
 
@@ -73,7 +73,7 @@ public class Config {
                 AUTH_TIMEOUT = prop.containsKey("AUTH_TIMEOUT") ? Long.parseLong(prop.getProperty("AUTH_TIMEOUT")) : AUTH_TIMEOUT;
                 MESSAGES_PER_SECOND = prop.containsKey("MESSAGES_PER_SECOND") ? Integer.parseInt(prop.getProperty("MESSAGES_PER_SECOND")) : MESSAGES_PER_SECOND;
                 MAX_CASCADED_COMMANDS = prop.containsKey("MAX_CASCADED_COMMANDS") ? Integer.parseInt(prop.getProperty("MAX_CASCADED_COMMANDS")) : MAX_CASCADED_COMMANDS;
-                CHAT_FILTER_MODE = prop.containsKey("CHAT_FILTER_MODE") ? Integer.parseInt(prop.getProperty("CHAT_FILTER_MODE")) : CHAT_FILTER_MODE;
+                COMMAND_FILTER_MODE = prop.containsKey("COMMAND_FILTER_MODE") ? Integer.parseInt(prop.getProperty("COMMAND_FILTER_MODE")) : COMMAND_FILTER_MODE;
                 ENABLE_BLACKLIST = prop.containsKey("ENABLE_BLACKLIST") ? Boolean.parseBoolean(prop.getProperty("ENABLE_BLACKLIST")) : ENABLE_BLACKLIST;
                 ENABLE_WHITELIST = prop.containsKey("ENABLE_WHITELIST") ? Boolean.parseBoolean(prop.getProperty("ENABLE_WHITELIST")) : ENABLE_WHITELIST;
                 JS_TIMEOUT = prop.containsKey("JS_TIMEOUT") ? Long.parseLong(prop.getProperty("JS_TIMEOUT")) : JS_TIMEOUT;
@@ -107,7 +107,7 @@ public class Config {
                 prop.setProperty("AUTH_TIMEOUT", String.valueOf(AUTH_TIMEOUT));
                 prop.setProperty("MESSAGES_PER_SECOND", String.valueOf(MESSAGES_PER_SECOND));
                 prop.setProperty("MAX_CASCADED_COMMANDS", String.valueOf(MAX_CASCADED_COMMANDS));
-                prop.setProperty("CHAT_FILTER_MODE", String.valueOf(CHAT_FILTER_MODE));
+                prop.setProperty("COMMAND_FILTER_MODE", String.valueOf(COMMAND_FILTER_MODE));
                 prop.setProperty("ENABLE_BLACKLIST", String.valueOf(ENABLE_BLACKLIST));
                 prop.setProperty("ENABLE_WHITELIST", String.valueOf(ENABLE_WHITELIST));
                 prop.setProperty("JS_TIMEOUT", String.valueOf(JS_TIMEOUT));

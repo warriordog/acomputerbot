@@ -1,5 +1,7 @@
 package net.acomputerdog.ircbot.security;
 
+import com.sorcix.sirc.Chattable;
+import net.acomputerdog.core.java.Patterns;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
@@ -14,14 +16,51 @@ public class StringCheck {
         LOGGER = bot.getLogManager().getLogger("StringCheck");
     }
 
+    public boolean sendFormattedString(String str, Chattable target) {
+        return sendFormattedString(str, target, false);
+    }
+
+    public boolean sendFormattedString(String str, Chattable target, boolean filter) {
+        return sendFormattedString(str, target, "", filter);
+    }
+
+    public boolean sendFormattedString(String str, Chattable target, String prefix, boolean filter) {
+        str = filter ? filterString(str) : str;
+        if (str != null) {
+            String[] lines = str.split(Patterns.NEWLINE);
+            if (lines.length <= 5 || !filter) {
+                for (String line : lines) {
+                    if (line.length() > 400 && filter) {
+                        target.send("Output was too long, so it has been truncated.");
+                        line = line.substring(0, 397).concat("...");
+                    }
+                    target.send(prefix + line);
+                }
+            } else {
+                target.send("Output had too many lines, so newlines were replaced with \"▼\".");
+                if (str.length() > 400) {
+                    target.send("Output was too long, so it has been truncated.");
+                    str = str.substring(0, 397).concat("...");
+                }
+                target.send(prefix + str.replace("\n", "▼"));
+            }
+        }
+        return false;
+    }
+
     public String filterString(String str) {
-        if (Config.CHAT_FILTER_MODE == 0 || str == null || str.isEmpty()) {
+        str = filterCascadedCommands(str);
+        return str;
+    }
+
+    private String filterCascadedCommands(String str) {
+        if (Config.COMMAND_FILTER_MODE == 0 || str == null || str.isEmpty()) {
             return str;
-        } else if (Config.CHAT_FILTER_MODE == 2) {
+        } else if (Config.COMMAND_FILTER_MODE == 2) {
             return blockCommands(str);
         } else {
-            if (Config.CHAT_FILTER_MODE != 1) {
-                LOGGER.logError("Invalid chat filter mode: " + Config.CHAT_FILTER_MODE + ".  Assuming mode 1.");
+            if (Config.COMMAND_FILTER_MODE != 1) {
+                LOGGER.logError("Invalid chat filter mode: " + Config.COMMAND_FILTER_MODE + ".  Assuming mode 1.");
             }
             return filterCommands(str);
         }

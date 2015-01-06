@@ -59,7 +59,7 @@ public class CommandPipe extends Command {
 
             @Override
             public String getName() {
-                return "CommandPipe";
+                return "CommandPipe[" + target.getName() + "]";
             }
         };
 
@@ -68,14 +68,7 @@ public class CommandPipe extends Command {
             lastResponse = "";
             Command.onChat(bot, channel, sender, responseReader, fullCmd);
         }
-        printResponse(target, lastResponse);
+        bot.getStringCheck().sendFormattedString(lastResponse, target);
         return true;
-    }
-
-    private void printResponse(Chattable target, String response) {
-        String[] lines = response.split(Patterns.NEWLINE);
-        for (String line : lines) {
-            target.send(line);
-        }
     }
 }

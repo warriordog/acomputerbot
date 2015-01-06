@@ -40,7 +40,7 @@ public class CommandPrivateMessage extends Command {
             String user = command.args.substring(0, index);
             String message = command.args.substring(index + 1);
             User usr = bot.getConnection().createUser(user);
-            usr.sendMessage(message);
+            bot.getStringCheck().sendFormattedString(message, usr, true);
             target.send("Private message sent.");
             return true;
         } else {

@@ -4,7 +4,6 @@ import com.sorcix.sirc.Channel;
 import com.sorcix.sirc.Chattable;
 import com.sorcix.sirc.User;
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
-import net.acomputerdog.core.java.Patterns;
 import net.acomputerdog.core.java.Sleep;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.command.Command;
@@ -75,7 +74,7 @@ public class CommandJavaScript extends Command {
     private JSExecutor getExecutorFor(Chattable target) {
         JSExecutor executor = executionMap.get(target);
         if (executor == null) {
-            executionMap.put(target, executor = new JSExecutor(target, getLogger()));
+            executionMap.put(target, executor = new JSExecutor(target, getLogger(), bot));
         }
         return executor;
     }
@@ -85,14 +84,16 @@ public class CommandJavaScript extends Command {
         private final ScriptEngine engine;
         private final Chattable target;
         private final CLogger LOGGER;
+        private final IrcBot bot;
 
         private volatile Thread thread;
         private volatile String code = null;
         private volatile long startTime = 0;
 
-        private JSExecutor(Chattable target, CLogger logger) {
+        private JSExecutor(Chattable target, CLogger logger, IrcBot bot) {
             this.target = target;
             this.LOGGER = logger;
+            this.bot = bot;
             engine = new NashornScriptEngineFactory().getScriptEngine(new String[]{"--no-java"});
             for (String str : jsRemoves) {
                 try {
@@ -110,27 +111,7 @@ public class CommandJavaScript extends Command {
 
         private void execute(String code) throws ScriptException {
             String result = String.valueOf(engine.eval(code));
-            sendResult(result);
-        }
-
-        private void sendResult(String result) {
-            String[] lines = result.split(Patterns.NEWLINE);
-            if (lines.length <= 5) {
-                for (String line : lines) {
-                    if (line.length() > 400) {
-                        target.send("Output was too long, so it has been truncated.");
-                        line = line.substring(0, 397).concat("...");
-                    }
-                    target.send("> " + line);
-                }
-            } else {
-                target.send("Output had too many lines, so newlines were replaced with \"▼\".");
-                if (result.length() > 400) {
-                    target.send("Output was too long, so it has been truncated.");
-                    result = result.substring(0, 397).concat("...");
-                }
-                target.send("> " + result.replace("\n", "▼"));
-            }
+            bot.getStringCheck().sendFormattedString(result, target, "> ", true);
         }
 
         private void checkRunTime() {
