@@ -16,7 +16,7 @@ public class CommandPipe extends Command {
     private String lastResponse = "";
 
     public CommandPipe(IrcBot bot) {
-        super(bot, "Pipe", "pipe", "link", "join", "|");
+        super(bot, "Pipe", "pipe", "link", "joincmd", "join-cmd", "join_cmd", "|");
     }
 
     @Override
