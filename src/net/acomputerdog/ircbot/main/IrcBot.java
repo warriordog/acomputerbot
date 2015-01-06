@@ -25,6 +25,7 @@ public class IrcBot {
     private boolean isRunning = false;
     private boolean canRun = true;
     private String shutdownReason = null;
+    private boolean properShutdown = false;
 
     private IrcListener handler;
     private IrcConnection connection;
@@ -142,8 +143,13 @@ public class IrcBot {
             Config.save();
             IrcConnection.ABOUT_ADDITIONAL = "";
             logManager.onShutdown();
+            properShutdown = true;
         } catch (Throwable ignored) {}
         System.exit(code);
+    }
+
+    public boolean isProperShutdown() {
+        return properShutdown;
     }
 
     public void stop() {

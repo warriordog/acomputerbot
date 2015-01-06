@@ -45,6 +45,8 @@ public class Config {
 
     public static long JS_TIMEOUT = 10000;
 
+    public static boolean ENABLE_CONSOLE = false;
+
     //---------Internal Stuff--------------
 
     private static final CLogger LOGGER = IrcBot.instance.getLogManager().getLogger("Config");
@@ -77,6 +79,7 @@ public class Config {
                 ENABLE_BLACKLIST = prop.containsKey("ENABLE_BLACKLIST") ? Boolean.parseBoolean(prop.getProperty("ENABLE_BLACKLIST")) : ENABLE_BLACKLIST;
                 ENABLE_WHITELIST = prop.containsKey("ENABLE_WHITELIST") ? Boolean.parseBoolean(prop.getProperty("ENABLE_WHITELIST")) : ENABLE_WHITELIST;
                 JS_TIMEOUT = prop.containsKey("JS_TIMEOUT") ? Long.parseLong(prop.getProperty("JS_TIMEOUT")) : JS_TIMEOUT;
+                ENABLE_CONSOLE = prop.containsKey("ENABLE_CONSOLE") ? Boolean.parseBoolean(prop.getProperty("ENABLE_CONSOLE")) : ENABLE_CONSOLE;
             } else {
                 LOGGER.logInfo("Configuration file does not exist.  It will be created.");
                 save();
@@ -111,6 +114,7 @@ public class Config {
                 prop.setProperty("ENABLE_BLACKLIST", String.valueOf(ENABLE_BLACKLIST));
                 prop.setProperty("ENABLE_WHITELIST", String.valueOf(ENABLE_WHITELIST));
                 prop.setProperty("JS_TIMEOUT", String.valueOf(JS_TIMEOUT));
+                prop.setProperty("ENABLE_CONSOLE", String.valueOf(ENABLE_CONSOLE));
                 OutputStream out = new FileOutputStream(saveFile);
                 prop.store(out, "AcomputerBot configuration file.  Lines prefixed with '#' will be ignored.");
                 out.close();
