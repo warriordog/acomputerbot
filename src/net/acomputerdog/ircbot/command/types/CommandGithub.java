@@ -18,7 +18,7 @@ public class CommandGithub extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("My source code can be found on github here: https://github.com/warriordog/acomputerbot");
         return true;
     }

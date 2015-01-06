@@ -18,7 +18,7 @@ public class CommandLogout extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         if (bot.getAuth().deauthenticate(sender)) {
             target.send("You have been successfully logged out!");
             return true;

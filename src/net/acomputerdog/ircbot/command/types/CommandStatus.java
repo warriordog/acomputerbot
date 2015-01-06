@@ -18,7 +18,7 @@ public class CommandStatus extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send(bot.getVersionString() + " status:");
         target.send("  " + Command.getCommandNameMap().size() + " loaded commands with " + Command.getCommandMap().size() + " registered aliases.");
         target.send("  Memory: " + (Runtime.getRuntime().freeMemory() / 1000000) + "mb used / " + (Runtime.getRuntime().totalMemory() / 1000000) + "mb allocated / " + (Runtime.getRuntime().maxMemory() / 1000000) + "mb available.");

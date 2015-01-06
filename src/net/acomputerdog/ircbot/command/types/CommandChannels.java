@@ -20,7 +20,7 @@ public class CommandChannels extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Connected channels:");
         Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();
         for (String chan : channelMap.keySet()) {

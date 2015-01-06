@@ -61,7 +61,7 @@ public class CommandJavaScript extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         JSExecutor executor = getExecutorFor(target);
         if (executor.code != null) {
             target.send(colorRed("A command is already running, please wait up to 10 seconds for it to finish or be terminated!"));

@@ -34,7 +34,7 @@ public class CommandWhitelist extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         User user = bot.getConnection().createUser(command.args);
         if (bot.getBlacklist().isWhitelisted(user)) {
             bot.getBlacklist().removeWhitelisted(user);

@@ -18,7 +18,7 @@ public class CommandSmiley extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("☺");
         return true;
     }

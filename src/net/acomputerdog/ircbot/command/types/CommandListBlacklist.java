@@ -31,7 +31,7 @@ public class CommandListBlacklist extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Blacklisted users:");
         Set<String> blacklist = bot.getBlacklist().getBlacklistedUsers();
         int count = 0;

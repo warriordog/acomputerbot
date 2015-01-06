@@ -36,7 +36,7 @@ public class CommandJoin extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         String channelName = command.args.toLowerCase();
         Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();
         if (!channelMap.containsKey(channelName)) {

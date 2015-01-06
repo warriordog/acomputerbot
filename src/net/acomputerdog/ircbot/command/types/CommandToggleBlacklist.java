@@ -29,7 +29,7 @@ public class CommandToggleBlacklist extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         if (Config.ENABLE_BLACKLIST) {
             Config.ENABLE_BLACKLIST = false;
             target.send("Blacklist disabled.");

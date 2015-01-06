@@ -64,7 +64,7 @@ public abstract class Command {
         return false;
     }
 
-    public abstract boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command);
+    public abstract boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command);
 
     public String getName() {
         return name;
@@ -152,10 +152,10 @@ public abstract class Command {
                             if (cmd.getMinArgs() <= 0 || cmdLine.hasArgs()) {
                                 if (!cmd.requiresAdmin() || bot.getAuth().isAuthenticated(sender) || (cmd.canOpOverride() && sender.hasOperator())) {
                                     if (channel == null && cmd.allowedInPM(sender)) {
-                                        cmd.processCommand(bot, null, sender, target, cmdLine);
+                                        cmd.processCommand(null, sender, target, cmdLine);
                                         cmd.getLogger().logInfo("User " + sender.getNick() + " used command in PM: \"" + message + "\".");
                                     } else if (cmd.allowedInChannel(channel, sender)) {
-                                        cmd.processCommand(bot, channel, sender, target, cmdLine);
+                                        cmd.processCommand(channel, sender, target, cmdLine);
                                         cmd.getLogger().logInfo("User " + sender.getNick() + " used command in " + channel.getName() + ": \"" + message + "\".");
                                     } else {
                                         target.send(colorRed("That command cannot be used here!"));

@@ -34,7 +34,7 @@ public class CommandLogin extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Authentication request processed.  Please wait to be authenticated...");
         bot.getAuth().requestAuthentication(sender, target, command.args);
         return true;

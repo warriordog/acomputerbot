@@ -34,7 +34,7 @@ public class CommandSudoPrivate extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         int index = command.args.indexOf(' ');
         if (index != -1) {
             String user = command.args.substring(0, index);

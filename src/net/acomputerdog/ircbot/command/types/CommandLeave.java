@@ -40,7 +40,7 @@ public class CommandLeave extends Command {
         return "Tells AcomputerBot to leave a channel.";
     }
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
             String channelName = getChannelName(command.args.toLowerCase());
             Map<String, Channel> channelMap = bot.getConnection().getState().getChannelMap();

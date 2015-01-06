@@ -18,7 +18,7 @@ public class CommandWhoAmI extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         User user;
         if (channel != null) {
             user = bot.getConnection().createUser(sender.getNickLower(), channel.getName());

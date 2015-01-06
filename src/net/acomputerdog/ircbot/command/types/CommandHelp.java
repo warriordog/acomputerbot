@@ -29,7 +29,7 @@ public class CommandHelp extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
             Command cmd = getCommandMap().get(command.args.toLowerCase());
             if (cmd != null) {

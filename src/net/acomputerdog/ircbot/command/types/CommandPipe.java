@@ -35,7 +35,7 @@ public class CommandPipe extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         String[] commands = command.args.split(Patterns.quote("|"));
         Deque<String> commandDeque = new LinkedList<>();
         for (String cmd : commands) {

@@ -7,7 +7,6 @@ import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
-import net.acomputerdog.ircbot.security.Auth;
 
 public class CommandStop extends Command {
     public CommandStop(IrcBot bot) {
@@ -35,7 +34,7 @@ public class CommandStop extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Bye bye!");
         if (command.hasArgs()) {
             bot.stop(command.args);

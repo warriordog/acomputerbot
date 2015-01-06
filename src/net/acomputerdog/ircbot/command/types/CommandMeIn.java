@@ -36,7 +36,7 @@ public class CommandMeIn extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         int split = command.args.indexOf(' ');
         if (split == -1 || split == command.args.length() - 1) {
             target.send(colorRed("Not enough args, use \"" + getHelpString() + "\"."));

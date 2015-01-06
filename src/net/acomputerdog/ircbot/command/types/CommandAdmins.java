@@ -18,7 +18,7 @@ public class CommandAdmins extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         sendOnlineAdmins(target);
         if (bot.getAuth().isAuthenticated(sender)) {
             sendRegisteredAdmins(target);

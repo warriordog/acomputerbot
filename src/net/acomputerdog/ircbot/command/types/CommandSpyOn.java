@@ -32,7 +32,7 @@ public class CommandSpyOn extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.args.equals("*")) {
             spyMap.keySet().forEach(u -> spyMap.get(u).stop());
             target.send("All spy sessions ended.");

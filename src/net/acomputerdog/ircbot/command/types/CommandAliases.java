@@ -18,7 +18,7 @@ public class CommandAliases extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send("Registered aliases:");
         StringBuilder builder = new StringBuilder(16);
         int count = 0;

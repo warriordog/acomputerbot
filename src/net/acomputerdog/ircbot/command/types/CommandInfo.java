@@ -2,7 +2,6 @@ package net.acomputerdog.ircbot.command.types;
 
 import com.sorcix.sirc.Channel;
 import com.sorcix.sirc.Chattable;
-import com.sorcix.sirc.IrcColors;
 import com.sorcix.sirc.User;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
@@ -20,7 +19,7 @@ public class CommandInfo extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         target.send(colorYellow("This is a simple bot made by acomputerdog.  I am open source and written in java!  Type \"" + Config.COMMAND_PREFIX + "help\" for commands."));
         return true;
     }

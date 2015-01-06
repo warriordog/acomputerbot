@@ -29,7 +29,7 @@ public class CommandChar extends Command {
     }
 
     @Override
-    public boolean processCommand(IrcBot bot, Channel channel, User sender, Chattable target, CommandLine command) {
+    public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         try {
             target.send(String.valueOf((char) Integer.parseInt(command.args, 16)));
             return true;
