@@ -141,6 +141,7 @@ public class IrcBot {
             admins.save();
             Config.save();
             IrcConnection.ABOUT_ADDITIONAL = "";
+            logManager.onShutdown();
         } catch (Throwable ignored) {}
         System.exit(code);
     }
