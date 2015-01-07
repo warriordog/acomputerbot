@@ -24,6 +24,11 @@ public class IrcListener extends IrcAdaptor implements UnknownListener {
     }
 
     @Override
+    public void onMessage(IrcConnection irc, User sender, Channel target, String message) {
+        Command.onChat(bot, target, sender, target, message);
+    }
+
+    @Override
     public void onPrivateMessage(IrcConnection irc, User sender, String message) {
         Command.onChat(bot, null, sender, sender, message);
     }

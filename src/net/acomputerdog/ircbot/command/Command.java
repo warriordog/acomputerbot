@@ -272,6 +272,8 @@ public abstract class Command {
         registerCommand(new CommandJavaScript(bot));
         registerCommand(new CommandPipe(bot));
         registerCommand(new CommandJavaScriptConsole(bot));
+        registerCommand(new CommandNote(bot));
+        registerCommand(new CommandClearNotes(bot));
     }
 
     protected static String colorRed(String message) {
