@@ -106,7 +106,7 @@ public class IrcInput extends Thread {
      */
     @Override
     public void run() {
-        String line = null;
+        String line;
         try {
             // wait for lines to come in
             while ((line = this.in.readLine()) != null) {

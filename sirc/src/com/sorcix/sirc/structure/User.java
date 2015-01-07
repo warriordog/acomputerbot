@@ -39,34 +39,6 @@ import com.sorcix.sirc.util.Chattable;
 public class User extends Chattable {
 
     /**
-     * Hostname of this user (or null if unknown).
-     */
-    private String hostName;
-    /**
-     * IrcConnection used to contact this user.
-     */
-    private final IrcConnection irc;
-    /**
-     * Nickname of this user.
-     */
-    private String nick;
-    /**
-     * Lowercase nickname of this user.
-     */
-    private String nickLower;
-    /**
-     * The prefix.
-     */
-    private char prefix;
-    /**
-     * Custom address to send messages to.
-     */
-    private String address = null;
-    /**
-     * Username of this user (or null if unknown).
-     */
-    private String userName;
-    /**
      * Mode character for voice.
      */
     public static final char MODE_VOICE = 'v';
@@ -110,7 +82,34 @@ public class User extends Chattable {
      * Possible user prefixes.
      */
     protected static final String USER_PREFIX = "~@%+&";
-
+    /**
+     * IrcConnection used to contact this user.
+     */
+    private final IrcConnection irc;
+    /**
+     * Hostname of this user (or null if unknown).
+     */
+    private String hostName;
+    /**
+     * Nickname of this user.
+     */
+    private String nick;
+    /**
+     * Lowercase nickname of this user.
+     */
+    private String nickLower;
+    /**
+     * The prefix.
+     */
+    private char prefix;
+    /**
+     * Custom address to send messages to.
+     */
+    private String address = null;
+    /**
+     * Username of this user (or null if unknown).
+     */
+    private String userName;
     private String realName;
 
     /**
@@ -168,6 +167,10 @@ public class User extends Chattable {
         return this.address;
     }
 
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     /**
      * Returns the hostname for this user.
      *
@@ -175,6 +178,10 @@ public class User extends Chattable {
      */
     public String getHostName() {
         return this.hostName;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
     }
 
     /**
@@ -187,12 +194,39 @@ public class User extends Chattable {
     }
 
     /**
+     * Changes the nickname of this user.
+     *
+     * @param nick The new nickname.
+     */
+    public void setNick(String nick) {
+        if (nick == null)
+            return;
+        if (User.USER_PREFIX.indexOf(nick.charAt(0)) >= 0) {
+            this.prefix = nick.charAt(0);
+            nick = nick.substring(1);
+        }
+        this.nick = nick;
+        this.nickLower = nick.toLowerCase();
+        // TODO: Check whether addresses like nick!user@server are
+        // allowed
+        if ((this.address != null) && this.address.contains("@")) {
+            this.address = this.nick + "@" + this.address.split("@", 2)[1];
+        } else {
+            this.address = this.nick;
+        }
+    }
+
+    /**
      * Returns the lowercase nickname for this user.
      *
      * @return Lowercase nickname.
      */
     public String getNickLower() {
         return this.nickLower;
+    }
+
+    public void setNickLower(String nickLower) {
+        this.nickLower = nickLower;
     }
 
     /**
@@ -204,6 +238,10 @@ public class User extends Chattable {
         return this.prefix;
     }
 
+    public void setPrefix(char prefix) {
+        this.prefix = prefix;
+    }
+
     /**
      * Returns the username for this user.
      *
@@ -213,8 +251,16 @@ public class User extends Chattable {
         return this.userName;
     }
 
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
     public String getRealName() {
         return this.realName != null ? this.realName : this.nick;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     /**
@@ -347,30 +393,6 @@ public class User extends Chattable {
         return time;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
-    }
-
-    public void setNickLower(String nickLower) {
-        this.nickLower = nickLower;
-    }
-
-    public void setPrefix(char prefix) {
-        this.prefix = prefix;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
-    }
-
     /**
      * Sends CTCP reply using notices. Replies to CTCP requests should
      * be sent using a notice.
@@ -464,29 +486,6 @@ public class User extends Chattable {
      */
     public void setMode(String mode) {
         this.irc.getOutput().send("MODE " + this.getAddress() + " " + mode);
-    }
-
-    /**
-     * Changes the nickname of this user.
-     *
-     * @param nick The new nickname.
-     */
-    public void setNick(String nick) {
-        if (nick == null)
-            return;
-        if (User.USER_PREFIX.indexOf(nick.charAt(0)) >= 0) {
-            this.prefix = nick.charAt(0);
-            nick = nick.substring(1);
-        }
-        this.nick = nick;
-        this.nickLower = nick.toLowerCase();
-        // TODO: Check whether addresses like nick!user@server are
-        // allowed
-        if ((this.address != null) && this.address.contains("@")) {
-            this.address = this.nick + "@" + this.address.split("@", 2)[1];
-        } else {
-            this.address = this.nick;
-        }
     }
 
     @Override

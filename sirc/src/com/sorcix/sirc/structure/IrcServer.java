@@ -36,6 +36,10 @@ package com.sorcix.sirc.structure;
 public class IrcServer {
 
     /**
+     * Default port (6667)
+     */
+    public static final int DEFAULT_PORT = 6667;
+    /**
      * The server address.
      */
     private String address;
@@ -51,10 +55,6 @@ public class IrcServer {
      * Whether the server uses SSL.
      */
     private boolean secure;
-    /**
-     * Default port (6667)
-     */
-    public static final int DEFAULT_PORT = 6667;
 
     /**
      * Creates a new (non-SSL) IrcServer on default port.
@@ -100,39 +100,21 @@ public class IrcServer {
     }
 
     /**
-     * Retrieves the password.
-     *
-     * @return The server password, or {@code null}.
-     */
-    public String getPassword() {
-        return this.password;
-    }
-
-    /**
-     * Retrieves the port number.
-     *
-     * @return The server port.
-     */
-    public int getPort() {
-        return this.port;
-    }
-
-    /**
-     * Checks whether this server is using SSL.
-     *
-     * @return True if this server is using SSL, false otherwise.
-     */
-    public boolean isSecure() {
-        return this.secure;
-    }
-
-    /**
      * Changes the server address.
      *
      * @param address The new server address.
      */
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    /**
+     * Retrieves the password.
+     *
+     * @return The server password, or {@code null}.
+     */
+    public String getPassword() {
+        return this.password;
     }
 
     /**
@@ -145,12 +127,30 @@ public class IrcServer {
     }
 
     /**
+     * Retrieves the port number.
+     *
+     * @return The server port.
+     */
+    public int getPort() {
+        return this.port;
+    }
+
+    /**
      * Changes the server port.
      *
      * @param port The new server port.
      */
     public void setPort(int port) {
         this.port = port;
+    }
+
+    /**
+     * Checks whether this server is using SSL.
+     *
+     * @return True if this server is using SSL, false otherwise.
+     */
+    public boolean isSecure() {
+        return this.secure;
     }
 
     /**

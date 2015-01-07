@@ -290,10 +290,10 @@ public class IrcConnection {
      * Connect to the IRC server. You must set the server details and nickname
      * before calling this method!
      *
-     * @throws UnknownHostException When the domain name is invalid.
-     * @throws IOException          When anything went wrong while connecting.
-     * @throws com.sorcix.sirc.util.NickNameException    If the given nickname is already in use or invalid.
-     * @throws com.sorcix.sirc.util.PasswordException    If the server password is incorrect.
+     * @throws UnknownHostException                   When the domain name is invalid.
+     * @throws IOException                            When anything went wrong while connecting.
+     * @throws com.sorcix.sirc.util.NickNameException If the given nickname is already in use or invalid.
+     * @throws com.sorcix.sirc.util.PasswordException If the server password is incorrect.
      * @see #setServer(String, int)
      * @see #setNick(String)
      */

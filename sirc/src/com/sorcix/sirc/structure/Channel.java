@@ -43,6 +43,10 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Channel extends Chattable {
 
     /**
+     * Possible channel prefixes.
+     */
+    public static final String CHANNEL_PREFIX = "#&+!";
+    /**
      * IrcConnection used to send messages to this channel.
      */
     private final IrcConnection irc;
@@ -58,10 +62,6 @@ public class Channel extends Chattable {
      * The user list.
      */
     private Map<String, User> users;
-    /**
-     * Possible channel prefixes.
-     */
-    public static final String CHANNEL_PREFIX = "#&+!";
 
     /**
      * Creates a new {@code Channel} object with given name.
@@ -170,6 +170,17 @@ public class Channel extends Chattable {
      */
     public String getTopic() {
         return this.topic;
+    }
+
+    /**
+     * Changes the topic of this channel. This does not send a request
+     * to the IRC server, to change the topic on the server, use
+     * {@link #changeTopic(String)}.
+     *
+     * @param topic The new topic.
+     */
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     /**
@@ -494,17 +505,6 @@ public class Channel extends Chattable {
      */
     public void setMode(String mode) {
         this.irc.getOutput().send("MODE " + this.getName() + " " + mode);
-    }
-
-    /**
-     * Changes the topic of this channel. This does not send a request
-     * to the IRC server, to change the topic on the server, use
-     * {@link #changeTopic(String)}.
-     *
-     * @param topic The new topic.
-     */
-    public void setTopic(String topic) {
-        this.topic = topic;
     }
 
     @Override
