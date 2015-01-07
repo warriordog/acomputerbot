@@ -32,12 +32,12 @@ package com.sorcix.sirc;
  *
  * @author Sorcix
  */
-public final class User extends Chattable {
+public class User extends Chattable {
 
     /**
      * Hostname of this user (or null if unknown).
      */
-    private final String hostName;
+    private String hostName;
     /**
      * IrcConnection used to contact this user.
      */
@@ -61,7 +61,7 @@ public final class User extends Chattable {
     /**
      * Username of this user (or null if unknown).
      */
-    private final String userName;
+    private String userName;
     /**
      * Mode character for voice.
      */
@@ -107,7 +107,7 @@ public final class User extends Chattable {
      */
     protected static final String USER_PREFIX = "~@%+&";
 
-    private final String realName;
+    private String realName;
 
     /**
      * Creates a new {@code User}.
@@ -116,7 +116,7 @@ public final class User extends Chattable {
      * @param irc  The IrcConnection used to send messages to this
      *             user.
      */
-    public User(final String nick, final IrcConnection irc) {
+    public User(String nick, IrcConnection irc) {
         this(nick, null, null, null, irc);
     }
 
@@ -130,7 +130,7 @@ public final class User extends Chattable {
      * @param irc      The IrcConnection used to send messages to this
      *                 user.
      */
-    protected User(final String nick, final String user, final String host, final String realName, final IrcConnection irc) {
+    protected User(String nick, String user, String host, String realName, IrcConnection irc) {
         this.setNick(nick);
         this.realName = realName;
         this.userName = user;
@@ -280,7 +280,7 @@ public final class User extends Chattable {
      * @param message The message to send.
      * @see #sendMessage(String)
      */
-    public void send(final String message) {
+    public void send(String message) {
         this.sendMessage(message);
     }
 
@@ -289,7 +289,7 @@ public final class User extends Chattable {
      *
      * @param action The action to send.
      */
-    public void sendAction(final String action) {
+    public void sendAction(String action) {
         this.sendCtcpAction(action);
     }
 
@@ -309,7 +309,7 @@ public final class User extends Chattable {
      *
      * @param command Command to send.
      */
-    public void sendCtcp(final String command) {
+    public void sendCtcp(String command) {
         this.irc.getOutput().send("PRIVMSG " + this.getAddress() + " :" + IrcPacket.CTCP + command + IrcPacket.CTCP);
     }
 
@@ -319,7 +319,7 @@ public final class User extends Chattable {
      * @param action The action to send.
      * @see #sendCtcp(String)
      */
-    protected void sendCtcpAction(final String action) {
+    protected void sendCtcpAction(String action) {
         if ((action != null) && (action.length() != 0)) {
             this.sendCtcp("ACTION " + action);
         }
@@ -338,9 +338,33 @@ public final class User extends Chattable {
      * @return The timestamp sent to this user.
      */
     public long sendCtcpPing() {
-        final Long time = System.currentTimeMillis();
+        Long time = System.currentTimeMillis();
         this.sendCtcp("PING " + time.toString());
         return time;
+    }
+
+    public void setHostName(String hostName) {
+        this.hostName = hostName;
+    }
+
+    public void setNickLower(String nickLower) {
+        this.nickLower = nickLower;
+    }
+
+    public void setPrefix(char prefix) {
+        this.prefix = prefix;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     /**
@@ -349,7 +373,7 @@ public final class User extends Chattable {
      *
      * @param command Command to send.
      */
-    protected void sendCtcpReply(final String command) {
+    protected void sendCtcpReply(String command) {
         this.sendCtcpReply(command, false);
     }
 
@@ -360,7 +384,7 @@ public final class User extends Chattable {
      * @param command   Command to send.
      * @param skipQueue Whether to skip the outgoing message queue.
      */
-    protected void sendCtcpReply(final String command, final boolean skipQueue) {
+    protected void sendCtcpReply(String command, boolean skipQueue) {
         if (skipQueue) {
             this.irc.getOutput().sendNow("NOTICE " + this.getAddress() + " :" + IrcPacket.CTCP + command + IrcPacket.CTCP);
         } else {
@@ -380,7 +404,7 @@ public final class User extends Chattable {
      *
      * @param message The message to send.
      */
-    public void sendMessage(final String message) {
+    public void sendMessage(String message) {
         this.irc.getOutput().send("PRIVMSG " + this.getAddress() + " :" + message);
     }
 
@@ -389,7 +413,7 @@ public final class User extends Chattable {
      *
      * @param message The notice to send.
      */
-    public void sendNotice(final String message) {
+    public void sendNotice(String message) {
         this.irc.getOutput().send("NOTICE " + this.getAddress() + " :" + message);
     }
 
@@ -401,7 +425,7 @@ public final class User extends Chattable {
      *
      * @param address The address to use.
      */
-    public void setCustomAddress(final String address) {
+    public void setCustomAddress(String address) {
         if (address == null) {
             this.address = this.getNick();
         } else if (address.startsWith("@")) {
@@ -417,7 +441,7 @@ public final class User extends Chattable {
      * @param mode   The mode character.
      * @param toggle True to enable the mode, false to disable.
      */
-    public void setMode(final char mode, final boolean toggle) {
+    public void setMode(char mode, boolean toggle) {
         if (toggle) {
             this.setMode("+" + mode);
         } else {
@@ -434,7 +458,7 @@ public final class User extends Chattable {
      *
      * @param mode The mode to change.
      */
-    public void setMode(final String mode) {
+    public void setMode(String mode) {
         this.irc.getOutput().send("MODE " + this.getAddress() + " " + mode);
     }
 
@@ -471,8 +495,17 @@ public final class User extends Chattable {
      *
      * @param user The fresh User object.
      */
-    protected void updateUser(final User user) {
-        //TODO: Unfinished method?
+    protected void updateUser(User user) {
+        //very funny, having this unimplemented method here...
+
+        this.realName = user.realName;
+        this.userName = user.userName;
+        this.hostName = user.hostName;
+        this.address = user.address;
+        //this.setNick(user.getNick());
+        this.nick = user.nick;
+        this.prefix = user.prefix;
+        this.nickLower = user.nickLower;
     }
 
 

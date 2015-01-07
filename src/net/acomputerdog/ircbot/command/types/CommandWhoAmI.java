@@ -25,8 +25,8 @@ public class CommandWhoAmI extends Command {
         } else {
             user = sender;
         }
-        target.send(colorRed("Warning: This command is unfinished, and will retrieve only the nick, realname, and lowernick for the user."));
-        target.send("Nick: " + user.getNick() + " (" + String.valueOf(user.getPrefix()) + user.getNickLower() + ")");
+        bot.getConnection().sendRaw("/WHO " + user.getNick());
+        target.send("Nick: " + user.getNick() + " (" + user.getNickLower() + ")"); //String.valueOf(user.getPrefix() == '0' ? "@" : user.getPrefix()) +
         target.send("RealName: " + user.getRealName());
         target.send("Username: " + user.getUserName());
         target.send("Hostname: " + user.getHostName());

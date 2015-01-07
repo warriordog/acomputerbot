@@ -5,7 +5,7 @@ import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.main.IrcBot;
 
-public class IrcListener implements MessageListener, ServerListener {
+public class IrcListener implements MessageListener, ServerListener, AdvancedListener {
 
     private final CLogger LOGGER;
 
@@ -79,7 +79,16 @@ public class IrcListener implements MessageListener, ServerListener {
     public void onJoin(IrcConnection irc, Channel channel, User user) {
         if (user.isUs()) {
             LOGGER.logInfo("Joining channel " + channel.getName() + ".");
+            bot.getConnection().sendRaw("WHO " + channel.getName());
+            //System.out.println("Sent WHO " + channel.getName());
+            //for (String nick : channel.getUsers().keySet()) {
+            //    bot.getConnection().sendRaw("/WHO " + nick);
+            //}
+        } else {
+            bot.getConnection().sendRaw("WHO " + user.getName());
+            //System.out.println("Sent WHO " + user.getName());
         }
+        //bot.getConnection().sendRaw("/WHO " + user.getNick());
     }
 
     @Override
@@ -119,5 +128,23 @@ public class IrcListener implements MessageListener, ServerListener {
     @Override
     public void onTopic(IrcConnection irc, Channel channel, User sender, String topic) {
         channel.setTopic(topic);
+    }
+
+    @Override
+    public void onUnknown(IrcConnection irc, IrcPacket line) {
+        if ("352".equals(line.getCommand())) {
+            String realname = line.getMessage().substring(2);
+            String[] parts = line.getArgumentsArray();
+            User user = irc.createUser(parts[5], parts[1]);
+            user.setHostName(parts[3]);
+            user.setRealName(realname);
+            user.setUserName(parts[2]);
+            System.out.println("Known: " + line.getCommand() + " - " + line.getMessage() + " - " + line.getArguments());
+        }
+    }
+
+    @Override
+    public void onUnknownReply(IrcConnection irc, IrcPacket line) {
+        //System.out.println("Unknown Rely: " + line.getCommand() + " - " + line.getMessage() + " - " + line.getArguments());
     }
 }

@@ -30,7 +30,7 @@ package com.sorcix.sirc;
 /**
  * Thrown when the nickname is already in use.
  */
-public final class NickNameException extends Exception {
+public class NickNameException extends Exception {
 
     /**
      * Serial Version ID

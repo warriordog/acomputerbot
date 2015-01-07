@@ -27,7 +27,8 @@
  */
 package com.sorcix.sirc;
 
-import java.util.Iterator;
+import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -35,7 +36,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @author Sorcix
  */
-public final class Channel extends Chattable {
+public class Channel extends Chattable {
 
     /**
      * IrcConnection used to send messages to this channel.
@@ -52,7 +53,7 @@ public final class Channel extends Chattable {
     /**
      * The user list.
      */
-    private ConcurrentHashMap<String, User> users;
+    private Map<String, User> users;
     /**
      * Possible channel prefixes.
      */
@@ -66,11 +67,11 @@ public final class Channel extends Chattable {
      *               channel.
      * @param global Whether this object is going to be shared.
      */
-    protected Channel(final String name, final IrcConnection irc, final boolean global) {
+    protected Channel(String name, IrcConnection irc, boolean global) {
         this.name = name;
         this.irc = irc;
         if (global) {
-            this.users = new ConcurrentHashMap<>(100, .75f, 2);
+            this.users = new ConcurrentHashMap<>();//new ConcurrentHashMap<>(100, .75f, 2);
         } else {
             this.users = null;
         }
@@ -81,9 +82,14 @@ public final class Channel extends Chattable {
      *
      * @param user The user to add.
      */
-    protected void addUser(final User user) {
-        if (this.users != null) {
-            this.users.putIfAbsent(user.getNickLower(), user);
+    public void addUser(User user) {
+        if (this.users != null && user != null) {
+            User currUser = users.get(user.getNickLower());
+            if (currUser != null) {
+                currUser.updateUser(user);
+            } else {
+                this.users.put(user.getNickLower(), user);
+            }
         }
     }
 
@@ -93,7 +99,7 @@ public final class Channel extends Chattable {
      * @param user The user to ban from this channel.
      * @param kick Whether to kick this user after banning.
      */
-    public void ban(final User user, final boolean kick) {
+    public void ban(User user, boolean kick) {
         ban(user, kick, null);
     }
 
@@ -104,7 +110,7 @@ public final class Channel extends Chattable {
      * @param kick   Whether to kick this user after banning
      * @param reason The message to append to the kick sent to the user.
      */
-    public void ban(final User user, final boolean kick, final String reason) {
+    public void ban(User user, boolean kick, String reason) {
         if (user.getHostName() != null) {
             this.setMode("+b *!*@*" + user.getHostName());
         } else {
@@ -126,12 +132,12 @@ public final class Channel extends Chattable {
      *
      * @param topic The new topic.
      */
-    public void changeTopic(final String topic) {
+    public void changeTopic(String topic) {
         this.irc.getOutput().send("TOPIC " + this.getName() + " :" + topic);
     }
 
     @Override
-    public boolean equals(final Object channel) {
+    public boolean equals(Object channel) {
         try {
             return ((Channel) channel).getName().equalsIgnoreCase(this.name) && (this.irc != null && this.irc.equals(((Channel) channel).irc));
         } catch (final Exception ex) {
@@ -173,7 +179,7 @@ public final class Channel extends Chattable {
      * @return A user object, or null if the user isn't in this
      * channel.
      */
-    protected User getUser(final String nickLower) {
+    public User getUser(String nickLower) {
         return this.users.get(nickLower);
     }
 
@@ -196,8 +202,8 @@ public final class Channel extends Chattable {
      * @return All users in this channel.
      * @see #isGlobal()
      */
-    public Iterator<User> getUsers() {
-        return this.users.values().iterator();
+    public Map<String, User> getUsers() {
+        return Collections.unmodifiableMap(users);
     }
 
     /**
@@ -207,7 +213,7 @@ public final class Channel extends Chattable {
      * @param user The user to give admin privileges.
      * @since 1.0.0
      */
-    public void giveAdmin(final User user) {
+    public void giveAdmin(User user) {
         this.setMode(User.MODE_ADMIN, user, true);
     }
 
@@ -218,7 +224,7 @@ public final class Channel extends Chattable {
      * @param user The user to give founder privileges.
      * @since 1.0.0
      */
-    public void giveFounder(final User user) {
+    public void giveFounder(User user) {
         this.setMode(User.MODE_FOUNDER, user, true);
     }
 
@@ -229,7 +235,7 @@ public final class Channel extends Chattable {
      * @param user The user to give halfop privileges.
      * @since 1.0.0
      */
-    public void giveHalfop(final User user) {
+    public void giveHalfop(User user) {
         this.setMode(User.MODE_HALF_OP, user, true);
     }
 
@@ -238,7 +244,7 @@ public final class Channel extends Chattable {
      *
      * @param user The user to give operator privileges.
      */
-    public void giveOperator(final User user) {
+    public void giveOperator(User user) {
         this.setMode(User.MODE_OPERATOR, user, true);
     }
 
@@ -247,7 +253,7 @@ public final class Channel extends Chattable {
      *
      * @param user The user to give voice privileges.
      */
-    public void giveVoice(final User user) {
+    public void giveVoice(User user) {
         this.setMode(User.MODE_VOICE, user, true);
     }
 
@@ -257,7 +263,7 @@ public final class Channel extends Chattable {
      * @param nick The nickname to check.
      * @return True if given user is in this channel, false otherwise.
      */
-    public boolean hasUser(final String nick) {
+    public boolean hasUser(String nick) {
         return (this.users != null) && this.users.containsKey(nick.toLowerCase());
     }
 
@@ -267,7 +273,7 @@ public final class Channel extends Chattable {
      * @param user The user to check.
      * @return True if given user is in this channel, false otherwise.
      */
-    public boolean hasUser(final User user) {
+    public boolean hasUser(User user) {
         return this.hasUser(user.getNickLower());
     }
 
@@ -293,7 +299,7 @@ public final class Channel extends Chattable {
      *
      * @param password The password needed to join this channel.
      */
-    public void join(final String password) {
+    public void join(String password) {
         this.irc.getOutput().send("JOIN " + this.getName() + " " + password);
     }
 
@@ -302,7 +308,7 @@ public final class Channel extends Chattable {
      *
      * @param user The user to kick from this channel.
      */
-    public void kick(final User user) {
+    public void kick(User user) {
         this.irc.getOutput().send("KICK " + this.getName() + " " + user.getNick());
     }
 
@@ -312,7 +318,7 @@ public final class Channel extends Chattable {
      * @param user   The user to kick from this channel.
      * @param reason The reason why this user was kicked.
      */
-    public void kick(final User user, final String reason) {
+    public void kick(User user, String reason) {
         this.irc.getOutput().send("KICK " + this.getName() + " " + user.getNick() + " :" + reason);
     }
 
@@ -329,7 +335,7 @@ public final class Channel extends Chattable {
      * @param user The user to remove admin privileges from.
      * @since 1.0.0
      */
-    public void removeAdmin(final User user) {
+    public void removeAdmin(User user) {
         this.setMode(User.MODE_ADMIN, user, false);
     }
 
@@ -339,7 +345,7 @@ public final class Channel extends Chattable {
      * @param user The user to remove founder privileges from.
      * @since 1.0.0
      */
-    public void removeFounder(final User user) {
+    public void removeFounder(User user) {
         this.setMode(User.MODE_FOUNDER, user, false);
     }
 
@@ -349,7 +355,7 @@ public final class Channel extends Chattable {
      * @param user The user to remove halfop privileges from.
      * @since 1.0.0
      */
-    public void removeHalfop(final User user) {
+    public void removeHalfop(User user) {
         this.setMode(User.MODE_HALF_OP, user, false);
     }
 
@@ -358,7 +364,7 @@ public final class Channel extends Chattable {
      *
      * @param user The user to remove operator privileges from.
      */
-    public void removeOperator(final User user) {
+    public void removeOperator(User user) {
         this.setMode(User.MODE_OPERATOR, user, false);
     }
 
@@ -367,7 +373,7 @@ public final class Channel extends Chattable {
      *
      * @param user The user to remove.
      */
-    protected void removeUser(final User user) {
+    public void removeUser(User user) {
         if (this.users != null) {
             this.users.remove(user.getNickLower());
         }
@@ -378,7 +384,7 @@ public final class Channel extends Chattable {
      *
      * @param user The user to remove voice privileges from.
      */
-    public void removeVoice(final User user) {
+    public void removeVoice(User user) {
         this.setMode(User.MODE_VOICE, user, false);
     }
 
@@ -388,7 +394,7 @@ public final class Channel extends Chattable {
      * @param old  The old nickname.
      * @param neww The new nickname.
      */
-    protected void renameUser(final String old, final String neww) {
+    public void renameUser(String old, String neww) {
         if (this.users != null) {
             final User user = this.users.remove(old);
             if (user != null) {
@@ -404,7 +410,7 @@ public final class Channel extends Chattable {
      * @param message The message to send.
      * @see #sendMessage(String)
      */
-    public void send(final String message) {
+    public void send(String message) {
         this.sendMessage(message);
     }
 
@@ -413,7 +419,7 @@ public final class Channel extends Chattable {
      *
      * @param action The action to send.
      */
-    public void sendAction(final String action) {
+    public void sendAction(String action) {
         this.sendCtcpAction(action);
     }
 
@@ -423,7 +429,7 @@ public final class Channel extends Chattable {
      *
      * @param command Command to send.
      */
-    public void sendCtcp(final String command) {
+    public void sendCtcp(String command) {
         this.irc.getOutput().send("PRIVMSG " + this.getName() + " :" + IrcPacket.CTCP + command + IrcPacket.CTCP);
     }
 
@@ -433,7 +439,7 @@ public final class Channel extends Chattable {
      * @param action The action to send.
      * @see #sendCtcp(String)
      */
-    protected void sendCtcpAction(final String action) {
+    public void sendCtcpAction(String action) {
         if ((action != null) && (action.length() != 0)) {
             this.sendCtcp("ACTION " + action);
         }
@@ -444,7 +450,7 @@ public final class Channel extends Chattable {
      *
      * @param message The message to send.
      */
-    public void sendMessage(final String message) {
+    public void sendMessage(String message) {
         this.irc.getOutput().send("PRIVMSG " + this.getName() + " :" + message);
     }
 
@@ -453,7 +459,7 @@ public final class Channel extends Chattable {
      *
      * @param message The notice to send.
      */
-    public void sendNotice(final String message) {
+    public void sendNotice(String message) {
         this.irc.getOutput().send("NOTICE " + this.getName() + " :" + message);
     }
 
@@ -464,7 +470,7 @@ public final class Channel extends Chattable {
      * @param user   The target user.
      * @param toggle True to enable the mode, false to disable.
      */
-    public void setMode(final char mode, final User user, final boolean toggle) {
+    public void setMode(char mode, User user, boolean toggle) {
         if (toggle) {
             this.setMode("+" + mode + " " + user.getNick());
         } else {
@@ -482,7 +488,7 @@ public final class Channel extends Chattable {
      *
      * @param mode The mode to change.
      */
-    public void setMode(final String mode) {
+    public void setMode(String mode) {
         this.irc.getOutput().send("MODE " + this.getName() + " " + mode);
     }
 
@@ -493,7 +499,7 @@ public final class Channel extends Chattable {
      *
      * @param topic The new topic.
      */
-    public void setTopic(final String topic) {
+    public void setTopic(String topic) {
         this.topic = topic;
     }
 
@@ -511,7 +517,7 @@ public final class Channel extends Chattable {
      *                  didn't exist.
      * @return The updated shared User object.
      */
-    protected User updateUser(final User user, final boolean createNew) {
+    public User updateUser(User user, boolean createNew) {
         if (this.hasUser(user.getNickLower())) {
             // update user if it exists
             final User shared = this.getUser(user.getNickLower());

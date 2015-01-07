@@ -67,10 +67,8 @@ public final class ClientState {
      *
      * @param channel The channel to add.
      */
-    protected void addChannel(final Channel channel) {
-        if (!this.channels.containsKey(channel.getName().toLowerCase())) {
-            this.channels.put(channel.getName().toLowerCase(), channel);
-        }
+    public void addChannel(Channel channel) {
+        this.channels.put(channel.getName().toLowerCase(), channel);
     }
 
     /**
@@ -78,10 +76,8 @@ public final class ClientState {
      *
      * @param user The user to add.
      */
-    protected void addUser(final User user) {
-        if (!this.users.containsKey(user.getNickLower())) {
-            this.users.put(user.getNickLower(), user);
-        }
+    public void addUser(User user) {
+        this.users.put(user.getNickLower(), user);
     }
 
     /**
@@ -92,7 +88,7 @@ public final class ClientState {
      * user is not in that channel)
      * @see #getChannel(String)
      */
-    protected Channel getChannel(final Channel channel) {
+    public Channel getChannel(Channel channel) {
         return this.getChannel(channel.getName());
     }
 
@@ -103,13 +99,14 @@ public final class ClientState {
      * @return The channel, or null if this channel doesn't exist. (The local
      * user is not in that channel)
      */
-    protected Channel getChannel(final String channel) {
+    public Channel getChannel(String channel) {
         if (channel != null && this.channels.containsKey(channel.toLowerCase())) {
             return this.channels.get(channel.toLowerCase());
         }
         return null;
     }
 
+    @Deprecated
     /**
      * Creates an iterator through all Channels.
      *
@@ -139,7 +136,7 @@ public final class ClientState {
      * @return The shared user object, or null if there is no singleton User
      * object for this user.
      */
-    protected User getUser(final String nick) {
+    public User getUser(String nick) {
         //TODO: implement singleton users in User, Channel and IrcConnection
         if (this.users.containsKey(nick)) {
             return this.users.get(nick);
@@ -153,7 +150,7 @@ public final class ClientState {
      * @param name The name of this channel.
      * @return True if the channel is in the list, false otherwise.
      */
-    protected boolean hasChannel(final String name) {
+    public boolean hasChannel(String name) {
         return name != null && this.channels.containsKey(name.toLowerCase());
     }
 
@@ -169,8 +166,8 @@ public final class ClientState {
      *
      * @param channel The channel name.
      */
-    protected void removeChannel(final String channel) {
-        if (channel != null && this.channels.containsKey(channel.toLowerCase())) {
+    public void removeChannel(String channel) {
+        if (channel != null) {
             this.channels.remove(channel.toLowerCase());
         }
     }
@@ -180,7 +177,7 @@ public final class ClientState {
      *
      * @param user The local {@code User}.
      */
-    protected void setClient(final User user) {
+    public void setClient(User user) {
         this.client = user;
     }
 }

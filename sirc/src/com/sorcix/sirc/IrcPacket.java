@@ -37,7 +37,7 @@ package com.sorcix.sirc;
  * @author Sorcix
  * @see AdvancedListener
  */
-public final class IrcPacket {
+public class IrcPacket {
 
     /**
      * Arguments separated by a space
@@ -110,9 +110,9 @@ public final class IrcPacket {
      * @param line Raw data from the server.
      * @param irc  The IrcConnection used to send messages.
      */
-    protected IrcPacket(String line, final IrcConnection irc) {
+    protected IrcPacket(String line, IrcConnection irc) {
         line = IrcColors.remove(line);
-        final int locLineStart = line.indexOf(':') + 1;
+        int locLineStart = line.indexOf(':') + 1;
         int locCommand;
         // some messages don't have a prefix
         if ((locLineStart > 1) || (locLineStart < 0)) {
@@ -125,11 +125,11 @@ public final class IrcPacket {
             this.prefix = line.substring(locLineStart, locCommand);
         }
         // space between command and receiver
-        final int locArgs = line.indexOf(' ', locCommand + 1);
+        int locArgs = line.indexOf(' ', locCommand + 1);
         // retrieve command
         this.command = line.substring(locCommand + 1, locArgs);
         // colon between arguments and message
-        final int locMsg = line.indexOf(':', locArgs);
+        int locMsg = line.indexOf(':', locArgs);
         // if there are arguments, save them
         if ((locMsg - locArgs) > 1) {
             this.arguments = line.substring(locArgs + 1, locMsg - 1);
@@ -157,7 +157,7 @@ public final class IrcPacket {
         // if possible, parse the sender into a user object
         // TODO: Get this out of here, this shouldn't be in IrcPacket..
         if ((this.prefix != null) && (this.prefix.indexOf('!') > 0)) {
-            final String[] stuff = this.prefix.split("@|!");
+            String[] stuff = this.prefix.split("@|!");
             if (stuff.length == 3) {
                 this.sender = new User(stuff[0], stuff[1], stuff[2], null, irc);
             } else if (stuff.length == 1)
@@ -175,8 +175,8 @@ public final class IrcPacket {
      * @param arguments A space separated arguments list, or {@code null}.
      * @param message   The message, or {@code null}.
      */
-    protected IrcPacket(final String prefix, final String command,
-                        final String arguments, final String message) {
+    protected IrcPacket(String prefix, String command,
+                        String arguments, String message) {
         this.prefix = prefix;
         this.command = command;
         this.arguments = arguments;
@@ -216,10 +216,10 @@ public final class IrcPacket {
      * @param parse String to parse.
      * @return Integer value, or -1 if the string is not an integer.
      */
-    private int getInteger(final String parse) {
+    private int getInteger(String parse) {
         try {
             return Integer.parseInt(parse);
-        } catch (final NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             return -1;
         }
     }
@@ -258,7 +258,7 @@ public final class IrcPacket {
      * @return IRC String containing the data in this object.
      */
     protected String getRaw() {
-        final StringBuilder builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
 
         if ((this.prefix != null) && (this.prefix.length() > 0)) {
             builder.append(":").append(this.prefix).append(" ");

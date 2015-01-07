@@ -19,13 +19,14 @@ public class IrcShutdownHandler extends Thread {
         runBuffer.allocate(1000);
         exceptionBuffer.allocate(1000);
         super.setDaemon(false);
+        LOGGER.logInfo("ShutDown handler loaded.");
     }
 
     @Override
     public void run() {
         try {
             runBuffer.deallocate();
-            if (bot.isProperShutdown()) {
+            if (!bot.isProperShutdown()) {
                 LOGGER.logWarning("Detected unexpected shutdown!");
                 IrcConnection connection = bot.getConnection();
                 if (connection != null) {
@@ -36,7 +37,6 @@ public class IrcShutdownHandler extends Thread {
                     manager.onShutdown();
                 }
             }
-            LOGGER.logInfo("Normal shutdown detected.");
         } catch (Throwable t) {
             exceptionBuffer.free();
             LOGGER.logError("Exception in shutdown handler!", t);

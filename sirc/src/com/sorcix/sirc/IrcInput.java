@@ -37,7 +37,7 @@ import java.util.Iterator;
  *
  * @author Sorcix
  */
-final class IrcInput extends Thread {
+class IrcInput extends Thread {
 
     /**
      * Stream used to read from the IRC server.
@@ -56,7 +56,7 @@ final class IrcInput extends Thread {
      * @param irc The IrcConnection using this output thread.
      * @param in  The stream to use for communication.
      */
-    protected IrcInput(final IrcConnection irc, final Reader in) {
+    protected IrcInput(IrcConnection irc, Reader in) {
         this.setName("sIRC-IN:" + irc.getServerAddress() + "-" + irc.getClient().getUserName());
         this.setPriority(Thread.NORM_PRIORITY);
         this.setDaemon(false);
@@ -88,9 +88,9 @@ final class IrcInput extends Thread {
      *
      * @param line The line to handle.
      */
-    private void handleLine(final String line) {
+    private void handleLine(String line) {
         // transform the raw line into an easier format
-        final IrcPacket parser = new IrcPacket(line, this.irc);
+        IrcPacket parser = new IrcPacket(line, this.irc);
         // Handle numeric server replies.
         if (parser.isNumeric()) {
             this.parser.parseNumeric(this.irc, parser);
@@ -109,7 +109,7 @@ final class IrcInput extends Thread {
         try {
             // wait for lines to come in
             while ((line = this.in.readLine()) != null) {
-                IrcDebug.log("<<< " + line);
+                //IrcDebug.log("<<< " + line);
                 // always respond to PING
                 if (line.startsWith("PING ")) {
                     this.irc.out.pong(line.substring(5));
@@ -117,10 +117,10 @@ final class IrcInput extends Thread {
                     this.handleLine(line);
                 }
             }
-        } catch (final IOException ex) {
+        } catch (IOException ex) {
             this.irc.setConnected(false);
-        } catch (final Exception ex) {
-            IrcDebug.log("Exception " + ex + " on: " + line);
+        } catch (Exception ex) {
+            //IrcDebug.log("Exception " + ex + " on: " + line);
             ex.printStackTrace();
         }
         // when reaching this, we are disconnected
@@ -128,7 +128,7 @@ final class IrcInput extends Thread {
         // close connections
         this.irc.disconnect();
         // send disconnect event
-        for (final Iterator<ServerListener> it = this.irc.getServerListeners(); it.hasNext(); ) {
+        for (Iterator<ServerListener> it = this.irc.getServerListeners(); it.hasNext(); ) {
             it.next().onDisconnect(this.irc);
         }
     }

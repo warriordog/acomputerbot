@@ -97,6 +97,7 @@ public class IrcBot {
         connection.setNick(Config.BOT_NICK);
         connection.addMessageListener(handler);
         connection.addServerListener(handler);
+        connection.setAdvancedListener(handler);
         connection.addMessageListener(nickServ = new NickServ(this));
         connection.setMessageDelay(Config.MESSAGES_PER_SECOND);
         connection.setVersion(getVersionString());
