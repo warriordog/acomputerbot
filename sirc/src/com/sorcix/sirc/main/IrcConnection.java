@@ -73,7 +73,7 @@ public class IrcConnection {
     /**
      * The sIRC about string, used in CTCP
      */
-    public static String ABOUT = "Sorcix Lib-IRC (sIRC) v" + IrcConnection.VERSION;
+    public static String ABOUT = "Sorcix Lib-IRC (sIRC) v" + IrcConnection.VERSION + " (modified - AcomputerBot)";
     /**
      * Message listeners.
      */
