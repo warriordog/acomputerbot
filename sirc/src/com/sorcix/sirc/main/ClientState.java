@@ -25,7 +25,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.main;
+
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
 
 import java.util.Collections;
 import java.util.HashMap;

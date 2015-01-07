@@ -1,5 +1,5 @@
 /*
- * SIRCService.java
+ * NickNameException.java
  * 
  * This file is part of the Sorcix Java IRC Library (sIRC).
  * 
@@ -25,41 +25,24 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.util;
 
 /**
- * A service plugin running on sIRC. A service extends sIRC by adding
- * much needed features such as auto rejoin, remembering channels and
- * common bot features.
- *
- * @author Sorcix
- * @see IrcConnection#addService(SIRCService)
- * @see IrcConnection#removeService(SIRCService)
- * @see IrcConnection#removeAllServices()
+ * Thrown when the nickname is already in use.
  */
-public interface SIRCService {
+public class NickNameException extends Exception {
 
     /**
-     * Returns the name of this service. Used for listing active
-     * services.
-     *
-     * @return The name of this service.
+     * Serial Version ID
      */
-    String getName();
+    private static final long serialVersionUID = -7856391898471344111L;
 
     /**
-     * Called upon loading this service on sIRC.
+     * Creates a new NickNameException.
      *
-     * @param irc The {@link IrcConnection} running this service.
+     * @param string Error string.
      */
-    void load(IrcConnection irc);
-
-    /**
-     * Called upon removing this service from sIRC. Please make sure
-     * all listeners are removed from sIRC before returning this
-     * method.
-     *
-     * @param irc The {@link IrcConnection} running this service.
-     */
-    void unload(IrcConnection irc);
+    public NickNameException(final String string) {
+        super(string);
+    }
 }

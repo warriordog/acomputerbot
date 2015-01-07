@@ -25,7 +25,14 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.util;
+
+import com.sorcix.sirc.listener.MessageListener;
+import com.sorcix.sirc.listener.ModeListener;
+import com.sorcix.sirc.listener.ServerListener;
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
 
 /**
  * Implements all sIRC listeners. Extending this class allows you to

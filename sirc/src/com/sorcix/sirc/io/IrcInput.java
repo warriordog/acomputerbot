@@ -25,7 +25,10 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.io;
+
+import com.sorcix.sirc.listener.ServerListener;
+import com.sorcix.sirc.main.IrcConnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +40,7 @@ import java.util.Iterator;
  *
  * @author Sorcix
  */
-class IrcInput extends Thread {
+public class IrcInput extends Thread {
 
     /**
      * Stream used to read from the IRC server.
@@ -56,7 +59,7 @@ class IrcInput extends Thread {
      * @param irc The IrcConnection using this output thread.
      * @param in  The stream to use for communication.
      */
-    protected IrcInput(IrcConnection irc, Reader in) {
+    public IrcInput(IrcConnection irc, Reader in) {
         this.setName("sIRC-IN:" + irc.getServerAddress() + "-" + irc.getClient().getUserName());
         this.setPriority(Thread.NORM_PRIORITY);
         this.setDaemon(false);
@@ -70,7 +73,7 @@ class IrcInput extends Thread {
      * @throws IOException
      * @see IrcConnection#disconnect()
      */
-    protected void close() throws IOException {
+    public void close() throws IOException {
         this.in.close();
     }
 
@@ -79,7 +82,7 @@ class IrcInput extends Thread {
      *
      * @return the reader.
      */
-    protected BufferedReader getReader() {
+    public BufferedReader getReader() {
         return this.in;
     }
 
@@ -112,7 +115,7 @@ class IrcInput extends Thread {
                 //IrcDebug.log("<<< " + line);
                 // always respond to PING
                 if (line.startsWith("PING ")) {
-                    this.irc.out.pong(line.substring(5));
+                    this.irc.getOut().pong(line.substring(5));
                 } else {
                     this.handleLine(line);
                 }

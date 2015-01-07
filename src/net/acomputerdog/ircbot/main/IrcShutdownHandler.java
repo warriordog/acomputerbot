@@ -1,6 +1,6 @@
 package net.acomputerdog.ircbot.main;
 
-import com.sorcix.sirc.IrcConnection;
+import com.sorcix.sirc.main.IrcConnection;
 import net.acomputerdog.core.java.MemBuffer;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.logging.LogManager;

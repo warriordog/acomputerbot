@@ -1,4 +1,4 @@
-package com.sorcix.sirc;
+package com.sorcix.sirc.util;
 
 import net.acomputerdog.core.hash.Hasher;
 

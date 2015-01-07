@@ -25,21 +25,25 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.listener;
+
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
 
 /**
  * Notified of user mode changes.
  *
  * @author Sorcix
- * @see IrcConnection#addModeListener(ModeListener)
- * @see IrcConnection#removeModeListener(ModeListener)
+ * @see com.sorcix.sirc.main.IrcConnection#addModeListener(ModeListener)
+ * @see com.sorcix.sirc.main.IrcConnection#removeModeListener(ModeListener)
  */
 public interface ModeListener {
 
     /**
      * Someone was given Admin mode.
      *
-     * @param irc     The {@link IrcConnection} receiving this event.
+     * @param irc     The {@link com.sorcix.sirc.main.IrcConnection} receiving this event.
      * @param channel The channel in which the user mode was changed.
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.

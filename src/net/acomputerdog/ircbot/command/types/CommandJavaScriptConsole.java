@@ -1,8 +1,8 @@
 package net.acomputerdog.ircbot.command.types;
 
-import com.sorcix.sirc.Channel;
-import com.sorcix.sirc.Chattable;
-import com.sorcix.sirc.User;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
+import com.sorcix.sirc.util.Chattable;
 import jdk.nashorn.api.scripting.NashornScriptEngineFactory;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;

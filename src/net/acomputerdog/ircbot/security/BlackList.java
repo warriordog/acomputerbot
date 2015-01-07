@@ -1,6 +1,6 @@
 package net.acomputerdog.ircbot.security;
 
-import com.sorcix.sirc.User;
+import com.sorcix.sirc.structure.User;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;

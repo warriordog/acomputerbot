@@ -25,21 +25,25 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.listener;
+
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
 
 /**
  * Notified of new IRC messages.
  *
  * @author Sorcix
- * @see IrcConnection#addMessageListener(MessageListener)
- * @see IrcConnection#removeMessageListener(MessageListener)
+ * @see com.sorcix.sirc.main.IrcConnection#addMessageListener(MessageListener)
+ * @see com.sorcix.sirc.main.IrcConnection#removeMessageListener(MessageListener)
  */
 public interface MessageListener {
 
     /**
      * Received an action in a channel.
      *
-     * @param irc    The {@link IrcConnection} receiving this event.
+     * @param irc    The {@link com.sorcix.sirc.main.IrcConnection} receiving this event.
      * @param sender The user who sent the action.
      * @param target The channel the action was sent to.
      * @param action The action message.

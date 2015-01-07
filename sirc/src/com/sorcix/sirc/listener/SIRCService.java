@@ -1,5 +1,5 @@
 /*
- * AdvancedListener.java
+ * SIRCService.java
  * 
  * This file is part of the Sorcix Java IRC Library (sIRC).
  * 
@@ -25,35 +25,43 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.listener;
+
+import com.sorcix.sirc.main.IrcConnection;
 
 /**
- * Notified when receiving unknown lines. This allows acting on
- * incoming IRC events not supported by sIRC. Note that sIRC only
- * allows a single instance of {@code AdvancedListener}, which means
- * that {@link SIRCService}s should not use it.
- * <p>
- * Note that if sIRC supports new events in the future the lines will
- * no longer be sent to the {@code AdvancedListener}!
- * </p>
+ * A service plugin running on sIRC. A service extends sIRC by adding
+ * much needed features such as auto rejoin, remembering channels and
+ * common bot features.
  *
  * @author Sorcix
+ * @see com.sorcix.sirc.main.IrcConnection#addService(SIRCService)
+ * @see com.sorcix.sirc.main.IrcConnection#removeService(SIRCService)
+ * @see com.sorcix.sirc.main.IrcConnection#removeAllServices()
  */
-public interface AdvancedListener {
+public interface SIRCService {
 
     /**
-     * Received an unknown IRC event.
+     * Returns the name of this service. Used for listing active
+     * services.
      *
-     * @param irc  The {@link IrcConnection} receiving this event.
-     * @param line The incoming line.
+     * @return The name of this service.
      */
-    void onUnknown(IrcConnection irc, IrcPacket line);
+    String getName();
 
     /**
-     * Received an unknown numeric server reply.
+     * Called upon loading this service on sIRC.
      *
-     * @param irc  The {@link IrcConnection} receiving this event.
-     * @param line The incoming line.
+     * @param irc The {@link com.sorcix.sirc.main.IrcConnection} running this service.
      */
-    void onUnknownReply(IrcConnection irc, IrcPacket line);
+    void load(IrcConnection irc);
+
+    /**
+     * Called upon removing this service from sIRC. Please make sure
+     * all listeners are removed from sIRC before returning this
+     * method.
+     *
+     * @param irc The {@link IrcConnection} running this service.
+     */
+    void unload(IrcConnection irc);
 }

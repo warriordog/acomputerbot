@@ -1,6 +1,10 @@
 package net.acomputerdog.ircbot.security;
 
-import com.sorcix.sirc.*;
+import com.sorcix.sirc.listener.MessageListener;
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
+import com.sorcix.sirc.util.Chattable;
 import net.acomputerdog.core.java.Patterns;
 import net.acomputerdog.ircbot.main.IrcBot;
 

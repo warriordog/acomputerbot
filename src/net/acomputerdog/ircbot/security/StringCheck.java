@@ -1,6 +1,6 @@
 package net.acomputerdog.ircbot.security;
 
-import com.sorcix.sirc.Chattable;
+import com.sorcix.sirc.util.Chattable;
 import net.acomputerdog.core.java.Patterns;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.config.Config;

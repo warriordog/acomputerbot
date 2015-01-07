@@ -25,8 +25,9 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.io;
 
+import com.sorcix.sirc.main.IrcConnection;
 import net.acomputerdog.core.java.Sleep;
 
 import java.io.BufferedWriter;
@@ -38,7 +39,7 @@ import java.io.Writer;
  *
  * @author Sorcix
  */
-class IrcOutput extends Thread {
+public class IrcOutput extends Thread {
 
     /**
      * The IrcConnection.
@@ -63,7 +64,7 @@ class IrcOutput extends Thread {
      * @param irc The IrcConnection using this output thread.
      * @param out The stream to use for communication.
      */
-    protected IrcOutput(IrcConnection irc, Writer out) {
+    public IrcOutput(IrcConnection irc, Writer out) {
         this.setName("sIRC-OUT:" + irc.getServerAddress() + "-" + irc.getClient().getUserName());
         this.setPriority(Thread.MIN_PRIORITY);
         this.setDaemon(true);
@@ -78,7 +79,7 @@ class IrcOutput extends Thread {
      * @throws IOException
      * @see IrcConnection#disconnect()
      */
-    protected void close() throws IOException {
+    public void close() throws IOException {
         this.out.flush();
         this.out.close();
     }
@@ -108,7 +109,7 @@ class IrcOutput extends Thread {
      *
      * @param packet The data to send.
      */
-    protected synchronized void send(IrcPacket packet) {
+    public synchronized void send(IrcPacket packet) {
         if (this.irc.getMessageDelay() == 0) {
             this.sendNow(packet.getRaw());
             return;
@@ -123,7 +124,7 @@ class IrcOutput extends Thread {
      * @deprecated Use {@link #send(IrcPacket)} instead.
      */
     @Deprecated
-    protected synchronized void send(String line) {
+    public synchronized void send(String line) {
         //TODO: Remove in a future release.
         if (this.irc.getMessageDelay() == 0) {
             this.sendNow(line);
@@ -139,7 +140,7 @@ class IrcOutput extends Thread {
      *
      * @param packet The IrcPacket to send.
      */
-    protected synchronized void sendNow(IrcPacket packet) {
+    public synchronized void sendNow(IrcPacket packet) {
         try {
             this.sendNowEx(packet.getRaw());
         } catch (Exception ex) {
@@ -156,7 +157,7 @@ class IrcOutput extends Thread {
      * @deprecated Use {@link #sendNow(IrcPacket)} instead.
      */
     @Deprecated
-    protected synchronized void sendNow(String line) {
+    public synchronized void sendNow(String line) {
         //TODO: Remove in a future release.
         try {
             this.sendNowEx(line);
@@ -173,7 +174,7 @@ class IrcOutput extends Thread {
      * @throws IOException If anything goes wrong while sending this
      *                     message.
      */
-    protected synchronized void sendNowEx(IrcPacket packet) throws IOException {
+    public synchronized void sendNowEx(IrcPacket packet) throws IOException {
         this.sendNowEx(packet.getRaw());
     }
 
@@ -199,7 +200,7 @@ class IrcOutput extends Thread {
      *
      * @param code The code to send with the PONG packet.
      */
-    protected void pong(String code) {
+    public void pong(String code) {
         try {
             this.sendNowEx("PONG " + code);
         } catch (Exception ex) {

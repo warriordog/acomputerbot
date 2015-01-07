@@ -25,7 +25,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.structure;
 
 /**
  * Contains information about an IRC server.
@@ -54,7 +54,7 @@ public class IrcServer {
     /**
      * Default port (6667)
      */
-    protected static final int DEFAULT_PORT = 6667;
+    public static final int DEFAULT_PORT = 6667;
 
     /**
      * Creates a new (non-SSL) IrcServer on default port.
@@ -131,7 +131,7 @@ public class IrcServer {
      *
      * @param address The new server address.
      */
-    protected void setAddress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -149,7 +149,7 @@ public class IrcServer {
      *
      * @param port The new server port.
      */
-    protected void setPort(int port) {
+    public void setPort(int port) {
         this.port = port;
     }
 
@@ -158,7 +158,7 @@ public class IrcServer {
      *
      * @param secure Whether this server is using SSL.
      */
-    protected void setSecure(boolean secure) {
+    public void setSecure(boolean secure) {
         this.secure = secure;
     }
 }

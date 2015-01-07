@@ -1,9 +1,9 @@
 package net.acomputerdog.ircbot.command;
 
-import com.sorcix.sirc.Channel;
-import com.sorcix.sirc.Chattable;
-import com.sorcix.sirc.IrcColors;
-import com.sorcix.sirc.User;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
+import com.sorcix.sirc.util.Chattable;
+import com.sorcix.sirc.util.IrcColors;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.command.types.*;
 import net.acomputerdog.ircbot.command.util.CommandLine;

@@ -1,5 +1,5 @@
 /*
- * NickNameException.java
+ * PasswordException.java
  * 
  * This file is part of the Sorcix Java IRC Library (sIRC).
  * 
@@ -25,12 +25,12 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.util;
 
 /**
- * Thrown when the nickname is already in use.
+ * Thrown when the server password was wrong.
  */
-public class NickNameException extends Exception {
+public class PasswordException extends Exception {
 
     /**
      * Serial Version ID
@@ -38,11 +38,11 @@ public class NickNameException extends Exception {
     private static final long serialVersionUID = -7856391898471344111L;
 
     /**
-     * Creates a new NickNameException.
+     * Creates a new PasswordException.
      *
      * @param string Error string.
      */
-    public NickNameException(final String string) {
+    public PasswordException(final String string) {
         super(string);
     }
 }

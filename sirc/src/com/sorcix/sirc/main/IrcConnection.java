@@ -25,7 +25,18 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.main;
+
+import com.sorcix.sirc.io.IrcInput;
+import com.sorcix.sirc.io.IrcOutput;
+import com.sorcix.sirc.io.IrcPacket;
+import com.sorcix.sirc.io.IrcPacketFactory;
+import com.sorcix.sirc.listener.*;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.IrcServer;
+import com.sorcix.sirc.structure.User;
+import com.sorcix.sirc.util.NickNameException;
+import com.sorcix.sirc.util.PasswordException;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
@@ -79,10 +90,7 @@ public class IrcConnection {
      * Mode listeners.
      */
     private final Set<ModeListener> modeListeners;
-    /**
-     * Connection OutputStream thread.
-     */
-    protected IrcOutput out = null;
+    private IrcOutput out = null;
     /**
      * Server listeners.
      */
@@ -118,7 +126,7 @@ public class IrcConnection {
     /**
      * End line character.
      */
-    protected static final String ENDLINE = "\n";
+    public static final String ENDLINE = "\n";
     /**
      * Whether to allow server redirection (bounce) or not.
      */
@@ -192,7 +200,7 @@ public class IrcConnection {
      * Adds a mode listener to this IrcConnection. Note that adding mode
      * listeners will cause sIRC to check every incoming mode change for
      * supported modes. Modes can also be read by using
-     * {@link ServerListener#onMode(IrcConnection, Channel, User, String)} which
+     * {@link ServerListener#onMode(IrcConnection, com.sorcix.sirc.structure.Channel, com.sorcix.sirc.structure.User, String)} which
      * can be a lot faster for reading modes.
      *
      * @param listener The mode listener to add.
@@ -236,7 +244,7 @@ public class IrcConnection {
      * @since 1.0.2
      */
     public void askMotd() {
-        this.out.send(IrcPacketFactory.createMOTD());
+        this.getOut().send(IrcPacketFactory.createMOTD());
     }
 
     /**
@@ -246,7 +254,7 @@ public class IrcConnection {
      * @param line The raw line to send.
      */
     public void sendRaw(String line) {
-        this.out.send(line);
+        this.getOut().send(line);
     }
 
     /**
@@ -254,8 +262,8 @@ public class IrcConnection {
      *
      * @param channel The channel to request the userlist for.
      */
-    protected void askNames(Channel channel) {
-        this.out.send(IrcPacketFactory.createNAMES(channel.getName()));
+    public void askNames(Channel channel) {
+        this.getOut().send(IrcPacketFactory.createNAMES(channel.getName()));
     }
 
     /**
@@ -264,11 +272,11 @@ public class IrcConnection {
     private void close() {
         try {
             this.in.interrupt();
-            this.out.interrupt();
+            this.getOut().interrupt();
             // close input stream
             this.in.close();
             // close output stream
-            this.out.close();
+            this.getOut().close();
             // close socket
             if (this.socket.isConnected()) {
                 this.socket.close();
@@ -284,8 +292,8 @@ public class IrcConnection {
      *
      * @throws UnknownHostException When the domain name is invalid.
      * @throws IOException          When anything went wrong while connecting.
-     * @throws NickNameException    If the given nickname is already in use or invalid.
-     * @throws PasswordException    If the server password is incorrect.
+     * @throws com.sorcix.sirc.util.NickNameException    If the given nickname is already in use or invalid.
+     * @throws com.sorcix.sirc.util.PasswordException    If the server password is incorrect.
      * @see #setServer(String, int)
      * @see #setNick(String)
      */
@@ -377,13 +385,13 @@ public class IrcConnection {
         if (!reconnecting) {
             // send password if given
             if (this.server.getPassword() != null) {
-                this.out.sendNowEx(IrcPacketFactory.createPASS(this.server
+                this.getOut().sendNowEx(IrcPacketFactory.createPASS(this.server
                         .getPassword()));
             }
-            this.out.sendNowEx(IrcPacketFactory.createUSER(this.state.getClient()
+            this.getOut().sendNowEx(IrcPacketFactory.createUSER(this.state.getClient()
                     .getUserName(), this.state.getClient().getNick()));
         }
-        this.out.sendNowEx(IrcPacketFactory.createNICK(this.state.getClient()
+        this.getOut().sendNowEx(IrcPacketFactory.createNICK(this.state.getClient()
                 .getNick()));
         // wait for reply
         String line;
@@ -417,12 +425,12 @@ public class IrcConnection {
                 }
             }
             if (line.startsWith("PING ")) {
-                this.out.pong(line.substring(5));
+                this.getOut().pong(line.substring(5));
             }
         }
         // start listening
         this.in.start();
-        this.out.start();
+        this.getOut().start();
         // we are connected
         this.setConnected(true);
         // send events
@@ -455,12 +463,12 @@ public class IrcConnection {
     }
 
     /**
-     * Creates a {@link User} object with given nickname. This will create a
-     * {@link User} object without any information about modes.
+     * Creates a {@link com.sorcix.sirc.structure.User} object with given nickname. This will create a
+     * {@link com.sorcix.sirc.structure.User} object without any information about modes.
      *
      * @param nick The nickname.
      * @return A {@code User} object representing given user.
-     * @see User#User(String, IrcConnection)
+     * @see com.sorcix.sirc.structure.User#User(String, IrcConnection)
      */
     public User createUser(String nick) {
         return new User(nick, this);
@@ -503,7 +511,7 @@ public class IrcConnection {
      */
     public void disconnect(String message) {
         if (this.isConnected()) {
-            this.out.sendNow(IrcPacketFactory.createQUIT(message));
+            this.getOut().sendNow(IrcPacketFactory.createQUIT(message));
         } else {
             this.close();
             this.getState().removeAll();
@@ -515,7 +523,7 @@ public class IrcConnection {
      *
      * @return The advanced listener, or null.
      */
-    protected AdvancedListener getAdvancedListener() {
+    public AdvancedListener getAdvancedListener() {
         return this.advancedListener;
     }
 
@@ -562,7 +570,7 @@ public class IrcConnection {
      *
      * @return All {@code MessageListeners}.
      */
-    protected Iterator<MessageListener> getMessageListeners() {
+    public Iterator<MessageListener> getMessageListeners() {
         return this.messageListeners.iterator();
     }
 
@@ -571,7 +579,7 @@ public class IrcConnection {
      *
      * @return All {@code ModeListeners}.
      */
-    protected Iterator<ModeListener> getModeListeners() {
+    public Iterator<ModeListener> getModeListeners() {
         return this.modeListeners.iterator();
     }
 
@@ -581,8 +589,8 @@ public class IrcConnection {
      *
      * @return The {@code IrcOutput} used to send messages.
      */
-    protected IrcOutput getOutput() {
-        return this.out;
+    public IrcOutput getOutput() {
+        return this.getOut();
     }
 
     /**
@@ -609,7 +617,7 @@ public class IrcConnection {
      *
      * @return All {@code ServerListeners}.
      */
-    protected Iterator<ServerListener> getServerListeners() {
+    public Iterator<ServerListener> getServerListeners() {
         return this.serverListeners.iterator();
     }
 
@@ -648,7 +656,7 @@ public class IrcConnection {
      * @return The version string.
      * @since 0.9.4
      */
-    protected String getVersion() {
+    public String getVersion() {
         if (this.version != null) {
             return this.version;
         }
@@ -771,7 +779,7 @@ public class IrcConnection {
      * @since 1.0.2
      */
     public void setAway(String reason) {
-        this.out.send(IrcPacketFactory.createAWAY(reason));
+        this.getOut().send(IrcPacketFactory.createAWAY(reason));
     }
 
     /**
@@ -836,7 +844,7 @@ public class IrcConnection {
                 this.state.getClient().setNick(nick);
             }
         } else {
-            this.out.sendNow(IrcPacketFactory.createNICK(nick));
+            this.getOut().sendNow(IrcPacketFactory.createNICK(nick));
         }
     }
 
@@ -934,5 +942,12 @@ public class IrcConnection {
      */
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    /**
+     * Connection OutputStream thread.
+     */
+    public IrcOutput getOut() {
+        return out;
     }
 }

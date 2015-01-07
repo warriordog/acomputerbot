@@ -25,23 +25,27 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.listener;
+
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
 
 /**
  * Notified of server/channel changes. Some methods in this listener
- * could be called due to us doing something, use {@link User#isUs()}
+ * could be called due to us doing something, use {@link com.sorcix.sirc.structure.User#isUs()}
  * to check if it was us.
  *
  * @author Sorcix
- * @see IrcConnection#addServerListener(ServerListener)
- * @see IrcConnection#removeServerListener(ServerListener)
+ * @see com.sorcix.sirc.main.IrcConnection#addServerListener(ServerListener)
+ * @see com.sorcix.sirc.main.IrcConnection#removeServerListener(ServerListener)
  */
 public interface ServerListener {
 
     /**
      * Connected to the server.
      *
-     * @param irc The {@link IrcConnection} receiving this event.
+     * @param irc The {@link com.sorcix.sirc.main.IrcConnection} receiving this event.
      */
     void onConnect(IrcConnection irc);
 

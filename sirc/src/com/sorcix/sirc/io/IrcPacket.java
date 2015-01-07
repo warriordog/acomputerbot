@@ -25,7 +25,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.io;
+
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.structure.User;
+import com.sorcix.sirc.util.IrcColors;
 
 /**
  * Parses a raw server response into a more readable format.
@@ -35,7 +39,7 @@ package com.sorcix.sirc;
  * </pre>
  *
  * @author Sorcix
- * @see AdvancedListener
+ * @see com.sorcix.sirc.listener.AdvancedListener
  */
 public class IrcPacket {
 
@@ -102,7 +106,7 @@ public class IrcPacket {
     /**
      * CTCP message mark.
      */
-    protected static final String CTCP = "\u0001";
+    public static final String CTCP = "\u0001";
 
     /**
      * Creates a new IrcPacket using the data from given raw IRC data.
@@ -110,7 +114,7 @@ public class IrcPacket {
      * @param line Raw data from the server.
      * @param irc  The IrcConnection used to send messages.
      */
-    protected IrcPacket(String line, IrcConnection irc) {
+    public IrcPacket(String line, IrcConnection irc) {
         line = IrcColors.remove(line);
         int locLineStart = line.indexOf(':') + 1;
         int locCommand;

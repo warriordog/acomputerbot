@@ -25,7 +25,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.structure;
+
+import com.sorcix.sirc.io.IrcPacket;
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.util.Chattable;
 
 /**
  * Represents a user on the IRC server.
@@ -65,23 +69,23 @@ public class User extends Chattable {
     /**
      * Mode character for voice.
      */
-    protected static final char MODE_VOICE = 'v';
+    public static final char MODE_VOICE = 'v';
     /**
      * Mode character for operator.
      */
-    protected static final char MODE_OPERATOR = 'o';
+    public static final char MODE_OPERATOR = 'o';
     /**
      * Mode character for half-op. (Not supported by RFC!)
      */
-    protected static final char MODE_HALF_OP = 'h';
+    public static final char MODE_HALF_OP = 'h';
     /**
      * Mode character for founder. (Not supported by RFC!)
      */
-    protected static final char MODE_FOUNDER = 'q';
+    public static final char MODE_FOUNDER = 'q';
     /**
      * Mode character for admin. (Not supported by RFC!)
      */
-    protected static final char MODE_ADMIN = 'a';
+    public static final char MODE_ADMIN = 'a';
     /**
      * Prefix character for half-op. (Not supported by RFC!)
      */
@@ -130,7 +134,7 @@ public class User extends Chattable {
      * @param irc      The IrcConnection used to send messages to this
      *                 user.
      */
-    protected User(String nick, String user, String host, String realName, IrcConnection irc) {
+    public User(String nick, String user, String host, String realName, IrcConnection irc) {
         this.setNick(nick);
         this.realName = realName;
         this.userName = user;
@@ -373,7 +377,7 @@ public class User extends Chattable {
      *
      * @param command Command to send.
      */
-    protected void sendCtcpReply(String command) {
+    public void sendCtcpReply(String command) {
         this.sendCtcpReply(command, false);
     }
 
@@ -384,7 +388,7 @@ public class User extends Chattable {
      * @param command   Command to send.
      * @param skipQueue Whether to skip the outgoing message queue.
      */
-    protected void sendCtcpReply(String command, boolean skipQueue) {
+    public void sendCtcpReply(String command, boolean skipQueue) {
         if (skipQueue) {
             this.irc.getOutput().sendNow("NOTICE " + this.getAddress() + " :" + IrcPacket.CTCP + command + IrcPacket.CTCP);
         } else {
@@ -467,7 +471,7 @@ public class User extends Chattable {
      *
      * @param nick The new nickname.
      */
-    protected void setNick(String nick) {
+    public void setNick(String nick) {
         if (nick == null)
             return;
         if (User.USER_PREFIX.indexOf(nick.charAt(0)) >= 0) {

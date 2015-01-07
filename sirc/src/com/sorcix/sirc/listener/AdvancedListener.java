@@ -1,5 +1,5 @@
 /*
- * PasswordException.java
+ * AdvancedListener.java
  * 
  * This file is part of the Sorcix Java IRC Library (sIRC).
  * 
@@ -25,24 +25,38 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.listener;
+
+import com.sorcix.sirc.io.IrcPacket;
+import com.sorcix.sirc.main.IrcConnection;
 
 /**
- * Thrown when the server password was wrong.
+ * Notified when receiving unknown lines. This allows acting on
+ * incoming IRC events not supported by sIRC. Note that sIRC only
+ * allows a single instance of {@code AdvancedListener}, which means
+ * that {@link SIRCService}s should not use it.
+ * <p>
+ * Note that if sIRC supports new events in the future the lines will
+ * no longer be sent to the {@code AdvancedListener}!
+ * </p>
+ *
+ * @author Sorcix
  */
-public class PasswordException extends Exception {
+public interface AdvancedListener {
 
     /**
-     * Serial Version ID
-     */
-    private static final long serialVersionUID = -7856391898471344111L;
-
-    /**
-     * Creates a new PasswordException.
+     * Received an unknown IRC event.
      *
-     * @param string Error string.
+     * @param irc  The {@link com.sorcix.sirc.main.IrcConnection} receiving this event.
+     * @param line The incoming line.
      */
-    public PasswordException(final String string) {
-        super(string);
-    }
+    void onUnknown(IrcConnection irc, IrcPacket line);
+
+    /**
+     * Received an unknown numeric server reply.
+     *
+     * @param irc  The {@link IrcConnection} receiving this event.
+     * @param line The incoming line.
+     */
+    void onUnknownReply(IrcConnection irc, IrcPacket line);
 }

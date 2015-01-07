@@ -25,7 +25,7 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.util;
 
 /**
  * This class provides mIRC color codes to be used when sending
@@ -173,7 +173,7 @@ public final class IrcColors {
      * @param input Text to clear.
      * @return Given text without markup.
      */
-    protected static String remove(String input) {
+    public static String remove(String input) {
         return IrcColors.remove(new StringBuffer(input)).toString();
     }
 

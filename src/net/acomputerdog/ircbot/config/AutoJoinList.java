@@ -1,6 +1,6 @@
 package net.acomputerdog.ircbot.config;
 
-import com.sorcix.sirc.Channel;
+import com.sorcix.sirc.structure.Channel;
 import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.main.IrcBot;
 

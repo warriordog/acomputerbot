@@ -25,7 +25,11 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package com.sorcix.sirc;
+package com.sorcix.sirc.structure;
+
+import com.sorcix.sirc.io.IrcPacket;
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.util.Chattable;
 
 import java.util.Collections;
 import java.util.Map;
@@ -57,7 +61,7 @@ public class Channel extends Chattable {
     /**
      * Possible channel prefixes.
      */
-    protected static final String CHANNEL_PREFIX = "#&+!";
+    public static final String CHANNEL_PREFIX = "#&+!";
 
     /**
      * Creates a new {@code Channel} object with given name.
@@ -67,7 +71,7 @@ public class Channel extends Chattable {
      *               channel.
      * @param global Whether this object is going to be shared.
      */
-    protected Channel(String name, IrcConnection irc, boolean global) {
+    public Channel(String name, IrcConnection irc, boolean global) {
         this.name = name;
         this.irc = irc;
         if (global) {

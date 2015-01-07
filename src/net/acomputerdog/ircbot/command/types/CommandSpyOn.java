@@ -1,6 +1,10 @@
 package net.acomputerdog.ircbot.command.types;
 
-import com.sorcix.sirc.*;
+import com.sorcix.sirc.listener.MessageListener;
+import com.sorcix.sirc.main.IrcConnection;
+import com.sorcix.sirc.structure.Channel;
+import com.sorcix.sirc.structure.User;
+import com.sorcix.sirc.util.Chattable;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.command.util.CommandLine;
 import net.acomputerdog.ircbot.config.Config;
