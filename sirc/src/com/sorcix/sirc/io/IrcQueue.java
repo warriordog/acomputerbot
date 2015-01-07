@@ -35,7 +35,7 @@ import java.util.Deque;
  *
  * @author Sorcix
  */
-class IrcQueue {
+public class IrcQueue {
 
     /**
      * Message Queue.
@@ -45,8 +45,8 @@ class IrcQueue {
     /**
      * Creates a new outgoing message queue.
      */
-    protected IrcQueue() {
-        this.queue = new ArrayDeque<>(8);
+    public IrcQueue() {
+        this.queue = new ArrayDeque<>();
     }
 
     /**
@@ -54,7 +54,7 @@ class IrcQueue {
      *
      * @param line The raw IRC line to add to the queue.
      */
-    protected void add(String line) {
+    public void add(String line) {
         synchronized (this.queue) {
             this.queue.addLast(line);
             this.queue.notify();
@@ -68,7 +68,7 @@ class IrcQueue {
      *
      * @param line The raw IRC line to add to the queue.
      */
-    protected void addToFront(String line) {
+    public void addToFront(String line) {
         synchronized (this.queue) {
             this.queue.addFirst(line);
             this.queue.notify();
@@ -80,7 +80,7 @@ class IrcQueue {
      *
      * @return A raw IRC line to be sent.
      */
-    protected String take() {
+    public String take() {
         String line;
         synchronized (this.queue) {
             if (this.queue.isEmpty()) {

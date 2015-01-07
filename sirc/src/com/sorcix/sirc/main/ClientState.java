@@ -32,7 +32,6 @@ import com.sorcix.sirc.structure.User;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -41,7 +40,7 @@ import java.util.Map;
  * @author Sorcix
  * @since 1.1.0
  */
-public final class ClientState {
+public class ClientState {
 
     // TODO: Allow changing the username (sIRC@..)
     /**
@@ -60,7 +59,7 @@ public final class ClientState {
     /**
      * Creates a new ClientState.
      */
-    protected ClientState() {
+    public ClientState() {
         this.channels = new HashMap<>();
         this.users = new HashMap<>();
     }
@@ -109,16 +108,6 @@ public final class ClientState {
         return null;
     }
 
-    @Deprecated
-    /**
-     * Creates an iterator through all Channels.
-     *
-     * @return an iterator through all Channels.
-     */
-    public Iterator<Channel> getChannels() {
-        return this.channels.values().iterator();
-    }
-
     public Map<String, Channel> getChannelMap() {
         return Collections.unmodifiableMap(channels);
     }
@@ -130,6 +119,15 @@ public final class ClientState {
      */
     public User getClient() {
         return this.client;
+    }
+
+    /**
+     * Set the local {@link User}.
+     *
+     * @param user The local {@code User}.
+     */
+    public void setClient(User user) {
+        this.client = user;
     }
 
     /**
@@ -160,7 +158,7 @@ public final class ClientState {
     /**
      * Remove all channels from the channel map.
      */
-    protected void removeAll() {
+    public void removeAll() {
         this.channels.clear();
     }
 
@@ -173,14 +171,5 @@ public final class ClientState {
         if (channel != null) {
             this.channels.remove(channel.toLowerCase());
         }
-    }
-
-    /**
-     * Set the local {@link User}.
-     *
-     * @param user The local {@code User}.
-     */
-    public void setClient(User user) {
-        this.client = user;
     }
 }

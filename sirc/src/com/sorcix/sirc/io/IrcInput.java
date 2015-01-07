@@ -27,13 +27,11 @@
  */
 package com.sorcix.sirc.io;
 
-import com.sorcix.sirc.listener.ServerListener;
 import com.sorcix.sirc.main.IrcConnection;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Iterator;
 
 /**
  * Input Thread.
@@ -131,8 +129,6 @@ public class IrcInput extends Thread {
         // close connections
         this.irc.disconnect();
         // send disconnect event
-        for (Iterator<ServerListener> it = this.irc.getServerListeners(); it.hasNext(); ) {
-            it.next().onDisconnect(this.irc);
-        }
+        irc.getServerListeners().forEach(listener -> listener.onDisconnect(irc));
     }
 }

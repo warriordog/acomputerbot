@@ -47,14 +47,14 @@ public interface SIRCService {
      *
      * @return The name of this service.
      */
-    String getName();
+    public String getName();
 
     /**
      * Called upon loading this service on sIRC.
      *
      * @param irc The {@link com.sorcix.sirc.main.IrcConnection} running this service.
      */
-    void load(IrcConnection irc);
+    public void load(IrcConnection irc);
 
     /**
      * Called upon removing this service from sIRC. Please make sure
@@ -63,5 +63,5 @@ public interface SIRCService {
      *
      * @param irc The {@link IrcConnection} running this service.
      */
-    void unload(IrcConnection irc);
+    public void unload(IrcConnection irc);
 }

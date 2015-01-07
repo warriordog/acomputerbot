@@ -47,14 +47,14 @@ public interface ServerListener {
      *
      * @param irc The {@link com.sorcix.sirc.main.IrcConnection} receiving this event.
      */
-    void onConnect(IrcConnection irc);
+    public void onConnect(IrcConnection irc);
 
     /**
      * Disconnected from the server.
      *
      * @param irc The {@link IrcConnection} receiving this event.
      */
-    void onDisconnect(IrcConnection irc);
+    public void onDisconnect(IrcConnection irc);
 
     /**
      * Someone (possibly us) was invited into a channel.
@@ -64,7 +64,7 @@ public interface ServerListener {
      * @param user    The user who was invited.
      * @param channel The channel the user was invited to.
      */
-    void onInvite(IrcConnection irc, User sender, User user, Channel channel);
+    public void onInvite(IrcConnection irc, User sender, User user, Channel channel);
 
     /**
      * Someone (possibly us) joined a channel.
@@ -73,7 +73,7 @@ public interface ServerListener {
      * @param channel The channel someone joined to.
      * @param user    The user who joined.
      */
-    void onJoin(IrcConnection irc, Channel channel, User user);
+    public void onJoin(IrcConnection irc, Channel channel, User user);
 
     /**
      * Someone (possibly us) was kicked from a channel.
@@ -89,7 +89,7 @@ public interface ServerListener {
      * @param user    The user who was kicked.
      * @param msg     The kick message.
      */
-    void onKick(IrcConnection irc, Channel channel, User sender, User user, String msg);
+    public void onKick(IrcConnection irc, Channel channel, User sender, User user, String msg);
 
     /**
      * Someone (possibly us) changed a channel mode.
@@ -99,7 +99,7 @@ public interface ServerListener {
      * @param sender  The user changing this mode.
      * @param mode    The mode change.
      */
-    void onMode(IrcConnection irc, Channel channel, User sender, String mode);
+    public void onMode(IrcConnection irc, Channel channel, User sender, String mode);
 
     /**
      * The server sent the Message of the Day.
@@ -109,7 +109,7 @@ public interface ServerListener {
      * @see IrcConnection#askMotd()
      * @since 1.0.2
      */
-    void onMotd(IrcConnection irc, String motd);
+    public void onMotd(IrcConnection irc, String motd);
 
     /**
      * Someone (possibly us) changed his nickname. Note that the
@@ -125,7 +125,7 @@ public interface ServerListener {
      * @param oldUser The old user nickname.
      * @param newUser The new user nickname.
      */
-    void onNick(IrcConnection irc, User oldUser, User newUser);
+    public void onNick(IrcConnection irc, User oldUser, User newUser);
 
     /**
      * Someone (possibly us) left a channel.
@@ -140,7 +140,7 @@ public interface ServerListener {
      * @param user    The user who parted.
      * @param message The part message, or {@code null}.
      */
-    void onPart(IrcConnection irc, Channel channel, User user, String message);
+    public void onPart(IrcConnection irc, Channel channel, User user, String message);
 
     /**
      * Someone quit the IRC server.
@@ -149,7 +149,7 @@ public interface ServerListener {
      * @param user    The user who quit.
      * @param message The quit message, or {@code null}.
      */
-    void onQuit(IrcConnection irc, User user, String message);
+    public void onQuit(IrcConnection irc, User user, String message);
 
     /**
      * Someone (possibly us) changed the topic of a channel, or we
@@ -162,5 +162,5 @@ public interface ServerListener {
      * @param sender  The user who changed the topic, or null.
      * @param topic   The new topic.
      */
-    void onTopic(IrcConnection irc, Channel channel, User sender, String topic);
+    public void onTopic(IrcConnection irc, Channel channel, User sender, String topic);
 }

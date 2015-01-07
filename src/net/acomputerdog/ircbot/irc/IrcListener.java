@@ -1,9 +1,9 @@
 package net.acomputerdog.ircbot.irc;
 
 import com.sorcix.sirc.io.IrcPacket;
-import com.sorcix.sirc.listener.AdvancedListener;
 import com.sorcix.sirc.listener.MessageListener;
 import com.sorcix.sirc.listener.ServerListener;
+import com.sorcix.sirc.listener.UnknownListener;
 import com.sorcix.sirc.main.IrcConnection;
 import com.sorcix.sirc.structure.Channel;
 import com.sorcix.sirc.structure.User;
@@ -11,7 +11,7 @@ import net.acomputerdog.core.logger.CLogger;
 import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.main.IrcBot;
 
-public class IrcListener implements MessageListener, ServerListener, AdvancedListener {
+public class IrcListener implements MessageListener, ServerListener, UnknownListener {
 
     private final CLogger LOGGER;
 

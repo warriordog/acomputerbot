@@ -39,10 +39,42 @@ import com.sorcix.sirc.util.IrcColors;
  * </pre>
  *
  * @author Sorcix
- * @see com.sorcix.sirc.listener.AdvancedListener
+ * @see com.sorcix.sirc.listener.UnknownListener
  */
 public class IrcPacket {
 
+    /**
+     * Unknown command sent to IRC server.
+     */
+    public static final int ERR_UNKNOWNCOMMAND = 421;
+    /**
+     * Termination of an RPL_MOTD list.
+     */
+    public static final int RPL_ENDOFMOTD = 376;
+    /**
+     * Reply to MOTD. (message of the day)
+     */
+    public static final int RPL_MOTD = 372;
+    /**
+     * Response to TOPIC with the set topic.
+     */
+    public static final int RPL_TOPIC = 332;
+    /**
+     * Termination of an RPL_NAMREPLY list.
+     */
+    public static final int RPL_ENDOFNAMES = 366;
+    /**
+     * Reply to NAMES (See RFC).
+     */
+    public static final int RPL_NAMREPLY = 353;
+    /**
+     * Sent to the client to redirect it to another server.
+     */
+    public static final int RPL_BOUNCE = 10;
+    /**
+     * CTCP message mark.
+     */
+    public static final String CTCP = "\u0001";
     /**
      * Arguments separated by a space
      */
@@ -75,38 +107,6 @@ public class IrcPacket {
      * The sender user object.
      */
     private User sender = null;
-    /**
-     * Unknown command sent to IRC server.
-     */
-    protected static final int ERR_UNKNOWNCOMMAND = 421;
-    /**
-     * Termination of an RPL_MOTD list.
-     */
-    protected static final int RPL_ENDOFMOTD = 376;
-    /**
-     * Reply to MOTD. (message of the day)
-     */
-    protected static final int RPL_MOTD = 372;
-    /**
-     * Response to TOPIC with the set topic.
-     */
-    protected static final int RPL_TOPIC = 332;
-    /**
-     * Termination of an RPL_NAMREPLY list.
-     */
-    protected static final int RPL_ENDOFNAMES = 366;
-    /**
-     * Reply to NAMES (See RFC).
-     */
-    protected static final int RPL_NAMREPLY = 353;
-    /**
-     * Sent to the client to redirect it to another server.
-     */
-    protected static final int RPL_BOUNCE = 10;
-    /**
-     * CTCP message mark.
-     */
-    public static final String CTCP = "\u0001";
 
     /**
      * Creates a new IrcPacket using the data from given raw IRC data.

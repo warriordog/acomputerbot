@@ -48,7 +48,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onAdmin(IrcConnection irc, Channel channel, User sender, User user);
+    public void onAdmin(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone lost Admin mode.
@@ -58,7 +58,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onDeAdmin(IrcConnection irc, Channel channel, User sender, User user);
+    public void onDeAdmin(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone lost Founder mode.
@@ -68,7 +68,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onDeFounder(IrcConnection irc, Channel channel, User sender, User user);
+    public void onDeFounder(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone lost Half-Operator mode.
@@ -78,7 +78,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onDeHalfop(IrcConnection irc, Channel channel, User sender, User user);
+    public void onDeHalfop(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone lost Operator mode.
@@ -88,7 +88,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onDeOp(IrcConnection irc, Channel channel, User sender, User user);
+    public void onDeOp(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone lost Voice mode.
@@ -98,7 +98,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onDeVoice(IrcConnection irc, Channel channel, User sender, User user);
+    public void onDeVoice(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone was given Founder mode.
@@ -108,7 +108,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onFounder(IrcConnection irc, Channel channel, User sender, User user);
+    public void onFounder(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone was given Half-Operator mode.
@@ -118,7 +118,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onHalfop(IrcConnection irc, Channel channel, User sender, User user);
+    public void onHalfop(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone was given Operator mode.
@@ -128,7 +128,7 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onOp(IrcConnection irc, Channel channel, User sender, User user);
+    public void onOp(IrcConnection irc, Channel channel, User sender, User user);
 
     /**
      * Someone was given Voice mode.
@@ -138,5 +138,5 @@ public interface ModeListener {
      * @param sender  The user changing this mode.
      * @param user    The user whose mode was changed.
      */
-    void onVoice(IrcConnection irc, Channel channel, User sender, User user);
+    public void onVoice(IrcConnection irc, Channel channel, User sender, User user);
 }

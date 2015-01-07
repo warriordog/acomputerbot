@@ -42,6 +42,10 @@ import java.io.Writer;
 public class IrcOutput extends Thread {
 
     /**
+     * Maximum line length.
+     */
+    public static final int MAX_LINE_LENGTH = 512;
+    /**
      * The IrcConnection.
      */
     private final IrcConnection irc;
@@ -53,10 +57,6 @@ public class IrcOutput extends Thread {
      * The outgoing message queue.
      */
     private final IrcQueue queue;
-    /**
-     * Maximum line length.
-     */
-    protected static final int MAX_LINE_LENGTH = 512;
 
     /**
      * Creates a new output thread.
@@ -186,7 +186,7 @@ public class IrcOutput extends Thread {
      * @throws IOException If anything goes wrong while sending this
      *                     message.
      */
-    private synchronized void sendNowEx(String line) throws IOException {
+    public synchronized void sendNowEx(String line) throws IOException {
         if (line.length() > (IrcOutput.MAX_LINE_LENGTH - 2)) {
             line = line.substring(0, IrcOutput.MAX_LINE_LENGTH - 2);
         }

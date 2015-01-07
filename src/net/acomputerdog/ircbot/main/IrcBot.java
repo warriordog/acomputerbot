@@ -43,6 +43,10 @@ public class IrcBot {
         }
     }
 
+    public static void main(String[] args) {
+        instance.start();
+    }
+
     private void start() {
         if (!isRunning) {
             isRunning = true;
@@ -97,7 +101,7 @@ public class IrcBot {
         connection.setNick(Config.BOT_NICK);
         connection.addMessageListener(handler);
         connection.addServerListener(handler);
-        connection.setAdvancedListener(handler);
+        connection.setUnknownListener(handler);
         connection.addMessageListener(nickServ = new NickServ(this));
         connection.setMessageDelay(Config.MESSAGES_PER_SECOND);
         connection.setVersion(getVersionString());
@@ -200,9 +204,5 @@ public class IrcBot {
 
     public LogManager getLogManager() {
         return logManager;
-    }
-
-    public static void main(String[] args) {
-	    instance.start();
     }
 }

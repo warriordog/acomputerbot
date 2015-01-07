@@ -42,7 +42,7 @@ import com.sorcix.sirc.main.IrcConnection;
  *
  * @author Sorcix
  */
-public interface AdvancedListener {
+public interface UnknownListener {
 
     /**
      * Received an unknown IRC event.
@@ -50,7 +50,7 @@ public interface AdvancedListener {
      * @param irc  The {@link com.sorcix.sirc.main.IrcConnection} receiving this event.
      * @param line The incoming line.
      */
-    void onUnknown(IrcConnection irc, IrcPacket line);
+    public void onUnknown(IrcConnection irc, IrcPacket line);
 
     /**
      * Received an unknown numeric server reply.
@@ -58,5 +58,5 @@ public interface AdvancedListener {
      * @param irc  The {@link IrcConnection} receiving this event.
      * @param line The incoming line.
      */
-    void onUnknownReply(IrcConnection irc, IrcPacket line);
+    public void onUnknownReply(IrcConnection irc, IrcPacket line);
 }
