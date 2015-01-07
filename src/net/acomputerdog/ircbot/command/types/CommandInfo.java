@@ -20,7 +20,7 @@ public class CommandInfo extends Command {
 
     @Override
     public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
-        target.send(colorYellow("This is a simple bot made by acomputerdog.  I am open source and written in java!  Type \"" + Config.COMMAND_PREFIX + "help\" for commands."));
+        target.send(colorYellow("I am running " + bot.getVersionString() + "!  AcomputerBot is a free, open source IRC bot written by acomputerdog.  Type \"" + Config.COMMAND_PREFIX + "help\" for a list of commands."));
         return true;
     }
 }
