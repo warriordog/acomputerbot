@@ -37,7 +37,8 @@ public class CommandHelp extends Command {
                 target.send(colorGreen("  Usage: \"" + cmd.getHelpString() + "\""));
                 target.send(colorGreen("  Aliases: " + getAliases(cmd)));
                 target.send(colorGreen("  Description: " + cmd.getDescription()));
-                target.send(colorGreen("  You can use: " + canUse(channel, sender, cmd)));
+                target.send(colorGreen("  Arguments: " + getArguments(cmd)));
+                target.send(colorGreen("  Permissions: " + getPermissions(cmd, channel, sender)));
                 return true;
             } else {
                 target.send(colorRed("Could not find command: \"" + command.args + "\""));
@@ -89,10 +90,31 @@ public class CommandHelp extends Command {
         return builder.toString();
     }
 
-    private boolean canUse(Channel channel, User user, Command command) {
-        if (channel == null) {
-            return command.allowedInPM(user);
+    private String getArguments(Command cmd) {
+        int min = cmd.getMinArgs();
+        int max = cmd.getMaxArgs();
+        if (min == max) {
+            return String.valueOf(min);
         }
-        return command.allowedInChannel(channel, user);
+        return min + " - " + max;
+    }
+
+    private String getPermissions(Command cmd, Channel channel, User sender) {
+        String perms;
+        if (cmd.requiresAdmin()) {
+            if (cmd.canOpOverride()) {
+                perms = "admin/op ";
+            } else {
+                perms = "admin ";
+            }
+        } else {
+            perms = "none ";
+        }
+        if (channel == null) {
+            perms += cmd.allowedInPM(sender) ? "(allowed here)" : "(blocked here)";
+        } else {
+            perms += cmd.allowedInChannel(channel, sender) ? "(allowed here)" : "(blocked here)";
+        }
+        return perms;
     }
 }
