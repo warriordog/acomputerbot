@@ -44,7 +44,7 @@ public class CommandJavaScriptConsole extends Command {
     @Override
     public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         if (!Config.ENABLE_CONSOLE) {
-            sender.send(colorRed("JavaScript console is disabled!"));
+            target.send(colorRed("JavaScript console is disabled!"));
             return false;
         }
         try {
