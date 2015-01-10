@@ -67,6 +67,8 @@ public class IrcListener extends IrcAdaptor implements UnknownListener {
     public void onPart(IrcConnection irc, Channel channel, User user, String message) {
         if (user.isUs() && channel != null) {
             LOGGER.logInfo("Leaving channel " + channel.getName() + ".");
+        } else {
+            bot.getAuth().deauthenticate(user);
         }
     }
 

@@ -85,6 +85,8 @@ public class IrcParser {
                 } else if (line.getMessage().equals("CLIENTINFO")) {
                     // send client info
                     line.getSender().sendCtcpReply("CLIENTINFO VERSION TIME PING SOURCE FINGER SIRCVERS");
+                } else if (line.getMessage().equals("ACOMPUTERBOTVERS")) {
+                    line.getSender().sendCtcpReply("ACOMPUTERBOTVERS Acomputerbot - (" + IrcConnection.ABOUT + IrcConnection.ABOUT_ADDITIONAL + ")");
                 } else {
                     // send error message
                     line.getSender().sendCtcpReply("ERRMSG CTCP Command not supported. Use CLIENTINFO to list supported commands.");
