@@ -17,7 +17,8 @@ import net.acomputerdog.ircbot.security.NickServ;
 import net.acomputerdog.ircbot.security.StringCheck;
 
 public class IrcBot {
-    public static final IrcBot instance = new IrcBot();
+    @Deprecated
+    public static IrcBot instance = new IrcBot();
     public static CLogger LOGGER;
 
     private final MemBuffer buffer = new MemBuffer();
@@ -38,13 +39,11 @@ public class IrcBot {
     private LogManager logManager;
 
     private IrcBot() {
-        if (instance != null) {
-            throw new IllegalStateException("Cannot create more than one IrcBot!");
-        }
+        instance = this;
     }
 
     public static void main(String[] args) {
-        instance.start();
+        new IrcBot().start();
     }
 
     private void start() {
@@ -93,7 +92,7 @@ public class IrcBot {
         Command.init(this);
         LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
 
-        IrcConnection.ABOUT_ADDITIONAL += (" + " + getVersionString());
+        IrcConnection.ABOUT_ADDITIONAL += (getVersionString());
         connection = new IrcConnection(Config.SERVER);
         if (Config.USE_LOGIN) {
             connection.setUsername(Config.BOT_USERNAME);

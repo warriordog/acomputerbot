@@ -71,7 +71,7 @@ public class IrcParser {
                     line.getSender().sendCtcpReply("VERSION " + irc.getVersion());
                 } else if (line.getMessage().equals("SIRCVERS")) {
                     // send sIRC version information
-                    line.getSender().sendCtcpReply("SIRCVERS " + IrcConnection.ABOUT + IrcConnection.ABOUT_ADDITIONAL);
+                    line.getSender().sendCtcpReply("SIRCVERS " + IrcConnection.ABOUT + " + " + IrcConnection.ABOUT_ADDITIONAL);
                 } else if (line.getMessage().equals("TIME")) {
                     // send current date&time
                     line.getSender().sendCtcpReply(new Date().toString());
@@ -86,7 +86,7 @@ public class IrcParser {
                     // send client info
                     line.getSender().sendCtcpReply("CLIENTINFO VERSION TIME PING SOURCE FINGER SIRCVERS");
                 } else if (line.getMessage().equals("ACOMPUTERBOTVERS")) {
-                    line.getSender().sendCtcpReply("ACOMPUTERBOTVERS Acomputerbot - (" + IrcConnection.ABOUT + IrcConnection.ABOUT_ADDITIONAL + ")");
+                    line.getSender().sendCtcpReply("ACOMPUTERBOTVERS Acomputerbot - (" + IrcConnection.ABOUT_ADDITIONAL + ")");
                 } else {
                     // send error message
                     line.getSender().sendCtcpReply("ERRMSG CTCP Command not supported. Use CLIENTINFO to list supported commands.");
