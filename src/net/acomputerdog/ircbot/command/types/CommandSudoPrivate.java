@@ -40,7 +40,7 @@ public class CommandSudoPrivate extends Command {
             String user = command.args.substring(0, index);
             String cmd = getCommand(command.args.substring(index + 1));
             User usr = bot.getConnection().createUser(user);
-            Command.onChat(bot, channel, usr, usr, cmd);
+            bot.getCommandManager().onChat(channel, usr, usr, cmd);
             return true;
         } else {
             target.send(colorRed("Not enough args, use \"" + getHelpString() + "\"!"));

@@ -7,7 +7,6 @@ import com.sorcix.sirc.structure.Channel;
 import com.sorcix.sirc.structure.User;
 import com.sorcix.sirc.util.IrcAdaptor;
 import net.acomputerdog.core.logger.CLogger;
-import net.acomputerdog.ircbot.command.Command;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.main.IrcBot;
 
@@ -31,13 +30,13 @@ public class IrcListener extends IrcAdaptor implements UnknownListener {
                 target.send("BOTINFO: " + bot.getVersionString() + " (" + IrcConnection.ABOUT + ").  Type \"" + Config.COMMAND_PREFIX + "info\" for more information.");
             }
         } else {
-            Command.onChat(bot, target, sender, target, message);
+            bot.getCommandManager().onChat(target, sender, target, message);
         }
     }
 
     @Override
     public void onPrivateMessage(IrcConnection irc, User sender, String message) {
-        Command.onChat(bot, null, sender, sender, message);
+        bot.getCommandManager().onChat(null, sender, sender, message);
     }
 
     @Override

@@ -25,10 +25,6 @@ public class CommandJavaScript extends Command {
     public CommandJavaScript(IrcBot bot) {
         super(bot, "JavaScript", "javascript", "js");
         executionMap = new ConcurrentHashMap<>();
-        //engine = new JSExecutor();
-        if (System.getSecurityManager() == null) {
-            System.setSecurityManager(new JSSecurityManager());
-        }
         Thread thread = new Thread(() -> {
             while (true) {
                 try {
@@ -90,6 +86,8 @@ public class CommandJavaScript extends Command {
         private volatile String code = null;
         private volatile long startTime = 0;
 
+        private boolean securityEnabled = false;
+
         private JSExecutor(Chattable target, CLogger logger, IrcBot bot) {
             this.target = target;
             this.LOGGER = logger;
@@ -103,7 +101,7 @@ public class CommandJavaScript extends Command {
                 }
             }
             if (System.getSecurityManager() == null) {
-                System.setSecurityManager(new JSSecurityManager());
+                System.setSecurityManager(new JSSecurityManager(this));
             }
             thread = createThread();
             thread.start();
@@ -134,10 +132,10 @@ public class CommandJavaScript extends Command {
                         startTime = System.currentTimeMillis();
                         String codeCopy = code; //do NOT execute this!  Its only for printing out the error-ed code
                         try {
-                            JSSecurityManager.setActive(true);
+                            securityEnabled = true;
                             execute(code);
                             LOGGER.logInfo(target.getName() + " executed JS: \"" + codeCopy + "\".");
-                            JSSecurityManager.setActive(false);
+                            securityEnabled = false;
                         } catch (ThreadDeath e) {
                             //message is sent elsewhere
                             LOGGER.logWarning(target.getName() + " timed out JS: \"" + codeCopy + "\"!");
@@ -170,20 +168,20 @@ public class CommandJavaScript extends Command {
     private static class JSSecurityManager extends SecurityManager {
         private static final String[] allowedPerms = {"nashorn.setConfig", "stopThread", "accessClassInPackage", "suppressAccessChecks", "accessDeclaredMembers", "createClassLoader", "getClassLoader"};
 
-        private static boolean active = false;
-
         private final SecurityManager parent;
         private final CLogger LOGGER;
+        private final JSExecutor executor;
 
-        private JSSecurityManager() {
+        private JSSecurityManager(JSExecutor executor) {
             super();
+            this.executor = executor;
             parent = System.getSecurityManager();
             LOGGER = new CLogger("JSSecurity", false, true);
         }
 
         @Override
         public void checkPermission(Permission perm) {
-            if (active) {
+            if (executor.securityEnabled) {
                 Class[] stack = getClassContext();
                 String permName = perm.getName();
                 boolean isAllowed = (perm instanceof FilePermission) && permName.endsWith(".jar"); //loading JS engine internals
@@ -210,10 +208,6 @@ public class CommandJavaScript extends Command {
             if (parent != null) {
                 parent.checkPermission(perm);
             }
-        }
-
-        private static void setActive(boolean active) {
-            JSSecurityManager.active = active;
         }
     }
 

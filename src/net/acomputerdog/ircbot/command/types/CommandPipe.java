@@ -66,7 +66,7 @@ public class CommandPipe extends Command {
         for (String cmd : commandDeque) {
             String fullCmd = (cmd + " " + lastResponse).trim();
             lastResponse = "";
-            Command.onChat(bot, channel, sender, responseReader, fullCmd);
+            bot.getCommandManager().onChat(channel, sender, responseReader, fullCmd);
         }
         bot.getStringCheck().sendFormattedString(lastResponse, target);
         return true;

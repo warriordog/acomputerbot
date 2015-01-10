@@ -40,7 +40,7 @@ public class CommandClearNotes extends Command {
     @Override
     public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         if (noteMap == null) {
-            noteMap = ((CommandNote) getCommandNameMap().get("Note")).getNoteMap();
+            noteMap = ((CommandNote) bot.getCommandManager().getCommandNameMap().get("Note")).getNoteMap();
         }
         if (command.hasArgs()) {
             User user = bot.getConnection().createUser(command.args);

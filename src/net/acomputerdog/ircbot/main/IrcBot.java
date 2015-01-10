@@ -5,7 +5,7 @@ import com.sorcix.sirc.util.NickNameException;
 import net.acomputerdog.core.java.MemBuffer;
 import net.acomputerdog.core.java.Sleep;
 import net.acomputerdog.core.logger.CLogger;
-import net.acomputerdog.ircbot.command.Command;
+import net.acomputerdog.ircbot.command.CommandManager;
 import net.acomputerdog.ircbot.config.Admins;
 import net.acomputerdog.ircbot.config.AutoJoinList;
 import net.acomputerdog.ircbot.config.Config;
@@ -19,7 +19,7 @@ import net.acomputerdog.ircbot.security.StringCheck;
 public class IrcBot {
     @Deprecated
     public static IrcBot instance = new IrcBot();
-    public static CLogger LOGGER;
+    public CLogger LOGGER;
 
     private final MemBuffer buffer = new MemBuffer();
 
@@ -27,6 +27,7 @@ public class IrcBot {
     private boolean canRun = true;
     private String shutdownReason = null;
     private boolean properShutdown = false;
+    private boolean reloading = false;
 
     private IrcListener handler;
     private IrcConnection connection;
@@ -37,33 +38,37 @@ public class IrcBot {
     private BlackList blacklist;
     private AutoJoinList autoJoinList;
     private LogManager logManager;
+    private CommandManager commandManager;
 
     private IrcBot() {
         instance = this;
     }
 
     public static void main(String[] args) {
-        new IrcBot().start();
+        while (true) {
+            //loops forever to support reloads
+            new IrcBot().start();
+            System.setSecurityManager(null); //disable JS sandbox
+            instance = null;
+            Sleep.sleep(1000);
+            System.gc();
+        }
     }
 
     private void start() {
-        if (!isRunning) {
-            isRunning = true;
-            try {
-                init();
-                while (canRun) {
-                    long methodStartTime = System.currentTimeMillis();
-                    onTick();
-                    Sleep.sync(methodStartTime, 1000 / Config.TPS);
-                }
-                end(0);
-            } catch (Throwable t) {
-                buffer.free();
-                LOGGER.logFatal("Uncaught exception in IrcBot loop!", t);
-                end(-1);
+        isRunning = true;
+        try {
+            init();
+            while (canRun) {
+                long methodStartTime = System.currentTimeMillis();
+                onTick();
+                Sleep.sync(methodStartTime, 1000 / Config.TPS);
             }
-        } else {
-            throw new IllegalArgumentException("Cannot start more than one IrcBot!");
+            end(0);
+        } catch (Throwable t) {
+            buffer.free();
+            LOGGER.logFatal("Uncaught exception in IrcBot loop!", t);
+            end(-1);
         }
     }
 
@@ -89,8 +94,9 @@ public class IrcBot {
         autoJoinList.load();
 
         handler = new IrcListener(this);
-        Command.init(this);
-        LOGGER.logInfo("Loaded " + Command.getCommandNameMap().size() + " commands with " + Command.getCommandMap().size() + " aliases.");
+        commandManager = new CommandManager(this);
+        commandManager.init();
+        LOGGER.logInfo("Loaded " + commandManager.getCommandNameMap().size() + " commands with " + commandManager.getCommandMap().size() + " aliases.");
 
         IrcConnection.ABOUT_ADDITIONAL += (getVersionString());
         connection = new IrcConnection(Config.SERVER);
@@ -129,6 +135,8 @@ public class IrcBot {
     }
 
     private void end(int code) {
+        buffer.free();
+        waitForCommandComplete();
         if (code == 0) {
             LOGGER.logInfo("Shutting down normally.");
         } else {
@@ -139,7 +147,11 @@ public class IrcBot {
         }
         try {
             if (connection != null) {
-                connection.disconnect(shutdownReason == null ? "Bot shutting down." : shutdownReason);
+                if (reloading) {
+                    connection.disconnect("Bot reloading.");
+                } else {
+                    connection.disconnect(shutdownReason == null ? "Bot shutting down." : shutdownReason);
+                }
             }
             blacklist.save();
             autoJoinList.save();
@@ -149,7 +161,16 @@ public class IrcBot {
             logManager.onShutdown();
             properShutdown = true;
         } catch (Throwable ignored) {}
-        System.exit(code);
+        if (!reloading) {
+            System.exit(code);
+        }
+    }
+
+    private void waitForCommandComplete() {
+        long startTime = System.currentTimeMillis();
+        while (commandManager.isCommandInProgress() && System.currentTimeMillis() - startTime < 10000) {
+            Sleep.sleep(100);
+        }
     }
 
     public boolean isProperShutdown() {
@@ -162,6 +183,11 @@ public class IrcBot {
 
     public void stop(String reason) {
         shutdownReason = reason;
+        stop();
+    }
+
+    public void reload() {
+        reloading = true;
         stop();
     }
 
@@ -203,5 +229,9 @@ public class IrcBot {
 
     public LogManager getLogManager() {
         return logManager;
+    }
+
+    public CommandManager getCommandManager() {
+        return commandManager;
     }
 }

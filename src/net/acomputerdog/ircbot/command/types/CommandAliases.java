@@ -22,7 +22,7 @@ public class CommandAliases extends Command {
         target.send("Registered aliases:");
         StringBuilder builder = new StringBuilder(16);
         int count = 0;
-        for (String str : getCommandMap().keySet()) {
+        for (String str : bot.getCommandManager().getCommandMap().keySet()) {
             if (count > 0) {
                 builder.append(", ");
             } else {

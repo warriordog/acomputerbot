@@ -39,7 +39,7 @@ public class CommandSudo extends Command {
         if (index != -1) {
             String user = command.args.substring(0, index);
             String cmd = getCommand(command.args.substring(index + 1));
-            Command.onChat(bot, channel, bot.getConnection().createUser(user), target, cmd);
+            bot.getCommandManager().onChat(channel, bot.getConnection().createUser(user), target, cmd);
             return true;
         } else {
             target.send(colorRed("Not enough args, use \"" + getHelpString() + "\"!"));

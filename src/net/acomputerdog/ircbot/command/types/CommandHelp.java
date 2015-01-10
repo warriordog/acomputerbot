@@ -31,7 +31,7 @@ public class CommandHelp extends Command {
     @Override
     public boolean processCommand(Channel channel, User sender, Chattable target, CommandLine command) {
         if (command.hasArgs()) {
-            Command cmd = getCommandMap().get(command.args.toLowerCase());
+            Command cmd = bot.getCommandManager().getCommandMap().get(command.args.toLowerCase());
             if (cmd != null) {
                 target.send(colorGreen("Found command: " + cmd.getName()));
                 target.send(colorGreen("  Usage: \"" + cmd.getHelpString() + "\""));
@@ -48,8 +48,8 @@ public class CommandHelp extends Command {
             target.send(colorGreen("Registered commands: (use \"" + getHelpString() + "\" to view details)"));
             StringBuilder builder = new StringBuilder(16);
             int count = 0;
-            for (String cmd : getCommandNameMap().keySet()) {
-                Command cmmd = getCommandNameMap().get(cmd);
+            for (String cmd : bot.getCommandManager().getCommandNameMap().keySet()) {
+                Command cmmd = bot.getCommandManager().getCommandNameMap().get(cmd);
                 if ((!cmmd.requiresAdmin() || (bot.getAuth().isAuthenticated(sender) || (cmmd.canOpOverride() && sender.hasOperator()))) &&
                         ((channel != null && cmmd.allowedInChannel(channel, sender)) || (channel == null && cmmd.allowedInPM(sender)))) {
                     if (count > 0) {
