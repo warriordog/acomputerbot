@@ -82,10 +82,12 @@ public class IrcListener extends IrcAdaptor implements UnknownListener {
         if ("352".equals(line.getCommand())) {
             String realname = line.getMessage().substring(2);
             String[] parts = line.getArgumentsArray();
-            User user = irc.createUser(parts[5], parts[1]);
-            user.setHostName(parts[3]);
-            user.setRealName(realname);
-            user.setUserName(parts[2]);
+            if (parts.length >= 6) {
+                User user = irc.createUser(parts[5], parts[1]);
+                user.setHostName(parts[3]);
+                user.setRealName(realname);
+                user.setUserName(parts[2]);
+            }
         }
     }
 
