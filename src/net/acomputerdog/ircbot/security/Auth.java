@@ -33,7 +33,7 @@ public class Auth {
         verifyWaitingPass.put(user, pass);
         verifyWaitingTimeout.put(user, System.currentTimeMillis() + 60000);
         loginReplyTarget.put(user, target);
-        IrcBot.instance.getNickServ().send("ACC " + user.getNick());
+        bot.getNickServ().send("ACC " + user.getNick());
     }
 
     private boolean authenticate(User user, String pass) {
@@ -91,7 +91,7 @@ public class Auth {
         }
         for (User user : authenticatedAdmins.keySet()) {
             if (authenticatedAdmins.get(user) <= System.currentTimeMillis()) {
-                IrcBot.instance.getNickServ().send("ACC " + user.getNick());
+                bot.getNickServ().send("ACC " + user.getNick());
                 reauthWaitingAdmins.put(user, System.currentTimeMillis() + 60000);
             }
         }
