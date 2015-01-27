@@ -26,6 +26,11 @@ public class CommandSpyIn extends Command {
     }
 
     @Override
+    public boolean requiresAdmin() {
+        return true;
+    }
+
+    @Override
     public String getDescription() {
         return "Monitors conversation in a channel.";
     }

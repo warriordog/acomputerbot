@@ -26,6 +26,11 @@ public class CommandSpyOn extends Command {
     }
 
     @Override
+    public boolean requiresAdmin() {
+        return true;
+    }
+
+    @Override
     public String getDescription() {
         return "Monitors conversation by a particular person.";
     }
