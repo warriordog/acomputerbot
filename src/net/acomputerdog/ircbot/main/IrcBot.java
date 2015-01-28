@@ -281,4 +281,12 @@ public class IrcBot {
     public CommandManager getCommandManager() {
         return commandManager;
     }
+
+    public PluginLoader getPluginLoader() {
+        return pluginLoader;
+    }
+
+    public PluginList getPluginList() {
+        return pluginList;
+    }
 }
