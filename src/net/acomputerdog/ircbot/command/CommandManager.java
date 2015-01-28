@@ -54,7 +54,7 @@ public class CommandManager {
                                     if (channel == null && cmd.allowedInPM(sender)) {
                                         cmd.processCommand(null, sender, target, cmdLine);
                                         cmd.getLogger().logInfo("User " + sender.getNick() + " used command in PM: \"" + message + "\".");
-                                    } else if (cmd.allowedInChannel(channel, sender)) {
+                                    } else if (channel != null && cmd.allowedInChannel(channel, sender)) {
                                         cmd.processCommand(channel, sender, target, cmdLine);
                                         cmd.getLogger().logInfo("User " + sender.getNick() + " used command in " + channel.getName() + ": \"" + message + "\".");
                                     } else {
@@ -77,10 +77,14 @@ public class CommandManager {
                         target.send(colorRed("You are not permitted to use AcomputerBot!"));
                     }
                 } catch (Exception e) {
-                    cmd.getLogger().logError("An exception occurred while processing this command!");
-                    cmd.getLogger().logError("The command being executed was \"" + message + "\".");
-                    cmd.getLogger().logError("The exception was a \"" + e.getClass().getName() + "\".  Message: \"" + e.getMessage() + "\".", e);
-                    target.send(colorRed("An exception occurred while processing the command!  Please report this!"));
+                    if (cmd == null) {
+                        LOGGER.logError("Null command: " + cmdLine.command);
+                    } else {
+                        cmd.getLogger().logError("An exception occurred while processing this command!");
+                        cmd.getLogger().logError("The command being executed was \"" + message + "\".");
+                        cmd.getLogger().logError("The exception was a \"" + e.getClass().getName() + "\".  Message: \"" + e.getMessage() + "\".", e);
+                        target.send(colorRed("An exception occurred while processing the command!  Please report this!"));
+                    }
                 }
             }
         } catch (Throwable t) {
