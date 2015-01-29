@@ -17,6 +17,10 @@ public interface IrcPlugin {
         return getID();
     }
 
+    public default String getVersion() {
+        return "0.0";
+    }
+
     public void onLoad(IrcBot bot);
 
     public void onUnload();
