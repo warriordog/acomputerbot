@@ -15,3 +15,5 @@ Although unfinished, AcomputerBot is fully configurable and is easily expanded t
 * BlackList/WhiteList support
 * Responds to "*BOTINFO" querys
 * Channel ops can remove bot to prevent abuse
+* Plugin support
+* All built-in commands are removable plugins
