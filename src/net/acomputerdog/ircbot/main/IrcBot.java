@@ -116,18 +116,14 @@ public class IrcBot {
         handler = new IrcListener(this);
         commandManager = new CommandManager(this);
 
-        if (pluginList.size() > 0) {
-            for (IrcPlugin plugin : pluginList.getPlugins()) {
-                try {
-                    plugin.onLoad(this);
-                    LOGGER.logInfo("Loaded " + pluginList.size() + " plugins.");
-                } catch (Throwable t) {
-                    LOGGER.logError("Exception loading plugin " + plugin.getName() + "!", t);
-                }
+        for (IrcPlugin plugin : pluginList.getPlugins()) {
+            try {
+                plugin.onLoad(this);
+            } catch (Throwable t) {
+                LOGGER.logError("Exception loading plugin " + plugin.getName() + "!", t);
             }
-        } else {
-            LOGGER.logInfo("Loaded 0 plugins.");
         }
+        LOGGER.logInfo("Loaded " + pluginList.size() + " plugins.");
 
         LOGGER.logInfo("Loaded " + commandManager.getCommandNameMap().size() + " commands with " + commandManager.getCommandMap().size() + " aliases.");
 
@@ -187,18 +183,14 @@ public class IrcBot {
                 }
             }
 
-            if (pluginList.size() > 0) {
-                for (IrcPlugin plugin : pluginList.getPlugins()) {
-                    try {
-                        plugin.onUnload();
-                        LOGGER.logInfo("Unloaded " + pluginList.size() + " plugins.");
-                    } catch (Throwable t) {
-                        LOGGER.logError("Exception unloading plugin " + plugin.getName() + "!", t);
-                    }
+            for (IrcPlugin plugin : pluginList.getPlugins()) {
+                try {
+                    plugin.onUnload();
+                } catch (Throwable t) {
+                    LOGGER.logError("Exception unloading plugin " + plugin.getName() + "!", t);
                 }
-            } else {
-                LOGGER.logInfo("Unloaded 0 plugins.");
             }
+            LOGGER.logInfo("Unloaded " + pluginList.size() + " plugins.");
 
             blacklist.save();
             autoJoinList.save();
