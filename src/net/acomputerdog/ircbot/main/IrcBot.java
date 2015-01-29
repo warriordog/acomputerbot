@@ -11,10 +11,15 @@ import net.acomputerdog.ircbot.config.AutoJoinList;
 import net.acomputerdog.ircbot.config.Config;
 import net.acomputerdog.ircbot.irc.IrcListener;
 import net.acomputerdog.ircbot.logging.LogManager;
+import net.acomputerdog.ircbot.plugin.IrcPlugin;
+import net.acomputerdog.ircbot.plugin.PluginList;
+import net.acomputerdog.ircbot.plugin.PluginLoader;
 import net.acomputerdog.ircbot.security.Auth;
 import net.acomputerdog.ircbot.security.BlackList;
 import net.acomputerdog.ircbot.security.NickServ;
 import net.acomputerdog.ircbot.security.StringCheck;
+
+import java.io.File;
 
 public class IrcBot {
     @Deprecated
@@ -39,6 +44,8 @@ public class IrcBot {
     private AutoJoinList autoJoinList;
     private LogManager logManager;
     private CommandManager commandManager;
+    private PluginLoader pluginLoader;
+    private PluginList pluginList;
 
     private IrcBot() {
         instance = this;
@@ -84,6 +91,19 @@ public class IrcBot {
         LOGGER.logInfo(getVersionString() + " starting.");
         Runtime.getRuntime().addShutdownHook(new IrcShutdownHandler(this));
 
+        pluginLoader = new PluginLoader();
+        pluginList = pluginLoader.getPlugins();
+        File pluginDir = new File("./plugins/");
+        if (!pluginDir.isDirectory()) {
+            pluginDir.mkdir();
+        } else {
+            try {
+                pluginLoader.loadPlugins(new File("./plugins/"));
+            } catch (Exception e) {
+                LOGGER.logWarning("Unable to load plugins, e");
+            }
+        }
+
         admins = new Admins(this);
         auth = new Auth(this);
         blacklist = new BlackList(this);
@@ -95,7 +115,16 @@ public class IrcBot {
 
         handler = new IrcListener(this);
         commandManager = new CommandManager(this);
-        commandManager.init();
+
+        for (IrcPlugin plugin : pluginList.getPlugins()) {
+            try {
+                plugin.onLoad(this);
+            } catch (Throwable t) {
+                LOGGER.logError("Exception loading plugin " + plugin.getName() + "!", t);
+            }
+        }
+        LOGGER.logInfo("Loaded " + pluginList.size() + " plugins.");
+
         LOGGER.logInfo("Loaded " + commandManager.getCommandNameMap().size() + " commands with " + commandManager.getCommandMap().size() + " aliases.");
 
         IrcConnection.ABOUT_ADDITIONAL += (getVersionString());
@@ -153,6 +182,16 @@ public class IrcBot {
                     connection.disconnect(shutdownReason == null ? "Bot shutting down." : shutdownReason);
                 }
             }
+
+            for (IrcPlugin plugin : pluginList.getPlugins()) {
+                try {
+                    plugin.onUnload();
+                } catch (Throwable t) {
+                    LOGGER.logError("Exception unloading plugin " + plugin.getName() + "!", t);
+                }
+            }
+            LOGGER.logInfo("Unloaded " + pluginList.size() + " plugins.");
+
             blacklist.save();
             autoJoinList.save();
             admins.save();
@@ -233,5 +272,13 @@ public class IrcBot {
 
     public CommandManager getCommandManager() {
         return commandManager;
+    }
+
+    public PluginLoader getPluginLoader() {
+        return pluginLoader;
+    }
+
+    public PluginList getPluginList() {
+        return pluginList;
     }
 }
